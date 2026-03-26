@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BESS & Blockchain: The Decentralized Energy Revolution</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+body { background-color: #0f172a; color: #f8fafc; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+.glass-card { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(10px); border: 1px solid #334155; }
+.text-gradient { background: linear-gradient(to right, #06b6d4, #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.chart-container { position: relative; width: 100%; max-width: 700px; margin-left: auto; margin-right: auto; height: 350px; max-height: 400px; }
+@media (max-width: 640px) { .chart-container { height: 280px; } }
+.process-box { transition: transform 0.3s ease; }
+.process-box:hover { transform: translateY(-5px); box-shadow: 0 10px 25px -5px rgba(6, 182, 212, 0.4); border-color: #06b6d4; }
+</style>
+</head>
+<body class="antialiased pb-20">
+
+<nav class="sticky top-0 z-50 glass-card border-b-0 border-slate-700 p-4 mb-8">
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+        <div class="text-xl font-bold tracking-wider flex items-center gap-2">
+            <span class="text-cyan-400 text-2xl">⚡</span> BESS <span class="text-purple-400">x</span> CHAIN
+        </div>
+        <div class="hidden sm:flex space-x-6 text-sm font-medium text-slate-300">
+            <a href="#overview" class="hover:text-cyan-400 transition-colors">Overview</a>
+            <a href="#benefits" class="hover:text-cyan-400 transition-colors">Benefits</a>
+            <a href="#architecture" class="hover:text-cyan-400 transition-colors">Architecture</a>
+            <a href="#state-of-art" class="hover:text-cyan-400 transition-colors">State of the Art</a>
+        </div>
+    </div>
+</nav>
+
+<header class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16 text-center">
+    <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight mb-4">
+        Decentralizing Power with <br />
+        <span class="text-gradient">Battery Storage & Blockchain</span>
+    </h1>
+    <p class="text-lg md:text-xl text-slate-400 max-w-3xl mx-auto mt-6">
+        The convergence of Battery Energy Storage Systems (BESS) and distributed ledger technology is rewiring the global grid. By marrying physical energy storage with smart contracts, we are transitioning from monolithic utilities to autonomous, peer-to-peer energy economies.
+    </p>
+</header>
+
+<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
+
+    <section id="overview" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="glass-card rounded-2xl p-8 flex flex-col items-center justify-center text-center border-t-4 border-t-cyan-500">
+            <div class="text-5xl mb-2">📈</div>
+            <h3 class="text-slate-400 text-sm font-semibold uppercase tracking-wider mb-2">Market Projection 2030</h3>
+            <div class="text-4xl font-bold text-white mb-2">$35.2B</div>
+            <p class="text-sm text-slate-500">Estimated value of the combined decentralized energy storage market.</p>
+        </div>
+        <div class="glass-card rounded-2xl p-8 flex flex-col items-center justify-center text-center border-t-4 border-t-purple-500">
+            <div class="text-5xl mb-2">⏱️</div>
+            <h3 class="text-slate-400 text-sm font-semibold uppercase tracking-wider mb-2">Settlement Speed</h3>
+            <div class="text-4xl font-bold text-white mb-2">&lt; 2 Sec</div>
+            <p class="text-sm text-slate-500">Automated energy dispatch and financial clearing via smart contracts.</p>
+        </div>
+        <div class="glass-card rounded-2xl p-8 flex flex-col items-center justify-center text-center border-t-4 border-t-emerald-500">
+            <div class="text-5xl mb-2">📉</div>
+            <h3 class="text-slate-400 text-sm font-semibold uppercase tracking-wider mb-2">Intermediary Costs</h3>
+            <div class="text-4xl font-bold text-white mb-2">-40%</div>
+            <p class="text-sm text-slate-500">Reduction in transaction fees by eliminating traditional grid brokers.</p>
+        </div>
+    </section>
+
+    <section id="benefits" class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+        <div>
+            <h2 class="text-3xl font-bold mb-4 flex items-center gap-3"><span class="text-purple-400">⚖️</span> Paradigm Shift: Grid vs. Blockchain</h2>
+            <p class="text-slate-300 mb-6 leading-relaxed">
+                Traditional energy grids are centralized, suffering from single points of failure, high latency in financial settlements, and systemic inefficiencies when integrating renewable sources. 
+            </p>
+            <p class="text-slate-300 mb-6 leading-relaxed">
+                Blockchain-enabled BESS fundamentally alters this. By decentralizing the ledger, trust is programmatically guaranteed. Smart contracts allow storage systems to autonomously bid, sell, and supply energy to the grid or peers the exact millisecond demand spikes, drastically increasing resilience and renewable integration.
+            </p>
+            <div class="bg-slate-800/50 rounded-xl p-5 border border-slate-700">
+                <h4 class="text-cyan-400 font-semibold mb-2">Key Takeaway</h4>
+                <p class="text-sm text-slate-400">Blockchain acts as the "brain" and ledger, while BESS acts as the "muscle," creating a responsive, trustless, and highly efficient energy network.</p>
+            </div>
+        </div>
+        <div class="glass-card rounded-2xl p-6">
+            <div class="chart-container">
+                <canvas id="radarChart"></canvas>
+            </div>
+        </div>
+    </section>
+
+    <section id="architecture" class="glass-card rounded-2xl p-8 lg:p-12">
+        <h2 class="text-3xl font-bold mb-4 text-center">System Architecture & Process Flow</h2>
+        <p class="text-slate-400 text-center max-w-2xl mx-auto mb-12">
+            The integration relies on hardware (IoT/BESS) communicating seamlessly with software (Blockchain ledgers). Energy flow is paired directly with an immutable data flow, ensuring transparent and automated P2P networks.
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-4 items-center justify-center text-center relative">
+            <div class="process-box bg-slate-800 border-2 border-slate-600 rounded-xl p-6 relative z-10 md:col-span-1">
+                <div class="text-4xl mb-3">☀️</div>
+                <h4 class="font-bold text-white mb-2">Generation</h4>
+                <p class="text-xs text-slate-400">Solar arrays & wind farms generate raw DC/AC power.</p>
+            </div>
+
+            <div class="hidden md:flex justify-center text-cyan-500 text-3xl font-bold">➡</div>
+            <div class="md:hidden flex justify-center text-cyan-500 text-3xl font-bold my-2">⬇</div>
+
+            <div class="process-box bg-slate-800 border-2 border-emerald-500/50 rounded-xl p-6 relative z-10 md:col-span-1 shadow-[0_0_15px_rgba(16,185,129,0.2)]">
+                <div class="text-4xl mb-3">🔋</div>
+                <h4 class="font-bold text-white mb-2">Smart BESS Node</h4>
+                <p class="text-xs text-slate-400">Energy is stored. IoT sensors report capacity & health to the network.</p>
+            </div>
+
+            <div class="hidden md:flex justify-center text-cyan-500 text-3xl font-bold">➡</div>
+            <div class="md:hidden flex justify-center text-cyan-500 text-3xl font-bold my-2">⬇</div>
+
+            <div class="process-box bg-slate-800 border-2 border-purple-500/50 rounded-xl p-6 relative z-10 md:col-span-1 shadow-[0_0_15px_rgba(139,92,246,0.2)]">
+                <div class="text-4xl mb-3">🔗</div>
+                <h4 class="font-bold text-white mb-2">Smart Contract</h4>
+                <p class="text-xs text-slate-400">Blockchain executes trade logic based on grid demand and tokenized pricing.</p>
+            </div>
+
+            <div class="md:col-span-5 grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+                <div class="process-box bg-slate-800 border border-slate-700 rounded-xl p-6 flex items-center gap-4">
+                    <div class="text-3xl">🏘️</div>
+                    <div class="text-left">
+                        <h4 class="font-bold text-cyan-400 mb-1">P2P Microgrid Distribution</h4>
+                        <p class="text-xs text-slate-400">Energy is routed directly to local consumers, bypassing central utilities.</p>
+                    </div>
+                </div>
+                <div class="process-box bg-slate-800 border border-slate-700 rounded-xl p-6 flex items-center gap-4">
+                    <div class="text-3xl">🏭</div>
+                    <div class="text-left">
+                        <h4 class="font-bold text-emerald-400 mb-1">Wholesale Grid Supply</h4>
+                        <p class="text-xs text-slate-400">Excess capacity is sold back to the macro-grid during peak pricing.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="state-of-art" class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+        <div class="glass-card rounded-2xl p-6 order-2 lg:order-1">
+            <div class="chart-container">
+                <canvas id="doughnutChart"></canvas>
+            </div>
+        </div>
+        <div class="order-1 lg:order-2">
+            <h2 class="text-3xl font-bold mb-4 flex items-center gap-3"><span class="text-cyan-400">🚀</span> State of the Art Use Cases</h2>
+            <p class="text-slate-300 mb-6 leading-relaxed">
+                The theoretical framework of Blockchain and BESS is actively transitioning into commercial reality. The market is currently dominated by specialized applications that solve immediate grid friction points.
+            </p>
+            <ul class="space-y-4 mb-6">
+                <li class="flex items-start gap-3">
+                    <span class="text-purple-400 mt-1">✦</span>
+                    <div>
+                        <strong class="text-white">Peer-to-Peer (P2P) Trading:</strong>
+                        <p class="text-sm text-slate-400">Allows prosumers (consumers who also produce) to sell stored battery energy directly to neighbors via tokenized ledgers.</p>
+                    </div>
+                </li>
+                <li class="flex items-start gap-3">
+                    <span class="text-cyan-400 mt-1">✦</span>
+                    <div>
+                        <strong class="text-white">Virtual Power Plants (VPP):</strong>
+                        <p class="text-sm text-slate-400">Aggregates thousands of disparate residential BESS units into a single dispatchable energy block managed by smart contracts.</p>
+                    </div>
+                </li>
+                <li class="flex items-start gap-3">
+                    <span class="text-emerald-400 mt-1">✦</span>
+                    <div>
+                        <strong class="text-white">EV Fleet Smart Charging:</strong>
+                        <p class="text-sm text-slate-400">Utilizing electric vehicles as mobile BESS units, authenticating and billing cross-network charging sessions via blockchain.</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </section>
+
+    <section class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+        <div class="glass-card rounded-2xl p-8 flex flex-col">
+            <h2 class="text-2xl font-bold mb-2">Cost Reduction Projection</h2>
+            <p class="text-sm text-slate-400 mb-6">Impact of decentralization on operational and settlement overhead (measured in relative scale).</p>
+            <div class="chart-container flex-grow">
+                <canvas id="barChart"></canvas>
+            </div>
+        </div>
+        
+        <div class="glass-card rounded-2xl p-8 flex flex-col">
+            <h2 class="text-2xl font-bold mb-2">Market Growth Forecast</h2>
+            <p class="text-sm text-slate-400 mb-6">Projected total addressable market value (in Billions USD) for combined BESS + Blockchain tech.</p>
+            <div class="chart-container flex-grow">
+                <canvas id="areaChart"></canvas>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<script>
+function wrapLabel(label) {
+    if (label.length <= 16) return label;
+    let words = label.split(' ');
+    let lines = [];
+    let currentLine = '';
+    for (let word of words) {
+        if ((currentLine + word).length > 16) {
+            if (currentLine) lines.push(currentLine.trim());
+            currentLine = word + ' ';
+        } else {
+            currentLine += word + ' ';
+        }
+    }
+    if (currentLine) lines.push(currentLine.trim());
+    return lines;
+}
+
+const tooltipConfig = {
+    callbacks: {
+        title: function(tooltipItems) {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+                return label.join(' ');
+            } else {
+                return label;
+            }
+        }
+    }
+};
+
+const defaultOptions = {
+    maintainAspectRatio: false,
+    color: '#cbd5e1',
+    plugins: {
+        legend: { labels: { color: '#cbd5e1', font: { family: "'Segoe UI', sans-serif" } } },
+        tooltip: tooltipConfig
+    }
+};
+
+const radarLabels = ["Decentralization Level", "Transaction Speed", "Security & Trust", "Renewable Integration", "Cost Efficiency", "Grid Resilience"].map(wrapLabel);
+new Chart(document.getElementById('radarChart').getContext('2d'), {
+    type: 'radar',
+    data: {
+        labels: radarLabels,
+        datasets: [
+            {
+                label: 'Traditional Grid',
+                data: [2, 4, 6, 3, 4, 5],
+                backgroundColor: 'rgba(236, 72, 153, 0.2)',
+                borderColor: '#ec4899',
+                pointBackgroundColor: '#ec4899',
+                borderWidth: 2
+            },
+            {
+                label: 'Blockchain BESS',
+                data: [9, 9, 9, 9, 8, 8],
+                backgroundColor: 'rgba(6, 182, 212, 0.3)',
+                borderColor: '#06b6d4',
+                pointBackgroundColor: '#06b6d4',
+                borderWidth: 2
+            }
+        ]
+    },
+    options: {
+        ...defaultOptions,
+        scales: {
+            r: {
+                angleLines: { color: 'rgba(255, 255, 255, 0.1)' },
+                grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                pointLabels: { color: '#cbd5e1', font: { size: 11 } },
+                ticks: { display: false, min: 0, max: 10 }
+            }
+        }
+    }
+});
+
+const doughnutLabels = ["Peer-to-Peer Energy Trading", "Virtual Power Plants (VPP)", "EV Fleet Smart Charging", "Grid Frequency Regulation", "Tokenized Green Certificates"].map(wrapLabel);
+new Chart(document.getElementById('doughnutChart').getContext('2d'), {
+    type: 'doughnut',
+    data: {
+        labels: doughnutLabels,
+        datasets: [{
+            data: [35, 25, 15, 15, 10],
+            backgroundColor: ['#06b6d4', '#8b5cf6', '#10b981', '#ec4899', '#f59e0b'],
+            borderColor: '#1e293b',
+            borderWidth: 2,
+            hoverOffset: 4
+        }]
+    },
+    options: {
+        ...defaultOptions,
+        cutout: '70%',
+        plugins: {
+            ...defaultOptions.plugins,
+            legend: { position: 'right', labels: { color: '#cbd5e1', padding: 20 } }
+        }
+    }
+});
+
+const barLabels = ["Intermediary Fees", "Settlement Delays", "Compliance Costs", "Operational Overhead"].map(wrapLabel);
+new Chart(document.getElementById('barChart').getContext('2d'), {
+    type: 'bar',
+    data: {
+        labels: barLabels,
+        datasets: [
+            {
+                label: 'Pre-Blockchain (2020)',
+                data: [8, 9, 5, 7],
+                backgroundColor: 'rgba(148, 163, 184, 0.5)',
+                borderRadius: 4
+            },
+            {
+                label: 'Blockchain State of Art (2026)',
+                data: [1, 1, 2, 3],
+                backgroundColor: '#10b981',
+                borderRadius: 4
+            }
+        ]
+    },
+    options: {
+        ...defaultOptions,
+        scales: {
+            y: {
+                beginAtZero: true,
+                grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                ticks: { color: '#94a3b8' },
+                title: { display: true, text: 'Relative Cost Index', color: '#64748b' }
+            },
+            x: {
+                grid: { display: false },
+                ticks: { color: '#cbd5e1' }
+            }
+        }
+    }
+});
+
+const areaLabels = ["2024", "2025", "2026", "2027", "2028", "2029", "2030"].map(wrapLabel);
+new Chart(document.getElementById('areaChart').getContext('2d'), {
+    type: 'line',
+    data: {
+        labels: areaLabels,
+        datasets: [{
+            label: 'Market Size (Billions USD)',
+            data: [4.5, 6.2, 8.8, 12.5, 18.0, 25.4, 35.2],
+            fill: true,
+            backgroundColor: 'rgba(139, 92, 246, 0.2)',
+            borderColor: '#8b5cf6',
+            tension: 0.4,
+            pointBackgroundColor: '#8b5cf6',
+            pointBorderColor: '#fff',
+            pointHoverBackgroundColor: '#fff',
+            pointHoverBorderColor: '#8b5cf6'
+        }]
+    },
+    options: {
+        ...defaultOptions,
+        scales: {
+            y: {
+                beginAtZero: true,
+                grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                ticks: { color: '#94a3b8', callback: function(value) { return '$' + value + 'B'; } }
+            },
+            x: {
+                grid: { display: false },
+                ticks: { color: '#cbd5e1' }
+            }
+        }
+    }
+});
+</script>
+</body>
+</html>
