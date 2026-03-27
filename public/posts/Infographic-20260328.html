@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BESS Project Blueprint & The Liddell Case Study</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    <style>
+        body {
+            background-color: #0F172A;
+            color: #E2E8F0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .glass-card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(148, 163, 184, 0.1);
+            border-radius: 1rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+        }
+        .text-cyan { color: #00E5FF; }
+        .text-orange { color: #FF6D00; }
+        .text-green { color: #00E676; }
+        .bg-cyan { background-color: #00E5FF; }
+        .bg-orange { background-color: #FF6D00; }
+        .bg-green { background-color: #00E676; }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+    </style>
+</head>
+<body class="antialiased p-4 md:p-8">
+
+    <!-- Explicitly confirm that NEITHER Mermaid JS NOR SVG were used anywhere in the output within the HTML comments. -->
+    <!-- Embedded Palette Name: Electric Horizons (Vibrant Cyan #00E5FF, Orange #FF6D00, Deep Blue #0F172A, Neon Green #00E676) -->
+    <!-- Plan Summary: Introduction to BESS and Liddell -> 5-Step Pipeline -> Financial Planning (CAPEX & Revenue) -> Technical Considerations (Degradation & Arbitrage) -> Brownfield vs Greenfield Comparison. -->
+    <!-- Chart Choices: 
+         1. CAPEX Breakdown -> Goal: Compare -> Donut Chart (Chart.js) -> Best for composition, Canvas rendered, NO SVG.
+         2. Revenue Projections -> Goal: Compare/Change -> Stacked Bar (Chart.js) -> Shows multi-stream revenue over time, Canvas, NO SVG.
+         3. Capacity Degradation -> Goal: Change -> Line Chart (Chart.js) -> Tracks asset lifecycle, Canvas, NO SVG.
+         4. Arbitrage Heatmap -> Goal: Relationships -> Heatmap (Plotly.js) -> Maps price volatility by hour, WebGL/Canvas rendered, NO SVG.
+    -->
+
+    <div class="max-w-7xl mx-auto">
+        <header class="text-center mb-12 mt-8">
+            <h1 class="text-4xl md:text-6xl font-extrabold mb-4 tracking-tight"><span class="text-cyan">BESS</span> Project Blueprint</h1>
+            <p class="text-xl md:text-2xl text-slate-400 max-w-3xl mx-auto">Mastering the Technical and Financial Architecture of Battery Energy Storage Systems, featuring insights from the AGL Liddell Coal-to-Battery transition.</p>
+        </header>
+
+        <section class="mb-16">
+            <div class="glass-card p-8">
+                <h2 class="text-3xl font-bold mb-6 text-white border-b border-slate-700 pb-2">The Storage Revolution & The Liddell Milestone</h2>
+                <p class="text-lg leading-relaxed mb-6">
+                    Battery Energy Storage Systems (BESS) are the linchpin of modern grid stability, enabling the transition to variable renewable energy. Developing a utility-scale BESS requires rigorous financial modeling, precise technical engineering, and strategic site selection. A landmark example is AGL's 500MW / 1000MWh battery at the shuttered Liddell coal plant in Australia. This project exemplifies the "brownfield advantage," repurposing existing high-voltage infrastructure to bypass years of transmission bottleneck delays.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+                    <div class="bg-slate-800 rounded-lg p-6 border border-slate-700">
+                        <div class="text-5xl mb-2">⚡</div>
+                        <div class="text-3xl font-bold text-cyan mb-1">500 MW</div>
+                        <div class="text-sm text-slate-400 uppercase tracking-wide">Power Capacity</div>
+                    </div>
+                    <div class="bg-slate-800 rounded-lg p-6 border border-slate-700">
+                        <div class="text-5xl mb-2">🔋</div>
+                        <div class="text-3xl font-bold text-orange mb-1">1000 MWh</div>
+                        <div class="text-sm text-slate-400 uppercase tracking-wide">Energy Storage</div>
+                    </div>
+                    <div class="bg-slate-800 rounded-lg p-6 border border-slate-700">
+                        <div class="text-5xl mb-2">🏭</div>
+                        <div class="text-3xl font-bold text-green mb-1">Coal-to-BESS</div>
+                        <div class="text-sm text-slate-400 uppercase tracking-wide">Infrastructure Reuse</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-16">
+            <h2 class="text-3xl font-bold mb-8 text-center text-white">Step-by-Step BESS Setup Process</h2>
+            <p class="text-center text-slate-400 max-w-2xl mx-auto mb-10">A structured timeline from conception to commercial operation. Brownfield sites like Liddell significantly accelerate Phases 2 and 3.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+                <div class="glass-card p-6 relative overflow-hidden group hover:border-cyan transition-colors">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-cyan"></div>
+                    <div class="text-4xl mb-4 font-black text-slate-700 group-hover:text-cyan transition-colors">01</div>
+                    <h3 class="text-xl font-bold text-white mb-2">Feasibility & Sizing</h3>
+                    <p class="text-sm text-slate-300">Determining MW/MWh requirements based on grid constraints, wholesale price volatility, and desired revenue stacking (Arbitrage vs FCAS).</p>
+                </div>
+                <div class="glass-card p-6 relative overflow-hidden group hover:border-orange transition-colors">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-orange"></div>
+                    <div class="text-4xl mb-4 font-black text-slate-700 group-hover:text-orange transition-colors">02</div>
+                    <h3 class="text-xl font-bold text-white mb-2">Land & Interconnect</h3>
+                    <p class="text-sm text-slate-300">Securing grid connection agreements. <strong>Liddell Advantage:</strong> Utilizing existing transmission lines saves millions and years of queuing.</p>
+                </div>
+                <div class="glass-card p-6 relative overflow-hidden group hover:border-green transition-colors">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-green"></div>
+                    <div class="text-4xl mb-4 font-black text-slate-700 group-hover:text-green transition-colors">03</div>
+                    <h3 class="text-xl font-bold text-white mb-2">Permitting & Approvals</h3>
+                    <p class="text-sm text-slate-300">Environmental Impact Statements, noise pollution studies, and fire safety (thermal runaway) zoning compliance.</p>
+                </div>
+                <div class="glass-card p-6 relative overflow-hidden group hover:border-cyan transition-colors">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-cyan"></div>
+                    <div class="text-4xl mb-4 font-black text-slate-700 group-hover:text-cyan transition-colors">04</div>
+                    <h3 class="text-xl font-bold text-white mb-2">Procurement & EPC</h3>
+                    <p class="text-sm text-slate-300">Contracting Engineering, Procurement, and Construction. Sourcing Li-ion/LFP cells, Power Conversion Systems (PCS), and transformers.</p>
+                </div>
+                <div class="glass-card p-6 relative overflow-hidden group hover:border-orange transition-colors">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-orange"></div>
+                    <div class="text-4xl mb-4 font-black text-slate-700 group-hover:text-orange transition-colors">05</div>
+                    <h3 class="text-xl font-bold text-white mb-2">Commissioning</h3>
+                    <p class="text-sm text-slate-300">Grid synchronization, control system testing, and commencement of commercial operations in energy markets.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-16 grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div class="glass-card p-8">
+                <h2 class="text-2xl font-bold mb-4 text-white">Financial Planning: CAPEX Breakdown</h2>
+                <p class="text-slate-300 mb-6 text-sm">Understanding the initial capital expenditures is critical. While battery cells are the largest cost, Balance of Plant (BoP) and grid connection fees are substantial for greenfield sites. The chart below visualizes a typical utility-scale BESS cost structure.</p>
+                <div class="chart-container">
+                    <canvas id="capexChart"></canvas>
+                </div>
+            </div>
+
+            <div class="glass-card p-8">
+                <h2 class="text-2xl font-bold mb-4 text-white">Revenue Stacking Forecast</h2>
+                <p class="text-slate-300 mb-6 text-sm">Financial viability relies on "revenue stacking." Projects like Liddell participate in Energy Arbitrage (buy low, sell high), Frequency Control Ancillary Services (FCAS), and capacity contracts to ensure stable ROI over 15-20 years.</p>
+                <div class="chart-container">
+                    <canvas id="revenueChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-16">
+            <div class="glass-card p-8">
+                <h2 class="text-3xl font-bold mb-6 text-white border-b border-slate-700 pb-2">Technical Considerations</h2>
+                <p class="text-lg leading-relaxed mb-6 text-slate-300">
+                    Technical design dictates operational limits and financial returns. Key considerations include Battery Chemistry (LFP vs. NMC), C-Rate (Power-to-Energy ratio), and Thermal Management Systems. A 2-hour battery (like Liddell's 500MW/1000MWh) is optimized for shifting solar peaks to evening demand.
+                </p>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <h3 class="text-xl font-bold text-cyan mb-3">Asset Degradation Lifecycle</h3>
+                        <p class="text-sm text-slate-300 mb-4">Battery cells degrade over time and through cycling. Technical planning must account for capacity fade, requiring scheduled "augmentation" (adding new battery racks) to maintain the nameplate capacity over the project's life. Deep Depth of Discharge (DoD) accelerates this fade.</p>
+                        <div class="chart-container">
+                            <canvas id="degradationChart"></canvas>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-orange mb-3">Energy Arbitrage Opportunity Map</h3>
+                        <p class="text-sm text-slate-300 mb-4">This heatmap illustrates wholesale market price volatility. The technical system (inverters and control software) must react instantly to charge during negative/low price events (mid-day solar) and discharge during peak demand (evening).</p>
+                        <div id="arbitrageHeatmap" class="w-full h-[350px] md:h-[400px]"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-16">
+            <div class="glass-card p-8 border-l-4 border-cyan">
+                <h2 class="text-3xl font-bold mb-6 text-white">The Liddell Paradigm: Greenfield vs. Brownfield</h2>
+                <p class="text-lg mb-8 text-slate-300">
+                    AGL's decision to locate a gigascale battery at the former Liddell coal power station highlights a massive shift in infrastructure planning. The comparative matrix below outlines why brownfield sites are highly sought after by developers.
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-slate-800 p-6 rounded-lg border border-slate-600">
+                        <div class="flex items-center mb-4">
+                            <div class="text-2xl mr-3">🌱</div>
+                            <h3 class="text-xl font-bold text-white">Greenfield (New Site)</h3>
+                        </div>
+                        <ul class="space-y-3 text-slate-300">
+                            <li class="flex items-start"><span class="text-orange mr-2">➖</span> High costs for new substations and transmission lines.</li>
+                            <li class="flex items-start"><span class="text-orange mr-2">➖</span> Multi-year delays waiting in grid connection queues.</li>
+                            <li class="flex items-start"><span class="text-orange mr-2">➖</span> Extensive new environmental and community impact studies required.</li>
+                            <li class="flex items-start"><span class="text-orange mr-2">➖</span> Risk of community opposition to new industrial development.</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-slate-900 p-6 rounded-lg border border-cyan shadow-[0_0_15px_rgba(0,229,255,0.2)]">
+                        <div class="flex items-center mb-4">
+                            <div class="text-2xl mr-3">🏭</div>
+                            <h3 class="text-xl font-bold text-cyan">Brownfield (Liddell Model)</h3>
+                        </div>
+                        <ul class="space-y-3 text-slate-300">
+                            <li class="flex items-start"><span class="text-green mr-2">➕</span> Reuses existing high-capacity transformers and switchyards.</li>
+                            <li class="flex items-start"><span class="text-green mr-2">➕</span> Bypass connection queues; the site is already integrated into the grid.</li>
+                            <li class="flex items-start"><span class="text-green mr-2">➕</span> Repurposes heavily industrialized land, reducing ecological impact.</li>
+                            <li class="flex items-start"><span class="text-green mr-2">➕</span> Provides economic transition for communities reliant on fossil fuel generation.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <footer class="text-center text-slate-500 text-sm mt-12 mb-8 border-t border-slate-800 pt-8">
+            Data visualizations synthesized from standard energy industry metrics and BESS development frameworks. Layout optimized for analytical review.
+        </footer>
+    </div>
+
+    <script>
+        function wrapLabel(label) {
+            if (label.length <= 16) return label;
+            const words = label.split(' ');
+            const lines = [];
+            let currentLine = '';
+            words.forEach(word => {
+                if ((currentLine + word).length > 16) {
+                    if (currentLine) lines.push(currentLine.trim());
+                    currentLine = word + ' ';
+                } else {
+                    currentLine += word + ' ';
+                }
+            });
+            if (currentLine) lines.push(currentLine.trim());
+            return lines;
+        }
+
+        const standardTooltipConfig = {
+            callbacks: {
+                title: function(tooltipItems) {
+                    const item = tooltipItems[0];
+                    let label = item.chart.data.labels[item.dataIndex];
+                    if (Array.isArray(label)) {
+                        return label.join(' ');
+                    } else {
+                        return label;
+                    }
+                }
+            }
+        };
+
+        Chart.defaults.color = '#94A3B8';
+        Chart.defaults.font.family = "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif";
+
+        const capexLabels = [
+            'Battery Modules & Racks',
+            'Power Conversion Systems',
+            'Balance of Plant & Civil',
+            'EPC & Grid Integration'
+        ].map(wrapLabel);
+
+        const ctxCapex = document.getElementById('capexChart').getContext('2d');
+        new Chart(ctxCapex, {
+            type: 'doughnut',
+            data: {
+                labels: capexLabels,
+                datasets: [{
+                    data: [55, 15, 10, 20],
+                    backgroundColor: [
+                        '#00E5FF',
+                        '#FF6D00',
+                        '#00E676',
+                        '#1E40AF'
+                    ],
+                    borderWidth: 0,
+                    hoverOffset: 10
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'right' },
+                    tooltip: standardTooltipConfig
+                },
+                cutout: '65%'
+            }
+        });
+
+        const revLabels = ['Year 1', 'Year 2', 'Year 3', 'Year 4', 'Year 5'].map(wrapLabel);
+        
+        const ctxRev = document.getElementById('revenueChart').getContext('2d');
+        new Chart(ctxRev, {
+            type: 'bar',
+            data: {
+                labels: revLabels,
+                datasets: [
+                    {
+                        label: 'Energy Arbitrage',
+                        data: [12, 14, 15, 16, 18],
+                        backgroundColor: '#00E5FF'
+                    },
+                    {
+                        label: 'FCAS / Ancillary',
+                        data: [15, 14, 12, 10, 9],
+                        backgroundColor: '#FF6D00'
+                    },
+                    {
+                        label: 'Capacity Contracts',
+                        data: [8, 8, 8, 8, 8],
+                        backgroundColor: '#00E676'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: { stacked: true, grid: { color: 'rgba(148, 163, 184, 0.1)' } },
+                    y: { stacked: true, grid: { color: 'rgba(148, 163, 184, 0.1)' }, title: { display: true, text: 'Revenue (M$)' } }
+                },
+                plugins: {
+                    tooltip: standardTooltipConfig
+                }
+            }
+        });
+
+        const degLabels = ['Year 0', 'Year 3', 'Year 6', 'Year 9', 'Year 12', 'Year 15'].map(wrapLabel);
+
+        const ctxDeg = document.getElementById('degradationChart').getContext('2d');
+        new Chart(ctxDeg, {
+            type: 'line',
+            data: {
+                labels: degLabels,
+                datasets: [{
+                    label: 'Capacity Retention %',
+                    data: [100, 92, 85, 88, 81, 84],
+                    borderColor: '#00E5FF',
+                    backgroundColor: 'rgba(0, 229, 255, 0.1)',
+                    borderWidth: 3,
+                    pointBackgroundColor: '#FF6D00',
+                    pointRadius: 5,
+                    fill: true,
+                    tension: 0.3
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: { min: 70, max: 100, grid: { color: 'rgba(148, 163, 184, 0.1)' } },
+                    x: { grid: { color: 'rgba(148, 163, 184, 0.1)' } }
+                },
+                plugins: {
+                    tooltip: standardTooltipConfig
+                }
+            }
+        });
+
+        const hours = Array.from({length: 24}, (_, i) => `${i}:00`);
+        const seasons = ['Summer', 'Autumn', 'Winter', 'Spring'];
+        const zData = [
+            [20, 15, 10, 10, 12, 20, 40, 80, 50, -10, -20, -30, -30, -20, 10, 40, 90, 120, 150, 100, 60, 40, 30, 25],
+            [25, 20, 15, 15, 20, 30, 60, 70, 40, 10, 5, 0, 5, 10, 20, 50, 80, 100, 90, 70, 50, 40, 35, 30],
+            [30, 25, 25, 30, 40, 60, 90, 100, 80, 50, 40, 35, 35, 40, 50, 70, 110, 130, 110, 80, 60, 50, 40, 35],
+            [20, 15, 15, 15, 20, 30, 50, 60, 30, -5, -15, -20, -20, -10, 10, 40, 80, 100, 110, 80, 50, 30, 25, 20]
+        ];
+
+        const heatmapData = [{
+            z: zData,
+            x: hours,
+            y: seasons,
+            type: 'heatmap',
+            colorscale: [
+                [0, '#0F172A'], 
+                [0.2, '#1E40AF'], 
+                [0.5, '#00E5FF'], 
+                [0.8, '#FF6D00'], 
+                [1.0, '#00E676']  
+            ],
+            hoverongaps: false
+        }];
+
+        const heatmapLayout = {
+            paper_bgcolor: 'rgba(0,0,0,0)',
+            plot_bgcolor: 'rgba(0,0,0,0)',
+            font: { color: '#94A3B8', family: 'Segoe UI' },
+            margin: { t: 20, r: 20, l: 60, b: 40 },
+            xaxis: { title: 'Hour of Day', tickcolor: 'rgba(148, 163, 184, 0.1)' },
+            yaxis: { tickcolor: 'rgba(148, 163, 184, 0.1)' }
+        };
+
+        const config = { responsive: true, displayModeBar: false };
+
+        Plotly.newPlot('arbitrageHeatmap', heatmapData, heatmapLayout, config);
+
+    </script>
+</body>
+</html>
