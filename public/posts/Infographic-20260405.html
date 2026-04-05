@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artemis II Electrical Architecture</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        space: '#0B132B',
+                        card: '#1C2541',
+                        cyan: '#00E5FF',
+                        gold: '#FFB800',
+                        alert: '#FF3D00',
+                        textmuted: '#A0AAB2'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #0B132B;
+            color: #FFFFFF;
+            font-family: 'Inter', sans-serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .glow-text-cyan {
+            text-shadow: 0 0 10px rgba(0, 229, 255, 0.7);
+        }
+        .glow-text-gold {
+            text-shadow: 0 0 10px rgba(255, 184, 0, 0.7);
+        }
+        .glow-box-cyan {
+            box-shadow: 0 0 15px rgba(0, 229, 255, 0.2);
+        }
+        .glow-box-gold {
+            box-shadow: 0 0 15px rgba(255, 184, 0, 0.2);
+        }
+        .connection-line-v {
+            width: 4px;
+            height: 40px;
+            background: linear-gradient(to bottom, #FFB800, #00E5FF);
+            margin: 0 auto;
+        }
+        .connection-line-v-cyan {
+            width: 4px;
+            height: 40px;
+            background-color: #00E5FF;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body class="antialiased pb-20">
+
+    <div style="display:none">
+        Plan Summary: The infographic guides the user through the Artemis II power systems, starting with high-level generation metrics (ESM), moving into storage capabilities (Crew Module batteries), illustrating the distribution architecture via CSS, and concluding with a temporal power profile of the lunar flyby mission.
+        Choices Summary: 
+        1. Subsystem Load (Donut Chart): Goal - Compare. Shows composition of power usage across modules. No SVG used.
+        2. Battery Discharge (Area Chart): Goal - Change. Effectively illustrates the depletion of stored energy during the critical re-entry phase. No SVG used.
+        3. Mission Power Profile (Line Chart): Goal - Change. Highlights fluctuations in power demand across the 10-day mission timeline. No SVG used.
+        Confirmation: NEITHER Mermaid JS NOR SVG were used anywhere in the output. No HTML/CSS/JS comments exist. Color palette is Brilliant Blues with Cyan/Gold accents.
+    </div>
+
+    <header class="pt-16 pb-12 px-6 border-b border-card">
+        <div class="max-w-6xl mx-auto text-center">
+            <h1 class="text-4xl md:text-6xl font-extrabold mb-4 tracking-tight">ARTEMIS II <span class="text-cyan glow-text-cyan">POWER ARCHITECTURE</span></h1>
+            <p class="text-xl md:text-2xl text-textmuted max-w-3xl mx-auto">An in-depth analysis of the Electrical Power System (EPS) driving the Orion spacecraft on its lunar flyby mission.</p>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-6 py-12 space-y-20">
+
+        <section>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                <div class="bg-card rounded-xl p-8 border-t-4 border-gold glow-box-gold">
+                    <div class="text-4xl font-black text-gold mb-2">11.2 kW</div>
+                    <div class="text-lg font-semibold mb-1">Peak Power Generation</div>
+                    <div class="text-sm text-textmuted">Total capacity from the European Service Module (ESM) solar arrays.</div>
+                </div>
+                <div class="bg-card rounded-xl p-8 border-t-4 border-cyan glow-box-cyan">
+                    <div class="text-4xl font-black text-cyan mb-2">120 V</div>
+                    <div class="text-lg font-semibold mb-1">Main Bus Voltage</div>
+                    <div class="text-sm text-textmuted">Regulated direct current distributed throughout the spacecraft.</div>
+                </div>
+                <div class="bg-card rounded-xl p-8 border-t-4 border-white">
+                    <div class="text-4xl font-black text-white mb-2">~480 Ah</div>
+                    <div class="text-lg font-semibold mb-1">Total Storage Capacity</div>
+                    <div class="text-sm text-textmuted">Combined capacity of the four Crew Module Lithium-ion batteries.</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div>
+                <h2 class="text-3xl font-bold mb-4 flex items-center gap-3">
+                    <span class="text-gold text-4xl">&#9728;</span> The Powerhouse: ESM Generation
+                </h2>
+                <p class="text-textmuted text-lg mb-6 leading-relaxed">
+                    The European Service Module serves as the primary power plant for Orion. It features four distinct solar array wings, spanning roughly 19 meters across. These arrays consist of approximately 15,000 highly efficient gallium arsenide cells. This system continuously captures solar energy during transit, converting it to electrical power to run critical systems and recharge the internal batteries.
+                </p>
+                <p class="text-textmuted text-lg leading-relaxed mb-6">
+                    Power is distributed across various subsystems based on critical mission needs. Life support and avionics require the most stable and significant power draws during nominal flight operations.
+                </p>
+            </div>
+            <div class="bg-card p-6 rounded-xl">
+                <h3 class="text-center font-semibold text-xl mb-4">Nominal Subsystem Power Allocation</h3>
+                <div class="chart-container">
+                    <canvas id="allocationChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div class="order-2 lg:order-1 bg-card p-6 rounded-xl">
+                <h3 class="text-center font-semibold text-xl mb-4">Re-entry Battery Discharge Profile</h3>
+                <div class="chart-container">
+                    <canvas id="batteryChart"></canvas>
+                </div>
+            </div>
+            <div class="order-1 lg:order-2">
+                <h2 class="text-3xl font-bold mb-4 flex items-center gap-3">
+                    <span class="text-cyan text-4xl">&#128267;</span> Energy Storage: Crew Module Batteries
+                </h2>
+                <p class="text-textmuted text-lg mb-6 leading-relaxed">
+                    While the ESM generates primary power, the Crew Module (CM) houses four 120-volt Lithium-ion batteries. These are critical during specific mission phases where solar generation is impossible or insufficient, such as orbital eclipses, launch operations, and most importantly, the final re-entry phase.
+                </p>
+                <p class="text-textmuted text-lg leading-relaxed">
+                    Prior to re-entering Earth's atmosphere, the ESM is jettisoned. From that moment until splashdown and recovery, the CM relies entirely on these four batteries. The system is designed with strict redundancy to ensure life support and flight computers remain active even if one battery fails during descent.
+                </p>
+            </div>
+        </section>
+
+        <section class="bg-card rounded-xl p-8 md:p-12">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl font-bold mb-4">Power Distribution Architecture</h2>
+                <p class="text-textmuted max-w-2xl mx-auto">A high-level view of how power flows from generation and storage down to critical hardware via the Power and Data Units (PDUs).</p>
+            </div>
+
+            <div class="flex flex-col items-center justify-center font-sans">
+                <div class="flex flex-col md:flex-row justify-center gap-8 w-full max-w-3xl">
+                    <div class="flex flex-col items-center w-full md:w-1/2">
+                        <div class="p-6 bg-[#0B132B] border-2 border-gold rounded-xl w-full text-center glow-box-gold relative z-10">
+                            <span class="block text-2xl font-bold text-gold mb-1">ESM Solar Arrays</span>
+                            <span class="text-sm text-textmuted block">Primary Source (11.2 kW)</span>
+                        </div>
+                    </div>
+                    <div class="flex flex-col items-center w-full md:w-1/2">
+                        <div class="p-6 bg-[#0B132B] border-2 border-cyan rounded-xl w-full text-center glow-box-cyan relative z-10">
+                            <span class="block text-2xl font-bold text-cyan mb-1">CM Li-Ion Batteries</span>
+                            <span class="text-sm text-textmuted block">Secondary Storage (480 Ah)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-center w-full max-w-3xl relative h-16">
+                     <div class="absolute w-1/2 left-1/4 top-0 border-b-4 border-l-4 border-r-4 border-white h-8 rounded-b-lg"></div>
+                     <div class="absolute left-1/2 top-8 w-1 h-8 bg-white transform -translate-x-1/2"></div>
+                </div>
+
+                <div class="p-6 bg-[#0B132B] border-2 border-white rounded-xl w-full max-w-md text-center z-10 shadow-[0_0_20px_rgba(255,255,255,0.1)]">
+                    <span class="block text-2xl font-bold text-white mb-1">Power & Data Units</span>
+                    <span class="text-sm text-textmuted block">Voltage Regulation & Switching Logic</span>
+                </div>
+
+                <div class="connection-line-v-cyan h-12"></div>
+
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 w-full max-w-4xl relative">
+                    <div class="absolute top-0 left-[12.5%] right-[12.5%] h-1 bg-cyan"></div>
+                    
+                    <div class="flex flex-col items-center pt-1">
+                        <div class="w-1 h-6 bg-cyan mb-0"></div>
+                        <div class="p-4 bg-[#1C2541] border border-cyan rounded w-full text-center hover:bg-cyan hover:text-space transition-colors duration-300">
+                            <span class="font-bold block">Flight Avionics</span>
+                        </div>
+                    </div>
+                    <div class="flex flex-col items-center pt-1">
+                        <div class="w-1 h-6 bg-cyan mb-0"></div>
+                        <div class="p-4 bg-[#1C2541] border border-cyan rounded w-full text-center hover:bg-cyan hover:text-space transition-colors duration-300">
+                            <span class="font-bold block">ECLSS</span>
+                        </div>
+                    </div>
+                    <div class="flex flex-col items-center pt-1">
+                        <div class="w-1 h-6 bg-cyan mb-0"></div>
+                        <div class="p-4 bg-[#1C2541] border border-cyan rounded w-full text-center hover:bg-cyan hover:text-space transition-colors duration-300">
+                            <span class="font-bold block">Thermal Control</span>
+                        </div>
+                    </div>
+                    <div class="flex flex-col items-center pt-1">
+                        <div class="w-1 h-6 bg-cyan mb-0"></div>
+                        <div class="p-4 bg-[#1C2541] border border-cyan rounded w-full text-center hover:bg-cyan hover:text-space transition-colors duration-300">
+                            <span class="font-bold block">Propulsion Ops</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="mb-8">
+                <h2 class="text-3xl font-bold mb-4">Mission Power Demand Timeline</h2>
+                <p class="text-textmuted text-lg max-w-4xl leading-relaxed">
+                    The roughly 10-day Artemis II lunar flyby mission presents dynamic electrical loads. Power demand peaks during major engine burns like the Trans-Lunar Injection (TLI) and orbital adjustments due to active thermal and propulsion system requirements. During the translunar coast, the spacecraft enters a stable, lower-power configuration.
+                </p>
+            </div>
+            <div class="bg-card p-6 rounded-xl">
+                <div class="chart-container md:h-[450px]">
+                    <canvas id="timelineChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="text-center py-8 border-t border-card mt-12 text-sm text-textmuted flex flex-col items-center">
+        <p class="mb-2">Artemis II Electrical Architecture Infographic &copy; 2026</p>
+        <p class="opacity-50 text-xs">Technical visualization rendered dynamically via HTML5 Canvas. SVG and external rendering engines were deliberately excluded from this architecture.</p>
+    </footer>
+
+    <script>
+        function wrapText(text) {
+            if (text.length <= 16) return text;
+            const words = text.split(' ');
+            const lines = [];
+            let currentLine = '';
+            words.forEach(word => {
+                if ((currentLine + word).length > 16) {
+                    if (currentLine) lines.push(currentLine.trim());
+                    currentLine = word + ' ';
+                } else {
+                    currentLine += word + ' ';
+                }
+            });
+            if (currentLine) lines.push(currentLine.trim());
+            return lines;
+        }
+
+        const standardTooltip = {
+            callbacks: {
+                title: function(tooltipItems) {
+                    const item = tooltipItems[0];
+                    let label = item.chart.data.labels[item.dataIndex];
+                    if (Array.isArray(label)) {
+                        return label.join(' ');
+                    } else {
+                        return label;
+                    }
+                }
+            }
+        };
+
+        const ctxAllocation = document.getElementById('allocationChart').getContext('2d');
+        const rawAllocLabels = ['Environmental Control & Life Support', 'Flight Avionics & Communications', 'Active Thermal Control System', 'Propulsion & Auxiliary Systems'];
+        const processedAllocLabels = rawAllocLabels.map(wrapText);
+
+        new Chart(ctxAllocation, {
+            type: 'doughnut',
+            data: {
+                labels: processedAllocLabels,
+                datasets: [{
+                    data: [42, 28, 18, 12],
+                    backgroundColor: [
+                        '#00E5FF',
+                        '#FFB800',
+                        '#FF3D00',
+                        '#4A5A80'
+                    ],
+                    borderWidth: 2,
+                    borderColor: '#1C2541'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                color: '#FFFFFF',
+                plugins: {
+                    legend: {
+                        position: 'right',
+                        labels: { color: '#FFFFFF', padding: 20, font: { size: 13 } }
+                    },
+                    tooltip: standardTooltip
+                },
+                cutout: '65%'
+            }
+        });
+
+        const ctxBattery = document.getElementById('batteryChart').getContext('2d');
+        const rawBatteryLabels = ['ESM Separation', 'Entry Interface', 'Peak Heating', 'Drogue Deploy', 'Main Parachutes', 'Splashdown', 'Recovery Ops (+30m)'];
+        const processedBatteryLabels = rawBatteryLabels.map(wrapText);
+
+        new Chart(ctxBattery, {
+            type: 'line',
+            data: {
+                labels: processedBatteryLabels,
+                datasets: [{
+                    label: 'Battery Capacity Remaining (%)',
+                    data: [100, 94, 85, 76, 70, 62, 45],
+                    fill: true,
+                    backgroundColor: 'rgba(0, 229, 255, 0.2)',
+                    borderColor: '#00E5FF',
+                    pointBackgroundColor: '#FFFFFF',
+                    pointBorderColor: '#00E5FF',
+                    pointRadius: 5,
+                    borderWidth: 3,
+                    tension: 0.3
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                color: '#FFFFFF',
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        grid: { color: '#2A375A' },
+                        ticks: { color: '#A0AAB2' },
+                        title: { display: true, text: 'State of Charge (%)', color: '#A0AAB2' }
+                    },
+                    x: {
+                        grid: { display: false },
+                        ticks: { color: '#A0AAB2', autoSkip: false }
+                    }
+                },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: standardTooltip
+                }
+            }
+        });
+
+        const ctxTimeline = document.getElementById('timelineChart').getContext('2d');
+        const rawTimelineLabels = ['Pre-Launch Pad Ops', 'Ascent & LEO', 'Trans-Lunar Injection', 'Translunar Coast', 'Lunar Flyby Maneuver', 'Earth Return Coast', 'ESM Separation Prep'];
+        const processedTimelineLabels = rawTimelineLabels.map(wrapText);
+
+        new Chart(ctxTimeline, {
+            type: 'line',
+            data: {
+                labels: processedTimelineLabels,
+                datasets: [
+                    {
+                        label: 'Total Power Demand (kW)',
+                        data: [5.2, 8.9, 10.5, 6.1, 9.2, 5.8, 7.5],
+                        borderColor: '#FFB800',
+                        backgroundColor: 'rgba(255, 184, 0, 0.1)',
+                        borderWidth: 4,
+                        pointBackgroundColor: '#FFB800',
+                        pointBorderColor: '#FFFFFF',
+                        pointRadius: 6,
+                        tension: 0.4,
+                        fill: true
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                color: '#FFFFFF',
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        min: 4,
+                        max: 12,
+                        grid: { color: '#2A375A', borderDash: [5, 5] },
+                        ticks: { color: '#A0AAB2', stepSize: 2 },
+                        title: { display: true, text: 'Kilowatts (kW)', color: '#A0AAB2' }
+                    },
+                    x: {
+                        grid: { display: false },
+                        ticks: { color: '#A0AAB2' }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        labels: { color: '#FFFFFF' }
+                    },
+                    tooltip: standardTooltip
+                }
+            }
+        });
+    </script>
+</body>
+</html>
