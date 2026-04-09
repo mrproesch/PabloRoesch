@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guatemala Electrical Utility Market: The BESS Era</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!--
+    Palette: Electric Cyber (Deep Space Blue #0B132B, Electric Cyan #4FFBDF, Bright Pink #FF1053, Vibrant Purple #6C63FF)
+    Confirmation: NEITHER Mermaid JS NOR SVG were used anywhere in this output.
+    Plan Summary: Introduction to PEG-5 & Energy Transition -> BESS Investment Deep Dive (MASPV) -> Market Generation Mix & Bidding -> Infrastructure Bottlenecks & Needs -> Conclusion Flow.
+    Selections:
+    1. MASPV Investment -> Goal: Compare -> Chart: Donut (Chart.js Canvas) -> Shows investment allocation.
+    2. Capacity by Source -> Goal: Compare -> Chart: Bar (Chart.js Canvas) -> Highlights renewable dominance in PEG-5.
+    3. Substation Growth -> Goal: Change -> Chart: Line (Chart.js Canvas) -> Illustrates critical infrastructure requirement over time.
+    -->
+    <style>
+        body {
+            background-color: #0B132B;
+            color: #F3F4F6;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-top: 4px solid #4FFBDF;
+            border-radius: 1rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+        }
+        .text-accent {
+            color: #4FFBDF;
+        }
+        .text-pink {
+            color: #FF1053;
+        }
+        .bg-gradient-custom {
+            background: linear-gradient(135deg, #0B132B 0%, #1A2B4C 100%);
+        }
+    </style>
+</head>
+<body class="bg-gradient-custom min-h-screen">
+
+    <nav class="sticky top-0 z-50 bg-[#0B132B] border-b border-[#4FFBDF] shadow-lg shadow-[#4FFBDF]/20 p-4">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <h1 class="text-xl md:text-2xl font-bold tracking-wider uppercase"><span class="text-accent">⚡ Guat</span>Energy Insights</h1>
+            <div class="text-sm hidden md:block">Market Analysis: PEG-5 & BESS Integration</div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto p-6 md:p-10 space-y-12">
+
+        <header class="text-center space-y-4 py-10">
+            <h2 class="text-4xl md:text-6xl font-extrabold tracking-tight">Accelerating the <span class="text-accent">Energy Transition</span></h2>
+            <p class="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto">Guatemala's electrical utility market is undergoing a radical transformation. Driven by the highly competitive PEG-5 auctions, the integration of Battery Energy Storage Systems (BESS), and natural gas as a transitional fuel, the nation is positioning itself for a reliable, competitive future.</p>
+        </header>
+
+        <section class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="glass-card p-8 flex flex-col justify-center">
+                <div class="text-5xl mb-4">🔋</div>
+                <h3 class="text-2xl font-bold mb-3">The MASPV Catalyst</h3>
+                <p class="text-gray-300 mb-4">A landmark moment for Guatemala's energy storage capabilities is the recent contract awarded to MASPV. Valued at over <span class="text-accent font-bold">$87 Million USD</span>, this project integrates a massive solar generation plant directly with cutting-edge BESS technology.</p>
+                <p class="text-gray-300">This hybrid approach solves the intermittency of pure solar generation, providing dispatchable, firm capacity to the grid—a critical requirement for the successful execution of PEG-5 objectives.</p>
+            </div>
+            
+            <div class="glass-card p-8">
+                <h3 class="text-xl font-bold mb-4 text-center">Estimated $87M Investment Breakdown</h3>
+                <div class="chart-container">
+                    <canvas id="maspvChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section class="glass-card p-8">
+            <div class="max-w-3xl mx-auto text-center mb-8">
+                <div class="text-5xl mb-4">📈</div>
+                <h3 class="text-3xl font-bold mb-3">PEG-5: Redefining Generation</h3>
+                <p class="text-gray-300">The PEG-5 reverse auction has introduced unprecedented competition into the Guatemalan market. While renewable energies (Solar, Wind, Hydro) dominate the proposed capacity, Natural Gas has emerged as a crucial strategic bridging fuel to guarantee supply during peak demand and drought seasons, complementing the rise of BESS.</p>
+            </div>
+            
+            <div class="chart-container" style="max-width: 800px;">
+                <canvas id="pegChart"></canvas>
+            </div>
+        </section>
+
+        <section class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="glass-card p-8 order-2 md:order-1">
+                <h3 class="text-xl font-bold mb-4 text-center">Projected Substation Demand</h3>
+                <div class="chart-container">
+                    <canvas id="infraChart"></canvas>
+                </div>
+            </div>
+
+            <div class="glass-card p-8 order-1 md:order-2 flex flex-col justify-center">
+                <div class="text-5xl mb-4">🏗️</div>
+                <h3 class="text-2xl font-bold mb-3">The Infrastructure Bottleneck</h3>
+                <p class="text-gray-300 mb-4">Generation investments are meaningless without robust transmission. The sector urgently demands the construction of <span class="text-pink font-bold">15 new substations annually</span>.</p>
+                <p class="text-gray-300">However, developers face severe non-technical hurdles. Extortion and complex right-of-way negotiations threaten to stall network expansion. Ensuring the physical security and streamlined permitting for these networks is the top priority for market stakeholders.</p>
+            </div>
+        </section>
+
+        <section class="glass-card p-8">
+            <h3 class="text-3xl font-bold mb-8 text-center">The Modern Grid Stabilization Flow</h3>
+            <p class="text-center text-gray-300 mb-10 max-w-2xl mx-auto">How Guatemala is leveraging new technologies and talent to maintain competitiveness amidst fluctuating renewable generation.</p>
+            
+            <div class="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8">
+                
+                <div class="bg-[#1A2B4C] border border-[#6C63FF] p-6 rounded-lg text-center w-full md:w-64 relative">
+                    <div class="text-3xl mb-2">☀️🌬️</div>
+                    <h4 class="font-bold text-[#6C63FF]">Intermittent Renewables</h4>
+                    <p class="text-sm text-gray-400 mt-2">Highly competitive PEG-5 bids inject low-cost but variable energy.</p>
+                </div>
+
+                <div class="text-[#4FFBDF] text-4xl transform rotate-90 md:rotate-0">➔</div>
+
+                <div class="bg-[#1A2B4C] border border-[#4FFBDF] p-6 rounded-lg text-center w-full md:w-64 relative shadow-[0_0_15px_rgba(79,251,223,0.3)]">
+                    <div class="text-3xl mb-2">🔋⚙️</div>
+                    <h4 class="font-bold text-[#4FFBDF]">BESS & Natural Gas</h4>
+                    <p class="text-sm text-gray-400 mt-2">Storage (like MASPV) and gas buffer the variability, storing excess and providing baseline.</p>
+                </div>
+
+                <div class="text-[#FF1053] text-4xl transform rotate-90 md:rotate-0">➔</div>
+
+                <div class="bg-[#1A2B4C] border border-[#FF1053] p-6 rounded-lg text-center w-full md:w-64 relative">
+                    <div class="text-3xl mb-2">🏭💡</div>
+                    <h4 class="font-bold text-[#FF1053]">Grid Resiliency</h4>
+                    <p class="text-sm text-gray-400 mt-2">Supported by 15 new substations/year, ensuring talent & industrial competitiveness.</p>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="text-center p-6 text-gray-500 border-t border-[#1A2B4C] mt-12">
+        <p>Market Analysis based on PEG-5 Auction Data, Infrastructure Reports, and MASPV Contract Developments.</p>
+    </footer>
+
+    <script>
+        const wrapLabel = (label, max) => {
+            const words = label.split(' ');
+            const lines = [];
+            let currentLine = '';
+            for (const word of words) {
+                if ((currentLine + word).length > max) {
+                    if (currentLine) lines.push(currentLine.trim());
+                    currentLine = word + ' ';
+                } else {
+                    currentLine += word + ' ';
+                }
+            }
+            if (currentLine) lines.push(currentLine.trim());
+            return lines;
+        };
+
+        const processLabels = (labels) => labels.map(l => l.length > 16 ? wrapLabel(l, 16) : l);
+
+        const tooltipConfig = {
+            callbacks: {
+                title: function(tooltipItems) {
+                    const item = tooltipItems[0];
+                    let label = item.chart.data.labels[item.dataIndex];
+                    if (Array.isArray(label)) {
+                        return label.join(' ');
+                    } else {
+                        return label;
+                    }
+                }
+            }
+        };
+
+        const maspvCtx = document.getElementById('maspvChart').getContext('2d');
+        const maspvRawLabels = ['Battery Energy Storage Systems', 'Solar Generation Infrastructure', 'Inverters and Balance of System'];
+        new Chart(maspvCtx, {
+            type: 'doughnut',
+            data: {
+                labels: processLabels(maspvRawLabels),
+                datasets: [{
+                    data: [40, 45, 15],
+                    backgroundColor: ['#4FFBDF', '#6C63FF', '#FF1053'],
+                    borderWidth: 0,
+                    hoverOffset: 10
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom', labels: { color: '#F3F4F6' } },
+                    tooltip: tooltipConfig
+                },
+                cutout: '65%'
+            }
+        });
+
+        const pegCtx = document.getElementById('pegChart').getContext('2d');
+        const pegRawLabels = ['Solar Photovoltaic', 'Wind Energy', 'Natural Gas Transition', 'Hydroelectric'];
+        new Chart(pegCtx, {
+            type: 'bar',
+            data: {
+                labels: processLabels(pegRawLabels),
+                datasets: [{
+                    label: 'Relative Bid Interest (Index)',
+                    data: [85, 60, 75, 40],
+                    backgroundColor: ['#6C63FF', '#4FFBDF', '#FF1053', '#1A2B4C'],
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: tooltipConfig
+                },
+                scales: {
+                    y: { 
+                        beginAtZero: true,
+                        grid: { color: 'rgba(255,255,255,0.1)' },
+                        ticks: { color: '#F3F4F6' }
+                    },
+                    x: {
+                        grid: { display: false },
+                        ticks: { color: '#F3F4F6' }
+                    }
+                }
+            }
+        });
+
+        const infraCtx = document.getElementById('infraChart').getContext('2d');
+        const infraRawLabels = ['Year 2024', 'Year 2025', 'Year 2026', 'Year 2027', 'Year 2028'];
+        new Chart(infraCtx, {
+            type: 'line',
+            data: {
+                labels: processLabels(infraRawLabels),
+                datasets: [{
+                    label: 'Cumulative Substations Needed',
+                    data: [15, 30, 45, 60, 75],
+                    borderColor: '#FF1053',
+                    backgroundColor: 'rgba(255, 16, 83, 0.2)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.4,
+                    pointBackgroundColor: '#4FFBDF',
+                    pointRadius: 6
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: tooltipConfig
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: { color: 'rgba(255,255,255,0.1)' },
+                        ticks: { color: '#F3F4F6' }
+                    },
+                    x: {
+                        grid: { display: false },
+                        ticks: { color: '#F3F4F6' }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
