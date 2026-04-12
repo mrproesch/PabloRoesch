@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The 1000km Era: BESS & Electro-Mobility</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+<style>
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #0F172A;
+    color: #F8FAFC;
+    margin: 0;
+    padding: 0;
+}
+.chart-container {
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    height: 45vh;
+    max-height: 450px;
+    min-height: 300px;
+}
+.plot-container {
+    width: 100%;
+    height: 500px;
+}
+.card {
+    background-color: #1E293B;
+    border: 1px solid #334155;
+    border-radius: 1rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.15);
+    padding: 1.5rem;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.card:hover {
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+}
+.text-cyan { color: #06B6D4; }
+.text-emerald { color: #10B981; }
+.text-rose { color: #F43F5E; }
+.bg-cyan { background-color: #06B6D4; }
+.bg-emerald { background-color: #10B981; }
+.bg-rose { background-color: #F43F5E; }
+.icon-large { font-size: 3rem; line-height: 1; }
+.node-line {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #10B981 0%, #06B6D4 100%);
+    transform: translateY(-50%);
+    z-index: 0;
+}
+.node-point {
+    position: relative;
+    z-index: 1;
+    background-color: #0F172A;
+    border: 4px solid #06B6D4;
+    border-radius: 50%;
+    width: 3rem;
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+</style>
+</head>
+<body class="antialiased">
+
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    
+    <header class="text-center mb-16">
+        <div class="inline-block p-4 rounded-full bg-slate-800 mb-4 border border-slate-700">
+            <span class="text-4xl">&#128667;</span> <span class="text-4xl mx-2">&#9889;</span> <span class="text-4xl">&#128267;</span>
+        </div>
+        <h1 class="text-5xl md:text-6xl font-extrabold tracking-tight mb-4">
+            The <span class="text-emerald">1000km</span> Freight Era
+        </h1>
+        <p class="text-xl md:text-2xl text-slate-400 max-w-3xl mx-auto">
+            Heavy electric trucks are achieving massive daily ranges. With diesel costs rising, the strategic deployment of Battery Energy Storage Systems (BESS) is creating the high-power "gas stations of the future".
+        </p>
+    </header>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+        <div class="card text-center flex flex-col justify-center">
+            <span class="icon-large text-emerald mb-2">&#128181;</span>
+            <h3 class="text-lg font-semibold text-slate-300">Operational Savings</h3>
+            <p class="text-4xl font-bold text-emerald mt-2">65%</p>
+            <p class="text-sm text-slate-400 mt-1">Reduction in fuel costs vs. Diesel</p>
+        </div>
+        <div class="card text-center flex flex-col justify-center">
+            <span class="icon-large text-cyan mb-2">&#128338;</span>
+            <h3 class="text-lg font-semibold text-slate-300">Megawatt Charging</h3>
+            <p class="text-4xl font-bold text-cyan mt-2">45 Min</p>
+            <p class="text-sm text-slate-400 mt-1">For 400km range replenishment</p>
+        </div>
+        <div class="card text-center flex flex-col justify-center">
+            <span class="icon-large text-rose mb-2">&#9981;</span>
+            <h3 class="text-lg font-semibold text-slate-300">Grid Upgrade Avoided</h3>
+            <p class="text-4xl font-bold text-rose mt-2">10x</p>
+            <p class="text-sm text-slate-400 mt-1">Lower infrastructure capital costs</p>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
+        
+        <div class="flex flex-col">
+            <h2 class="text-3xl font-bold mb-4">The Tipping Point: Economics of 1000km</h2>
+            <p class="text-slate-300 mb-6 leading-relaxed">
+                The traditional barrier to heavy electro-mobility has been range and charging infrastructure. However, as diesel prices continue their volatile upward trajectory, the Total Cost of Ownership (TCO) for a 40-ton electric truck has crossed the profitability threshold. The key lies in utilizing mandatory driver rest periods (typically 45 minutes after 4.5 hours of driving) to inject enough energy for the next leg, easily surpassing 1000km daily.
+            </p>
+            <div class="card flex-grow">
+                <h3 class="text-xl font-semibold mb-4 text-center">10-Year Total Cost of Ownership (Estimated)</h3>
+                <div class="chart-container">
+                    <canvas id="tcoChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex flex-col">
+            <h2 class="text-3xl font-bold mb-4">The Range Reality: Time Management</h2>
+            <p class="text-slate-300 mb-6 leading-relaxed">
+                Achieving a 1000km route does not require a battery capable of driving 1000km continuously. Instead, it relies on high-power Megawatt Charging Systems (MCS). By strategically synchronizing charging sessions with legally mandated tachograph rest stops, the truck essentially refuels without losing any operational driving time compared to diesel counterparts.
+            </p>
+            <div class="card flex-grow flex flex-col justify-center">
+                <h3 class="text-xl font-semibold mb-4 text-center">1000km Daily Duty Cycle Breakdown</h3>
+                <div class="chart-container" style="max-height: 350px;">
+                    <canvas id="cycleChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="mb-16">
+        <h2 class="text-3xl font-bold mb-4 text-center">The Grid Bottleneck & The BESS Solution</h2>
+        <p class="text-slate-300 mb-8 text-center max-w-4xl mx-auto leading-relaxed">
+            Delivering 1 Megawatt of power directly from the local grid to a single truck is often impossible without massive, time-consuming infrastructure upgrades. A Battery Energy Storage System (BESS) acts as a high-capacity buffer. It draws a slow, steady trickle of power from the grid 24/7, storing it locally. When a truck arrives, the BESS discharges rapidly, providing the necessary Megawatt burst without stressing the local utility infrastructure.
+        </p>
+        <div class="card">
+            <h3 class="text-xl font-semibold mb-6 text-center">Power Dynamics: Grid Draw vs. Truck Demand</h3>
+            <div class="chart-container" style="height: 50vh; max-height: 500px; max-width: 1000px;">
+                <canvas id="bessChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-16">
+        <h2 class="text-3xl font-bold mb-4 text-center">The "Gas Station of the Future" Network</h2>
+        <p class="text-slate-300 mb-12 text-center max-w-4xl mx-auto leading-relaxed">
+            To enable long-haul electro-mobility, these BESS-equipped charging hubs must be deployed strategically. Much like gas stations, they will be positioned along major freight corridors (hub-and-spoke model). Spacing these hubs every 200 to 300 kilometers guarantees that trucks can always align their mandatory breaks with a high-power charging opportunity.
+        </p>
+        
+        <div class="card overflow-hidden py-12 relative">
+            <div class="relative max-w-5xl mx-auto px-8">
+                <div class="node-line"></div>
+                <div class="flex justify-between items-center relative z-10">
+                    
+                    <div class="flex flex-col items-center">
+                        <div class="node-point shadow-[0_0_15px_rgba(6,182,212,0.5)]">&#127981;</div>
+                        <div class="mt-4 text-center">
+                            <p class="font-bold text-emerald">Origin Hub</p>
+                            <p class="text-xs text-slate-400">Slow Overnight Charge</p>
+                            <p class="text-xs font-mono text-cyan mt-1">0 km</p>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col items-center">
+                        <div class="node-point bg-slate-800 border-emerald shadow-[0_0_15px_rgba(16,185,129,0.5)]">&#9889;</div>
+                        <div class="mt-4 text-center">
+                            <p class="font-bold text-emerald">BESS Station Alpha</p>
+                            <p class="text-xs text-slate-400">45 Min MCS Boost</p>
+                            <p class="text-xs font-mono text-cyan mt-1">350 km</p>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col items-center">
+                        <div class="node-point bg-slate-800 border-emerald shadow-[0_0_15px_rgba(16,185,129,0.5)]">&#9889;</div>
+                        <div class="mt-4 text-center">
+                            <p class="font-bold text-emerald">BESS Station Beta</p>
+                            <p class="text-xs text-slate-400">45 Min MCS Boost</p>
+                            <p class="text-xs font-mono text-cyan mt-1">700 km</p>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col items-center">
+                        <div class="node-point shadow-[0_0_15px_rgba(6,182,212,0.5)]">&#127981;</div>
+                        <div class="mt-4 text-center">
+                            <p class="font-bold text-emerald">Destination Hub</p>
+                            <p class="text-xs text-slate-400">Arrival / Unload</p>
+                            <p class="text-xs font-mono text-cyan mt-1">1050 km</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-12">
+        <h2 class="text-3xl font-bold mb-4 text-center">Strategic ROI: Infrastructure Scalability</h2>
+        <p class="text-slate-300 mb-8 text-center max-w-4xl mx-auto leading-relaxed">
+            The relationship between Truck Volume, BESS Capacity installed, and Avoided Grid Upgrade Costs dictates the financial viability of these future stations. High volume routes require larger BESS units, but yield exponentially higher savings by negating the need for direct high-voltage transmission lines.
+        </p>
+        <div class="card">
+            <div id="plotly-3d" class="plot-container"></div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+function wrapLbl(lbl){
+    if(lbl.length<=16)return lbl;
+    let w=lbl.split(' ');
+    let l=[];
+    let c='';
+    w.forEach(x=>{
+        if((c+x).length>16){
+            if(c)l.push(c.trim());
+            c=x+' ';
+        }else{
+            c+=x+' ';
+        }
+    });
+    if(c)l.push(c.trim());
+    return l;
+}
+
+const tooltipConfig = {
+    callbacks: {
+        title: function(tooltipItems) {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+                return label.join(' ');
+            } else {
+                return label;
+            }
+        }
+    }
+};
+
+Chart.defaults.color = '#94A3B8';
+Chart.defaults.font.family = 'Inter';
+
+const tcoCtx = document.getElementById('tcoChart').getContext('2d');
+new Chart(tcoCtx, {
+    type: 'bar',
+    data: {
+        labels: [wrapLbl('Initial Vehicle Purchase Price'), wrapLbl('10-Year Fuel or Energy Cost'), wrapLbl('Maintenance & Operations Cost')],
+        datasets: [
+            {
+                label: 'Diesel Heavy Truck',
+                data: [150000, 750000, 120000],
+                backgroundColor: '#F43F5E',
+                borderRadius: 4
+            },
+            {
+                label: 'Electric Truck + BESS Power',
+                data: [350000, 260000, 70000],
+                backgroundColor: '#06B6D4',
+                borderRadius: 4
+            }
+        ]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            tooltip: tooltipConfig,
+            legend: { position: 'bottom', labels: { color: '#F8FAFC' } }
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                grid: { color: '#334155' },
+                ticks: { callback: function(value) { return '$' + value/1000 + 'k'; } }
+            },
+            x: { grid: { display: false } }
+        }
+    }
+});
+
+const cycleCtx = document.getElementById('cycleChart').getContext('2d');
+new Chart(cycleCtx, {
+    type: 'doughnut',
+    data: {
+        labels: [wrapLbl('Driving Operations (Max Legal limit)'), wrapLbl('Mandatory Rest & BESS Charging'), wrapLbl('Loading and Unloading Time')],
+        datasets: [{
+            data: [540, 90, 120],
+            backgroundColor: ['#06B6D4', '#10B981', '#64748B'],
+            borderWidth: 0,
+            hoverOffset: 4
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        cutout: '70%',
+        plugins: {
+            tooltip: tooltipConfig,
+            legend: { position: 'right', labels: { color: '#F8FAFC' } }
+        }
+    }
+});
+
+const bessCtx = document.getElementById('bessChart').getContext('2d');
+new Chart(bessCtx, {
+    type: 'line',
+    data: {
+        labels: ['00:00','03:00','06:00','09:00','12:00','15:00','18:00','21:00','24:00'],
+        datasets: [
+            {
+                label: wrapLbl('High Power Megawatt Demand (Trucks)'),
+                data: [0, 0, 1200, 0, 1200, 0, 1200, 0, 0],
+                borderColor: '#F43F5E',
+                backgroundColor: 'rgba(244, 63, 94, 0.1)',
+                borderWidth: 3,
+                stepped: true,
+                fill: true,
+                yAxisID: 'y'
+            },
+            {
+                label: wrapLbl('Steady Local Grid Draw Limit'),
+                data: [200, 200, 200, 200, 200, 200, 200, 200, 200],
+                borderColor: '#64748B',
+                borderDash: [5, 5],
+                borderWidth: 2,
+                pointRadius: 0,
+                yAxisID: 'y'
+            },
+            {
+                label: wrapLbl('BESS Stored Energy Level (MWh)'),
+                data: [4.0, 4.6, 4.0, 4.6, 4.0, 4.6, 4.0, 4.6, 5.2],
+                borderColor: '#10B981',
+                backgroundColor: 'rgba(16, 185, 129, 0.2)',
+                borderWidth: 3,
+                fill: true,
+                tension: 0.4,
+                yAxisID: 'y1'
+            }
+        ]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: { mode: 'index', intersect: false },
+        plugins: {
+            tooltip: tooltipConfig,
+            legend: { position: 'bottom', labels: { color: '#F8FAFC' } }
+        },
+        scales: {
+            y: {
+                type: 'linear',
+                display: true,
+                position: 'left',
+                title: { display: true, text: 'Power Demand (kW)', color: '#F8FAFC' },
+                grid: { color: '#334155' },
+                max: 1500
+            },
+            y1: {
+                type: 'linear',
+                display: true,
+                position: 'right',
+                title: { display: true, text: 'Storage Level (MWh)', color: '#F8FAFC' },
+                grid: { drawOnChartArea: false },
+                min: 0,
+                max: 6
+            },
+            x: { grid: { display: false } }
+        }
+    }
+});
+
+const trace1 = {
+    x: [1, 2, 3, 4, 5, 2, 4, 6, 8, 10, 3, 6, 9, 12, 15],
+    y: [10, 20, 30, 40, 50, 15, 25, 35, 45, 55, 20, 40, 60, 80, 100],
+    z: [2, 4, 6, 8, 10, 5, 10, 15, 20, 25, 12, 24, 36, 48, 60],
+    mode: 'markers',
+    marker: {
+        size: 8,
+        color: [2, 4, 6, 8, 10, 5, 10, 15, 20, 25, 12, 24, 36, 48, 60],
+        colorscale: [[0, '#06B6D4'], [1, '#10B981']],
+        opacity: 0.8
+    },
+    type: 'scatter3d'
+};
+
+const layout = {
+    scene: {
+        xaxis: { title: 'BESS Size (MWh)', backgroundcolor: '#1E293B', gridcolor: '#334155', showbackground: true, zerolinecolor: '#334155' },
+        yaxis: { title: 'Daily Trucks', backgroundcolor: '#1E293B', gridcolor: '#334155', showbackground: true, zerolinecolor: '#334155' },
+        zaxis: { title: 'Grid Savings ($M)', backgroundcolor: '#1E293B', gridcolor: '#334155', showbackground: true, zerolinecolor: '#334155' }
+    },
+    paper_bgcolor: 'rgba(0,0,0,0)',
+    plot_bgcolor: 'rgba(0,0,0,0)',
+    font: { color: '#F8FAFC', family: 'Inter' },
+    margin: { l: 0, r: 0, b: 0, t: 0 }
+};
+
+Plotly.newPlot('plotly-3d', [trace1], layout, {responsive: true, displayModeBar: false});
+
+</script>
+</body>
+</html>
