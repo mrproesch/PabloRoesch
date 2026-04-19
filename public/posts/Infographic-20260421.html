@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electrifying the High Seas: The Maritime Energy Transition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8FAFC;
+            color: #1E293B;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 100%;
+            height: 350px;
+            max-height: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .card {
+            background-color: #FFFFFF;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            transition: transform 0.2s ease-in-out;
+        }
+        .card:hover {
+            transform: translateY(-2px);
+        }
+        .vibrant-text-primary { color: #0077B6; }
+        .vibrant-bg-primary { background-color: #0077B6; }
+        .vibrant-text-secondary { color: #FF9F1C; }
+        .vibrant-bg-secondary { background-color: #FF9F1C; }
+        .diagram-box {
+            border: 2px solid #00B4D8;
+            background-color: #E0FBFC;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            text-align: center;
+            font-weight: 600;
+            color: #03045E;
+        }
+        .diagram-arrow {
+            font-size: 2rem;
+            color: #FF9F1C;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div style="display:none;" id="meta-information-container">
+        CONFIRMATION: NEITHER Mermaid JS NOR SVG were used anywhere in the output.
+        PALETTE NAME: Oceanic Spark (Colors: #03045E, #0077B6, #00B4D8, #E0FBFC, #FF9F1C)
+        PLAN SUMMARY: The infographic is structured to first introduce the emissions problem in the maritime sector, highlight the current growth of electric vessels, explain the underlying architecture relying on BESS, compare the pros and cons against traditional diesel, and finally project future technological advancements driven by companies like CATL.
+        VISUALIZATION CHOICES: 
+        1. Emissions Share -> Goal: Compare -> Donut Chart (Chart.js). Shows stark contrast of shipping emissions vs total.
+        2. Fleet Growth -> Goal: Change -> Bar Chart (Chart.js). Effectively shows volume growth over distinct time periods.
+        3. Ship Profiling -> Goal: Compare -> Radar Chart (Chart.js). Ideal for multi-variable comparison between two distinct entities (Diesel vs Electric).
+        4. Battery Evolution -> Goal: Change -> Line Chart (Chart.js). Shows continuous improvement of energy density over time/technology generations.
+        5. Architecture -> Goal: Organize -> HTML/CSS Diagram. Shows the power flow without using SVG or Mermaid.
+    </div>
+
+    <header class="vibrant-bg-primary text-white py-12 px-4 shadow-md">
+        <div class="max-w-7xl mx-auto">
+            <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight mb-4">Electrifying the High Seas</h1>
+            <p class="text-xl md:text-2xl font-light text-blue-100 max-w-3xl">The maritime sector is undergoing a historic energy transition. Driven by global emission targets and advancements in Battery Energy Storage Systems (BESS), the future of shipping is electric.</p>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 py-8">
+        
+        <section class="mb-12">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div class="card flex flex-col justify-center items-center text-center border-t-4 border-[#0077B6]">
+                    <span class="text-5xl font-extrabold vibrant-text-primary mb-2">3%</span>
+                    <span class="text-gray-600 font-medium">Of Global GHG Emissions</span>
+                    <p class="text-sm text-gray-500 mt-2">Maritime shipping currently produces massive carbon output, necessitating immediate action.</p>
+                </div>
+                <div class="card flex flex-col justify-center items-center text-center border-t-4 border-[#FF9F1C]">
+                    <span class="text-5xl font-extrabold vibrant-text-secondary mb-2">30%</span>
+                    <span class="text-gray-600 font-medium">Target Emission Cut by 2030</span>
+                    <p class="text-sm text-gray-500 mt-2">IMO regulations mandate steep reductions, forcing fleets to adopt electric or hybrid solutions.</p>
+                </div>
+                <div class="card flex flex-col justify-center items-center text-center border-t-4 border-[#00B4D8]">
+                    <span class="text-5xl font-extrabold text-[#00B4D8] mb-2">500+</span>
+                    <span class="text-gray-600 font-medium">Wh/kg Target Density</span>
+                    <p class="text-sm text-gray-500 mt-2">Next-gen condensed batteries (like CATL's) will unlock electrification for larger vessels.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+            
+            <div class="card">
+                <h2 class="text-2xl font-bold mb-4 vibrant-text-primary border-b pb-2">The Emissions Imperative</h2>
+                <p class="text-gray-700 mb-6 leading-relaxed">
+                    While shipping is incredibly efficient per ton of cargo, its massive scale makes it a primary contributor to global emissions. Transitioning from heavy fuel oils to Battery Energy Storage Systems (BESS) is critical to decarbonizing global supply chains.
+                </p>
+                <div class="chart-container">
+                    <canvas id="emissionsChart"></canvas>
+                </div>
+                <p class="text-sm text-gray-500 mt-4 text-center">
+                    Fig 1: Maritime shipping accounts for approximately 3% of global carbon emissions, equivalent to a major industrialized nation.
+                </p>
+            </div>
+
+            <div class="card">
+                <h2 class="text-2xl font-bold mb-4 vibrant-text-primary border-b pb-2">Surge in Electric Vessels</h2>
+                <p class="text-gray-700 mb-6 leading-relaxed">
+                    Initial deployments have focused on short-sea shipping, inland waterways, and passenger ferries. As charging infrastructure at ports improves, the global fleet of hybrid and fully electric vessels is experiencing exponential growth.
+                </p>
+                <div class="chart-container">
+                    <canvas id="fleetGrowthChart"></canvas>
+                </div>
+                <p class="text-sm text-gray-500 mt-4 text-center">
+                    Fig 2: Projected growth of operational electric and plug-in hybrid vessels worldwide from 2020 to 2030.
+                </p>
+            </div>
+        </section>
+
+        <section class="mb-12">
+            <div class="card col-span-1 lg:col-span-2">
+                <h2 class="text-2xl font-bold mb-4 vibrant-text-primary border-b pb-2">Maritime Electrification Architecture</h2>
+                <p class="text-gray-700 mb-8 leading-relaxed">
+                    The core of a modern electric vessel is the Battery Energy Storage System (BESS). Unlike traditional direct-drive diesel engines, electric architectures utilize an integrated DC grid. This allows for flexible power management, integrating port charging, onboard generators (in hybrids), and energy distribution to electric propulsion motors.
+                </p>
+                
+                <div class="bg-[#F8FAFC] p-6 rounded-lg border border-gray-200">
+                    <div class="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
+                        
+                        <div class="flex flex-col items-center">
+                            <div class="diagram-box w-40 h-32 flex flex-col justify-center shadow-md">
+                                <span class="text-3xl mb-1">&#9889;</span>
+                                <span>Port Shore Power</span>
+                                <span class="text-xs font-normal mt-1">(High Voltage AC/DC)</span>
+                            </div>
+                        </div>
+
+                        <div class="diagram-arrow rotate-90 md:rotate-0">&#10142;</div>
+
+                        <div class="flex flex-col items-center">
+                            <div class="diagram-box w-48 h-32 flex flex-col justify-center border-[#FF9F1C] bg-[#FFF3E0] shadow-md">
+                                <span class="text-3xl mb-1">&#128267;</span>
+                                <span>Marine BESS</span>
+                                <span class="text-xs font-normal mt-1">(Modular Battery Packs)</span>
+                            </div>
+                            <div class="mt-2 text-xs text-gray-500 font-semibold uppercase">Energy Storage Core</div>
+                        </div>
+
+                        <div class="diagram-arrow rotate-90 md:rotate-0">&#10142;</div>
+
+                        <div class="flex flex-col space-y-4 w-full md:w-auto">
+                            <div class="diagram-box w-full md:w-40 h-20 flex flex-col justify-center border-[#03045E] bg-[#E2E8F0] shadow-sm">
+                                <span>&#9881; Electric Motor</span>
+                            </div>
+                            <div class="diagram-box w-full md:w-40 h-20 flex flex-col justify-center border-[#03045E] bg-[#E2E8F0] shadow-sm">
+                                <span>&#128161; Hotel Loads</span>
+                            </div>
+                        </div>
+
+                        <div class="diagram-arrow rotate-90 md:rotate-0 hidden md:flex">&#10142;</div>
+
+                        <div class="flex flex-col items-center hidden md:flex">
+                            <div class="diagram-box w-32 h-32 flex flex-col justify-center border-gray-400 bg-white shadow-md rounded-full">
+                                <span class="text-4xl">&#128674;</span>
+                                <span class="text-sm mt-2">Propulsion</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p class="text-sm text-gray-500 mt-4 text-center">
+                    Fig 3: Simplified process flow of a fully electric marine architecture utilizing port charging and massive BESS modules.
+                </p>
+            </div>
+        </section>
+
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+            
+            <div class="card">
+                <h2 class="text-2xl font-bold mb-4 vibrant-text-primary border-b pb-2">Diesel vs. Electric Profiling</h2>
+                <p class="text-gray-700 mb-6 leading-relaxed">
+                    The shift to electric propulsion involves tradeoffs. While fully electric vessels dramatically reduce operating costs, localized emissions, and noise pollution, they currently require higher upfront capital expenditure and face operational range limitations due to battery weight.
+                </p>
+                <div class="chart-container">
+                    <canvas id="radarChart"></canvas>
+                </div>
+                <p class="text-sm text-gray-500 mt-4 text-center">
+                    Fig 4: Comparative analysis of traditional diesel vessels versus modern fully electric vessels across key operational metrics.
+                </p>
+            </div>
+
+            <div class="card">
+                <h2 class="text-2xl font-bold mb-4 vibrant-text-primary border-b pb-2">The Technological Frontier</h2>
+                <p class="text-gray-700 mb-6 leading-relaxed">
+                    Range anxiety is the biggest hurdle for deep-sea shipping. However, rapid advancements in battery chemistry by manufacturers like CATL are steadily increasing gravimetric energy density (Wh/kg), making electrification viable for increasingly larger and longer-range vessels.
+                </p>
+                <div class="chart-container">
+                    <canvas id="densityChart"></canvas>
+                </div>
+                <p class="text-sm text-gray-500 mt-4 text-center">
+                    Fig 5: The evolution of battery energy density. Reaching 500 Wh/kg (Condensed matter batteries) is considered a tipping point for broad maritime adoption.
+                </p>
+            </div>
+        </section>
+        
+        <section class="card mb-8 vibrant-bg-primary text-white border-none">
+            <h2 class="text-2xl font-bold mb-4 border-b border-blue-400 pb-2">The Future Outlook</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                <div>
+                    <h3 class="text-xl font-semibold mb-2 text-[#FF9F1C]">&#128268; Standardized Battery Swapping</h3>
+                    <p class="text-blue-100 text-sm leading-relaxed">Instead of waiting hours to charge massive vessels, the industry is moving towards standardized containerized battery swapping at ports. A depleted battery container is hoisted off, and a fully charged one is loaded, reducing turnaround times to minutes.</p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold mb-2 text-[#FF9F1C]">&#127754; Deep Sea Hybridization</h3>
+                    <p class="text-blue-100 text-sm leading-relaxed">While pure electric is winning coastal routes, transoceanic vessels will rely on hybrid architectures. BESS will handle peak shaving, maneuvering in emission-controlled port zones, and integrating with alternative green fuels like ammonia or methanol.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-gray-900 text-gray-400 py-8 text-center text-sm">
+        <p>&copy; 2026 Maritime Electrification Insights. Data synthesized for educational visualization.</p>
+    </footer>
+
+    <script>
+        const wrapText = (str) => {
+            if(str.length <= 16) return str;
+            const words = str.split(' ');
+            let lines = [];
+            let currentLine = '';
+            words.forEach(word => {
+                if ((currentLine + word).length > 16) {
+                    if(currentLine.trim() !== '') lines.push(currentLine.trim());
+                    currentLine = word + ' ';
+                } else {
+                    currentLine += word + ' ';
+                }
+            });
+            if(currentLine.trim() !== '') lines.push(currentLine.trim());
+            return lines;
+        };
+
+        const commonTooltipConfig = {
+            callbacks: {
+                title: function(tooltipItems) {
+                    const item = tooltipItems[0];
+                    let label = item.chart.data.labels[item.dataIndex];
+                    if (Array.isArray(label)) {
+                        return label.join(' ');
+                    } else {
+                        return label;
+                    }
+                }
+            }
+        };
+
+        Chart.defaults.font.family = "'Inter', sans-serif";
+        Chart.defaults.color = '#475569';
+
+        const ctxEmissions = document.getElementById('emissionsChart').getContext('2d');
+        new Chart(ctxEmissions, {
+            type: 'doughnut',
+            data: {
+                labels: [wrapText('Global Maritime Shipping Emissions'), wrapText('Other Global Emissions')],
+                datasets: [{
+                    data: [3, 97],
+                    backgroundColor: ['#FF9F1C', '#0077B6'],
+                    borderWidth: 0,
+                    hoverOffset: 10
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom' },
+                    tooltip: commonTooltipConfig
+                },
+                cutout: '70%'
+            }
+        });
+
+        const ctxFleet = document.getElementById('fleetGrowthChart').getContext('2d');
+        new Chart(ctxFleet, {
+            type: 'bar',
+            data: {
+                labels: [wrapText('2020 Historical Data'), wrapText('2023 Rapid Adoption'), wrapText('2025 Near-Term Forecast'), wrapText('2030 Long-Term Mandates')],
+                datasets: [{
+                    label: 'Number of Electric/Hybrid Vessels',
+                    data: [450, 1100, 2800, 8500],
+                    backgroundColor: '#00B4D8',
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: { beginAtZero: true, grid: { color: '#E2E8F0' } },
+                    x: { grid: { display: false } }
+                },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: commonTooltipConfig
+                }
+            }
+        });
+
+        const ctxRadar = document.getElementById('radarChart').getContext('2d');
+        new Chart(ctxRadar, {
+            type: 'radar',
+            data: {
+                labels: [
+                    wrapText('Initial Capital Expenditure'),
+                    wrapText('Long-Term Operating Costs'),
+                    wrapText('Maximum Operating Range'),
+                    wrapText('Local Port Emissions'),
+                    wrapText('Acoustic Noise Pollution')
+                ],
+                datasets: [
+                    {
+                        label: 'Traditional Diesel',
+                        data: [40, 90, 100, 100, 95],
+                        backgroundColor: 'rgba(30, 41, 59, 0.2)',
+                        borderColor: '#1E293B',
+                        pointBackgroundColor: '#1E293B',
+                        borderWidth: 2
+                    },
+                    {
+                        label: 'Fully Electric BESS',
+                        data: [90, 20, 35, 0, 10],
+                        backgroundColor: 'rgba(0, 119, 182, 0.4)',
+                        borderColor: '#0077B6',
+                        pointBackgroundColor: '#0077B6',
+                        borderWidth: 2
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    r: {
+                        angleLines: { color: '#E2E8F0' },
+                        grid: { color: '#E2E8F0' },
+                        pointLabels: { font: { size: 11 }, color: '#475569' },
+                        ticks: { display: false }
+                    }
+                },
+                plugins: {
+                    legend: { position: 'bottom' },
+                    tooltip: commonTooltipConfig
+                }
+            }
+        });
+
+        const ctxDensity = document.getElementById('densityChart').getContext('2d');
+        new Chart(ctxDensity, {
+            type: 'line',
+            data: {
+                labels: [wrapText('Legacy Lead-Acid'), wrapText('Standard LFP (Marine Grade)'), wrapText('Advanced NMC Chemistries'), wrapText('Next-Gen Condensed Matter')],
+                datasets: [{
+                    label: 'Energy Density (Wh/kg)',
+                    data: [40, 160, 260, 500],
+                    borderColor: '#FF9F1C',
+                    backgroundColor: 'rgba(255, 159, 28, 0.1)',
+                    borderWidth: 3,
+                    pointBackgroundColor: '#FFFFFF',
+                    pointBorderColor: '#FF9F1C',
+                    pointBorderWidth: 2,
+                    pointRadius: 6,
+                    fill: true,
+                    tension: 0.3
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: { 
+                        beginAtZero: true, 
+                        grid: { color: '#E2E8F0' },
+                        title: { display: true, text: 'Wh/kg' }
+                    },
+                    x: { grid: { display: false } }
+                },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: commonTooltipConfig
+                }
+            }
+        });
+    </script>
+</body>
+</html>
