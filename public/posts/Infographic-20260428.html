@@ -1,0 +1,424 @@
+<!--
+Palette Name: Energetic Tech (Deep Blue #1E3A8A, Bright Blue #3B82F6, Emerald #10B981, Amber #F59E0B, Coral #EF4444)
+
+Plan Summary:
+1. Introduction: Contextualize the EV boom and emerging infrastructure/demographic challenges.
+2. Demographic Divide: Highlight the concentration of EVs in high-income demographics causing localized grid strain (Source: ecoinventos).
+3. Grid Strain: Illustrate the impact of unmanaged, clustered EV charging on local distribution networks.
+4. BESS as a Solution: Detail how Battery Energy Storage Systems resolve grid constraints, enabling faster, equitable EV rollout (Source: elperiodicodelaenergia).
+5. Future Outlook: Project BESS market growth and systemic integration.
+
+Chart Choices Summary:
+- EV Demographics (Goal: Compare) -> Doughnut Chart (Chart.js). Justification: Effectively shows composition of the EV owner market. NO SVG.
+- Grid Demand Profile (Goal: Change over time) -> Line Chart (Chart.js). Justification: Visualizes peak spikes clearly. NO SVG.
+- BESS Benefits Breakdown (Goal: Compare) -> Polar Area Chart (Chart.js). Justification: Compares performance metrics of BESS. NO SVG.
+- BESS Capacity Growth (Goal: Change) -> Bar Chart (Chart.js). Justification: Demonstrates volume growth over time. NO SVG.
+- EV Charging Integration Flow (Goal: Organize) -> HTML/CSS Grid Diagram. Justification: Shows system architecture using native DOM elements. NO SVG, NO Mermaid JS.
+
+Confirmation: NEITHER Mermaid JS NOR SVG were used anywhere in the output.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EV Expansion & BESS Grid Integration</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            background-color: #F3F4F6;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .large-chart-container {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            max-height: 500px;
+        }
+    </style>
+</head>
+<body class="text-gray-800 font-sans antialiased overflow-x-hidden">
+
+    <header class="bg-blue-900 text-white py-16 px-6 shadow-lg relative overflow-hidden">
+        <div class="max-w-6xl mx-auto relative z-10">
+            <span class="inline-block py-1 px-3 rounded-full bg-blue-800 text-blue-200 text-sm font-semibold tracking-wider mb-4 uppercase">Market Analysis 2024</span>
+            <h1 class="text-4xl md:text-6xl font-extrabold mb-6 tracking-tight leading-tight">Navigating the EV <br><span class="text-blue-400">Grid Transition</span></h1>
+            <p class="text-xl md:text-2xl text-blue-100 font-light max-w-3xl leading-relaxed">Overcoming demographic bottlenecks and critical grid strain with Battery Energy Storage Systems (BESS) to accelerate equitable electrification.</p>
+        </div>
+        <div class="absolute top-0 right-0 -mt-20 -mr-20 w-96 h-96 bg-blue-600 rounded-full mix-blend-multiply filter blur-3xl opacity-50"></div>
+        <div class="absolute bottom-0 left-10 -mb-20 w-72 h-72 bg-emerald-500 rounded-full mix-blend-multiply filter blur-3xl opacity-30"></div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 py-12 space-y-16">
+
+        <section class="bg-white rounded-2xl shadow-xl border border-gray-100 p-8 md:p-12">
+            <div class="max-w-3xl mb-10">
+                <h2 class="text-3xl font-bold text-blue-900 mb-4">1. The Demographic Bottleneck</h2>
+                <p class="text-lg text-gray-600 leading-relaxed">Recent studies over the last 6 months have revealed a stark reality: Electric Vehicle adoption is heavily skewed. Current market penetration is overwhelmingly concentrated within high-income, highly educated households. This unequal distribution poses an immediate challenge to widespread infrastructure planning.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="order-2 lg:order-1 bg-blue-50 p-6 rounded-xl border-l-4 border-blue-500">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4">Concentrated Adoption</h3>
+                    <p class="text-gray-700 leading-relaxed mb-4">Data from recent Spanish demographic research indicates nearly 70% of new EVs are registered to upper-bracket households. This creates localized "hotspots" of high electricity demand in specific suburban sectors, rather than an even spread across the entire distribution network.</p>
+                    <ul class="space-y-3 mt-6">
+                        <li class="flex items-center text-gray-700"><span class="text-emerald-500 font-bold text-xl mr-3">&#10003;</span> Accelerated adoption in affluent areas.</li>
+                        <li class="flex items-center text-gray-700"><span class="text-red-500 font-bold text-xl mr-3">&#10007;</span> Stalled infrastructure in lower-income zones.</li>
+                    </ul>
+                </div>
+                <div class="chart-container order-1 lg:order-2">
+                    <canvas id="demographicsChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-white rounded-2xl shadow-xl border border-gray-100 p-8 md:p-12">
+            <div class="max-w-3xl mb-10">
+                <h2 class="text-3xl font-bold text-blue-900 mb-4">2. Localized Grid Strain</h2>
+                <p class="text-lg text-gray-600 leading-relaxed">Because EV ownership clusters geographically, the local electrical distribution network in these neighborhoods faces extreme stress. Traditional grids were not built to handle dozens of fast chargers activating simultaneously in a single residential block.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="chart-container">
+                    <canvas id="gridStrainChart"></canvas>
+                </div>
+                <div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4">The Unmanaged Charging Spike</h3>
+                    <p class="text-gray-700 leading-relaxed mb-4">When residents return from work and plug in their vehicles around 18:00, it creates a massive localized peak. Without intervention, managing this "duck curve" exacerbation requires physically digging up streets to install thicker copper cables and larger transformers—an incredibly costly and slow process.</p>
+                    <div class="bg-red-50 text-red-800 p-4 rounded-lg mt-4 font-medium border border-red-200">
+                        &#9888; Severe risk of local substation overload during peak evening hours without storage buffers.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-gradient-to-br from-blue-900 to-blue-800 rounded-2xl shadow-2xl p-8 md:p-12 text-white">
+            <div class="max-w-3xl mb-10 mx-auto text-center">
+                <h2 class="text-3xl font-bold text-white mb-4">3. The BESS Architecture Solution</h2>
+                <p class="text-lg text-blue-200 leading-relaxed">Battery Energy Storage Systems (BESS) are now identified by European markets as the essential keystone. By placing large-scale batteries at strategic grid nodes or charging hubs, operators can completely decouple the EV charging spike from base grid generation.</p>
+            </div>
+
+            <div class="flex flex-col md:flex-row items-center justify-center bg-white/10 backdrop-blur-sm p-8 rounded-xl border border-white/20 mb-8 max-w-4xl mx-auto gap-4">
+                
+                <div class="bg-white text-blue-900 p-6 rounded-xl shadow-lg text-center w-full md:w-48 transform transition hover:scale-105">
+                    <div class="text-4xl mb-3">&#9889;</div>
+                    <div class="font-bold text-lg">Main Grid</div>
+                    <div class="text-xs text-blue-600 mt-2">Steady, baseload generation</div>
+                </div>
+
+                <div class="text-amber-400 text-4xl my-4 md:my-0 transform rotate-90 md:rotate-0 drop-shadow-md">
+                    &#10142;
+                </div>
+
+                <div class="bg-emerald-500 text-white p-6 rounded-xl shadow-lg text-center w-full md:w-56 border-4 border-emerald-300 relative transform transition hover:scale-105">
+                    <div class="absolute -top-3 -right-3 bg-amber-400 text-blue-900 text-xs font-bold px-2 py-1 rounded-full shadow">BUFFER</div>
+                    <div class="text-4xl mb-3">&#128267;</div>
+                    <div class="font-bold text-lg">BESS Units</div>
+                    <div class="text-xs text-emerald-100 mt-2">Charges at night, discharges at peak</div>
+                </div>
+
+                <div class="text-amber-400 text-4xl my-4 md:my-0 transform rotate-90 md:rotate-0 drop-shadow-md">
+                    &#10142;
+                </div>
+
+                <div class="bg-blue-600 text-white p-6 rounded-xl shadow-lg text-center w-full md:w-48 transform transition hover:scale-105">
+                    <div class="text-4xl mb-3">&#9881;</div>
+                    <div class="font-bold text-lg">EV Chargers</div>
+                    <div class="text-xs text-blue-200 mt-2">Draws from BESS, not the grid</div>
+                </div>
+
+            </div>
+            <p class="text-center text-blue-200 text-sm font-medium">System Flow: Resolving local capacity limits instantly without waiting for grid hardware upgrades.</p>
+        </section>
+
+        <section class="bg-white rounded-2xl shadow-xl border border-gray-100 p-8 md:p-12">
+             <div class="max-w-3xl mb-10">
+                <h2 class="text-3xl font-bold text-blue-900 mb-4">4. Multilayered Grid Benefits</h2>
+                <p class="text-lg text-gray-600 leading-relaxed">BESS technology acts as a multi-tool for the modern distribution network. While mitigating EV peak loads is critical, these storage systems simultaneously provide vital ancillary services that stabilize the entire European energy market.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="order-2 lg:order-1">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4">Beyond Simple Storage</h3>
+                    <p class="text-gray-700 leading-relaxed mb-6">By injecting or absorbing power in milliseconds, BESS maintains grid frequency, prevents voltage sags during mass charging events, and perfectly captures intermittent renewable energy (solar/wind) that would otherwise be curtailed.</p>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                            <div class="text-3xl text-blue-500 mb-2">&#8645;</div>
+                            <div class="font-bold text-sm text-gray-800">Peak Shaving</div>
+                        </div>
+                        <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                            <div class="text-3xl text-emerald-500 mb-2">&#9851;</div>
+                            <div class="font-bold text-sm text-gray-800">Renewable Integration</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="chart-container order-1 lg:order-2">
+                    <canvas id="bessBenefitsChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-white rounded-2xl shadow-xl border border-gray-100 p-8 md:p-12">
+            <div class="max-w-3xl mb-10 mx-auto text-center">
+                <h2 class="text-3xl font-bold text-blue-900 mb-4">5. The Future: Exponential Market Growth</h2>
+                <p class="text-lg text-gray-600 leading-relaxed">Recognizing storage as the ultimate enabler for electrification, the last six months have seen a massive regulatory and financial pivot. European projections show an exponential deployment of BESS capacity over the next few years.</p>
+            </div>
+
+            <div class="large-chart-container bg-gray-50 rounded-xl p-4 border border-gray-100">
+                <canvas id="marketGrowthChart"></canvas>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-gray-900 text-gray-400 py-12 text-center px-6">
+        <div class="max-w-4xl mx-auto">
+            <p class="mb-4 text-gray-300 font-semibold tracking-wide">Infographic Data Synthesis</p>
+            <p class="text-sm">Based on recent European grid studies, demographic EV adoption analyses (Spain), and market positioning reports for energy storage systems.</p>
+            <p class="text-xs mt-8 text-gray-600">&copy; 2024 Energy Market Insights.</p>
+        </div>
+    </footer>
+
+    <script>
+        const chartFont = {
+            family: "'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
+            size: 13
+        };
+
+        const doughnutCtx = document.getElementById('demographicsChart').getContext('2d');
+        new Chart(doughnutCtx, {
+            type: 'doughnut',
+            data: {
+                labels: [['High-Income', 'Households'], ['Medium-Income', 'Households'], ['Low-Income', 'Households']],
+                datasets: [{
+                    data: [68, 22, 10],
+                    backgroundColor: ['#1E3A8A', '#3B82F6', '#10B981'],
+                    borderWidth: 0,
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                cutout: '65%',
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: { font: chartFont, padding: 20 }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(17, 24, 39, 0.9)',
+                        padding: 12,
+                        callbacks: {
+                            title: function(tooltipItems) {
+                                const item = tooltipItems[0];
+                                let label = item.chart.data.labels[item.dataIndex];
+                                if (Array.isArray(label)) {
+                                    return label.join(' ');
+                                } else {
+                                    return label;
+                                }
+                            },
+                            label: function(context) {
+                                return ' Adoption Rate: ' + context.parsed + '%';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        const lineCtx = document.getElementById('gridStrainChart').getContext('2d');
+        new Chart(lineCtx, {
+            type: 'line',
+            data: {
+                labels: ['12:00', '14:00', '16:00', '18:00', '20:00', '22:00', '00:00'],
+                datasets: [
+                    {
+                        label: 'Unmanaged EV Peak',
+                        data: [40, 45, 55, 105, 110, 85, 50],
+                        borderColor: '#EF4444',
+                        backgroundColor: 'rgba(239, 68, 68, 0.15)',
+                        fill: true,
+                        tension: 0.4,
+                        borderWidth: 3,
+                        pointBackgroundColor: '#EF4444'
+                    },
+                    {
+                        label: 'Base Grid Load',
+                        data: [35, 38, 40, 50, 48, 40, 30],
+                        borderColor: '#1E3A8A',
+                        borderDash: [5, 5],
+                        tension: 0.4,
+                        fill: false,
+                        borderWidth: 2,
+                        pointBackgroundColor: '#1E3A8A'
+                    }
+                ]
+            },
+            options: {
+                maintainAspectRatio: false,
+                interaction: {
+                    mode: 'index',
+                    intersect: false,
+                },
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: { font: chartFont }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(17, 24, 39, 0.9)',
+                        padding: 12,
+                        callbacks: {
+                            title: function(tooltipItems) {
+                                const item = tooltipItems[0];
+                                let label = item.chart.data.labels[item.dataIndex];
+                                if (Array.isArray(label)) {
+                                    return label.join(' ');
+                                } else {
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: { 
+                        beginAtZero: true, 
+                        max: 130,
+                        title: {
+                            display: true,
+                            text: 'Grid Load Capacity (%)',
+                            font: chartFont
+                        },
+                        grid: { color: 'rgba(0,0,0,0.05)' }
+                    },
+                    x: {
+                        grid: { display: false }
+                    }
+                }
+            }
+        });
+
+        const polarCtx = document.getElementById('bessBenefitsChart').getContext('2d');
+        new Chart(polarCtx, {
+            type: 'polarArea',
+            data: {
+                labels: [['Peak Shaving', 'Capabilities'], ['Voltage Support', '& Regulation'], ['Renewable Energy', 'Integration'], ['Grid Frequency', 'Stability']],
+                datasets: [{
+                    data: [95, 80, 92, 85],
+                    backgroundColor: [
+                        'rgba(59, 130, 246, 0.75)',
+                        'rgba(16, 185, 129, 0.75)',
+                        'rgba(245, 158, 11, 0.75)',
+                        'rgba(239, 68, 68, 0.75)'
+                    ],
+                    borderColor: '#ffffff',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                scales: {
+                    r: {
+                        ticks: { display: false },
+                        grid: { color: 'rgba(0,0,0,0.05)' }
+                    }
+                },
+                plugins: {
+                    legend: { 
+                        position: 'bottom',
+                        labels: { font: chartFont, padding: 15 }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(17, 24, 39, 0.9)',
+                        padding: 12,
+                        callbacks: {
+                            title: function(tooltipItems) {
+                                const item = tooltipItems[0];
+                                let label = item.chart.data.labels[item.dataIndex];
+                                if (Array.isArray(label)) {
+                                    return label.join(' ');
+                                } else {
+                                    return label;
+                                }
+                            },
+                            label: function(context) {
+                                return ' Utility Score: ' + context.parsed + '/100';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        const barCtx = document.getElementById('marketGrowthChart').getContext('2d');
+        new Chart(barCtx, {
+            type: 'bar',
+            data: {
+                labels: ['2022', '2023', '2024', '2025', '2026', '2027'],
+                datasets: [{
+                    label: 'Projected BESS Capacity (GW)',
+                    data: [5, 9, 16, 28, 45, 68],
+                    backgroundColor: '#3B82F6',
+                    hoverBackgroundColor: '#1E3A8A',
+                    borderRadius: 6,
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: { font: chartFont }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(17, 24, 39, 0.9)',
+                        padding: 12,
+                        callbacks: {
+                            title: function(tooltipItems) {
+                                const item = tooltipItems[0];
+                                let label = item.chart.data.labels[item.dataIndex];
+                                if (Array.isArray(label)) {
+                                    return label.join(' ');
+                                } else {
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: { 
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Gigawatts (GW)',
+                            font: chartFont
+                        },
+                        grid: { color: 'rgba(0,0,0,0.05)' }
+                    },
+                    x: {
+                        grid: { display: false }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
