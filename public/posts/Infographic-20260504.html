@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electrifying Heavy Transport: The BESS Catalyst</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Roboto', sans-serif; }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container { height: 400px; }
+        }
+        .bess-flow-container {
+            background: linear-gradient(135deg, #4F46E5 0%, #0EA5E9 100%);
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+    <!-- 
+    Palette Chosen: "Vibrant Tech" (Indigo #4F46E5, Cyan #0EA5E9, Emerald #10B981, Amber #F59E0B)
+    Explicit Confirmation: NEITHER Mermaid JS NOR SVG were used anywhere in this output. All icons are Unicode, and all charts are Canvas/WebGL based.
+    Plan Summary:
+    1. Hook: Large KPIs establishing the shift in Heavy Transport.
+    2. Trends: Line chart showing European electric HGV adoption.
+    3. Economics: Stacked bar showing Total Cost of Ownership (TCO) advantage.
+    4. Infrastructure Barrier: BESS Flowchart (HTML/CSS) explaining the Megawatt Charging System (MCS) architecture.
+    5. Grid Impact: Plotly Bubble Chart showing the relationship between battery size, charge speed, and grid strain.
+    6. Peak Demand: Bar chart demonstrating how BESS flattens the curve.
+
+    Chart Selections:
+    - HGV Adoption -> Goal: Change -> Chart.js Line Chart (Best for temporal trends, Canvas).
+    - TCO Breakdown -> Goal: Compare/Composition -> Chart.js Stacked Bar (Compares categories and parts to whole, Canvas).
+    - Battery/Charge Relationship -> Goal: Relationships -> Plotly.js Bubble Chart (Handles 3 variables effectively, WebGL mode).
+    - BESS Process -> Goal: Organize -> HTML/CSS Grid (Replaces SVG/Mermaid flowcharts as required).
+    - Peak Load Reduction -> Goal: Compare -> Chart.js Bar Chart (Direct categorical comparison, Canvas).
+    -->
+
+    <nav class="bg-indigo-900 text-white p-4 sticky top-0 z-50 shadow-md">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-xl font-bold tracking-wider">⚡ ELECTRO-LOGISTICS</h1>
+            <div class="text-sm font-medium text-cyan-300">Data Visualization Portal</div>
+        </div>
+    </nav>
+
+    <header class="container mx-auto px-4 py-12 text-center max-w-4xl">
+        <h2 class="text-4xl md:text-5xl font-black text-indigo-950 mb-4 leading-tight">Barrier-Free Electric Trucks: <span class="text-indigo-600">The All-In-One Solution</span></h2>
+        <p class="text-lg text-slate-600 leading-relaxed">The European heavy transport sector is undergoing a monumental shift. While the rapid adoption of electric Heavy Goods Vehicles (HGVs) promises massive emission reductions, it introduces unprecedented demands on electrical grids. Explore how Battery Energy Storage Systems (BESS) provide the missing link for sustainable, high-power logistics.</p>
+    </header>
+
+    <main class="container mx-auto px-4 pb-16">
+        
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+            <div class="bg-white rounded-2xl shadow-lg p-6 border-b-4 border-cyan-500 transform transition hover:-translate-y-1">
+                <div class="text-5xl mb-2 text-cyan-500">🚛</div>
+                <div class="text-4xl font-black text-slate-800 mb-1">60%</div>
+                <div class="text-sm font-bold text-slate-500 uppercase tracking-wide">Projected HGV EV Share by 2035</div>
+            </div>
+            <div class="bg-white rounded-2xl shadow-lg p-6 border-b-4 border-emerald-500 transform transition hover:-translate-y-1">
+                <div class="text-5xl mb-2 text-emerald-500">📉</div>
+                <div class="text-4xl font-black text-slate-800 mb-1">-25%</div>
+                <div class="text-sm font-bold text-slate-500 uppercase tracking-wide">TCO Reduction (7-Year Horizon)</div>
+            </div>
+            <div class="bg-white rounded-2xl shadow-lg p-6 border-b-4 border-amber-500 transform transition hover:-translate-y-1">
+                <div class="text-5xl mb-2 text-amber-500">⚡</div>
+                <div class="text-4xl font-black text-slate-800 mb-1">1.2 MW</div>
+                <div class="text-sm font-bold text-slate-500 uppercase tracking-wide">Megawatt Charging Standard (MCS)</div>
+            </div>
+        </section>
+
+        <section class="mb-16 bg-white rounded-2xl shadow-xl p-8">
+            <div class="max-w-3xl mb-8">
+                <h3 class="text-2xl font-bold text-indigo-900 mb-3">The Acceleration of Zero-Emission Logistics</h3>
+                <p class="text-slate-600 leading-relaxed">The transition is moving faster than anticipated. Driven by strict EU emission regulations and corporate sustainability goals, fleet operators are rapidly retiring diesel assets. This line chart illustrates the projected exponential growth of battery-electric trucks on European roads over the next decade.</p>
+            </div>
+            <div class="chart-container">
+                <canvas id="adoptionChart"></canvas>
+            </div>
+            <div class="mt-4 p-4 bg-slate-50 rounded-lg text-sm text-slate-700 border-l-4 border-indigo-500">
+                <strong>Key Takeaway:</strong> We are crossing the early-adopter threshold. By 2030, nearly a third of all new heavy truck registrations are expected to be fully electric, creating immense pressure to deploy charging infrastructure.
+            </div>
+        </section>
+
+        <section class="mb-16 bg-white rounded-2xl shadow-xl p-8">
+            <div class="max-w-3xl mb-8">
+                <h3 class="text-2xl font-bold text-indigo-900 mb-3">The Economic Reality: Total Cost of Ownership (TCO)</h3>
+                <p class="text-slate-600 leading-relaxed">A major barrier to entry has historically been the high capital expenditure (CAPEX) of electric trucks. However, when analyzing the total cost over a standard 7-year lifecycle, the operational savings in energy and maintenance make electric fleets highly lucrative. This stacked bar chart compares the lifecycle cost distribution.</p>
+            </div>
+            <div class="chart-container">
+                <canvas id="tcoChart"></canvas>
+            </div>
+            <div class="mt-4 p-4 bg-slate-50 rounded-lg text-sm text-slate-700 border-l-4 border-emerald-500">
+                <strong>Key Takeaway:</strong> While the upfront vehicle purchase price remains higher for EVs, dramatic reductions in fuel (electricity) costs and lower mechanical maintenance invert the economic equation over time.
+            </div>
+        </section>
+
+        <section class="mb-16 p-8 rounded-2xl shadow-xl bess-flow-container text-white">
+            <div class="max-w-3xl mx-auto text-center mb-10">
+                <h3 class="text-3xl font-bold mb-4">The Grid Bottleneck & The BESS Solution</h3>
+                <p class="text-indigo-100 text-lg">Fast-charging a fleet of trucks requires Megawatt Charging Systems (MCS). Plugging these directly into the local grid often triggers multi-million euro infrastructure upgrades and years of delays. Battery Energy Storage Systems (BESS) act as the vital buffer.</p>
+            </div>
+            
+            <div class="flex flex-col lg:flex-row items-center justify-center gap-6">
+                <div class="bg-white/10 backdrop-blur-md p-6 rounded-xl border border-white/20 w-full lg:w-1/3 text-center">
+                    <div class="text-6xl mb-4">🏢</div>
+                    <h4 class="font-bold text-xl mb-2">Local Power Grid</h4>
+                    <p class="text-sm text-indigo-100">Standard, low-capacity grid connection. Provides steady, slow trickle of power, avoiding peak demand fees.</p>
+                </div>
+                
+                <div class="text-3xl text-cyan-300 font-bold rotate-90 lg:rotate-0">➔</div>
+                
+                <div class="bg-white p-6 rounded-xl shadow-2xl border-b-4 border-amber-500 w-full lg:w-1/3 text-center transform scale-105">
+                    <div class="text-6xl mb-4">🔋</div>
+                    <h4 class="font-bold text-xl text-slate-800 mb-2">BESS Hub</h4>
+                    <p class="text-sm text-slate-600">Stores energy 24/7. Buffers the grid and discharges massive amounts of power instantly when trucks arrive.</p>
+                </div>
+                
+                <div class="text-3xl text-cyan-300 font-bold rotate-90 lg:rotate-0">➔</div>
+                
+                <div class="bg-white/10 backdrop-blur-md p-6 rounded-xl border border-white/20 w-full lg:w-1/3 text-center">
+                    <div class="text-6xl mb-4">🚛</div>
+                    <h4 class="font-bold text-xl mb-2">MCS Dispenser</h4>
+                    <p class="text-sm text-indigo-100">Delivers up to 1.2 MW directly to the vehicle, enabling 400km of range in just 30-45 minutes.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="grid grid-cols-1 xl:grid-cols-2 gap-8 mb-16">
+            
+            <div class="bg-white rounded-2xl shadow-xl p-8 flex flex-col">
+                <div class="mb-6">
+                    <h3 class="text-2xl font-bold text-indigo-900 mb-3">Flattening the Curve</h3>
+                    <p class="text-slate-600 text-sm">Direct grid charging creates massive "peak demand" spikes, leading to exorbitant utility tariffs. BESS installations shave these peaks entirely.</p>
+                </div>
+                <div class="chart-container flex-grow">
+                    <canvas id="peakLoadChart"></canvas>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-xl p-8 flex flex-col">
+                <div class="mb-6">
+                    <h3 class="text-2xl font-bold text-indigo-900 mb-3">Capacity vs. Charging Time vs. Grid Strain</h3>
+                    <p class="text-slate-600 text-sm">This scatter plot illustrates the relationship across vehicle classes. Larger bubbles indicate higher local grid strain without BESS intervention.</p>
+                </div>
+                <div id="plotlyScatter" class="w-full h-full min-h-[350px]"></div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <footer class="bg-slate-900 text-slate-400 py-8 text-center border-t border-slate-800">
+        <p>© 2026 Electro-Logistics Data Visualizations. All metrics are based on European Heavy Transport Projections.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            function wrapLabel(label) {
+                if (label.length <= 16) return label;
+                const words = label.split(' ');
+                const lines = [];
+                let currentLine = '';
+                words.forEach(word => {
+                    if ((currentLine + word).length > 16) {
+                        if (currentLine) lines.push(currentLine.trim());
+                        currentLine = word + ' ';
+                    } else {
+                        currentLine += word + ' ';
+                    }
+                });
+                if (currentLine) lines.push(currentLine.trim());
+                return lines;
+            }
+
+            const standardTooltipPlugin = {
+                tooltip: {
+                    backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                    titleFont: { size: 14, family: 'Roboto' },
+                    bodyFont: { size: 13, family: 'Roboto' },
+                    padding: 12,
+                    cornerRadius: 8,
+                    callbacks: {
+                        title: function(tooltipItems) {
+                            const item = tooltipItems[0];
+                            let label = item.chart.data.labels[item.dataIndex];
+                            if (Array.isArray(label)) {
+                                return label.join(' ');
+                            } else {
+                                return label;
+                            }
+                        }
+                    }
+                }
+            };
+
+            const chartOptionsBase = {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { labels: { font: { family: 'Roboto' } } },
+                    ...standardTooltipPlugin
+                },
+                scales: {
+                    x: { ticks: { font: { family: 'Roboto' } }, grid: { display: false } },
+                    y: { ticks: { font: { family: 'Roboto' } }, border: { dash: [4, 4] } }
+                }
+            };
+
+            const adoptionLabels = ['2020', '2022', '2024', '2026', '2028', '2030', '2032', '2035'].map(wrapLabel);
+            new Chart(document.getElementById('adoptionChart').getContext('2d'), {
+                type: 'line',
+                data: {
+                    labels: adoptionLabels,
+                    datasets: [{
+                        label: 'European Electric HGV Market Share (%)',
+                        data: [1, 2, 5, 12, 22, 35, 48, 60],
+                        borderColor: '#0EA5E9',
+                        backgroundColor: 'rgba(14, 165, 233, 0.2)',
+                        borderWidth: 4,
+                        pointBackgroundColor: '#4F46E5',
+                        pointRadius: 6,
+                        pointHoverRadius: 8,
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    ...chartOptionsBase,
+                    scales: {
+                        y: { ...chartOptionsBase.scales.y, beginAtZero: true, max: 100 }
+                    }
+                }
+            });
+
+            const tcoLabels = ['Legacy Diesel Fleet Lifecycle Costs', 'Modern Electric Fleet Lifecycle Costs'].map(wrapLabel);
+            new Chart(document.getElementById('tcoChart').getContext('2d'), {
+                type: 'bar',
+                data: {
+                    labels: tcoLabels,
+                    datasets: [
+                        { label: 'Vehicle Purchase (CAPEX)', data: [15, 35], backgroundColor: '#4F46E5' },
+                        { label: 'Fuel / Energy', data: [50, 15], backgroundColor: '#0EA5E9' },
+                        { label: 'Maintenance', data: [15, 8], backgroundColor: '#10B981' },
+                        { label: 'Taxes & Road Tolls', data: [20, 10], backgroundColor: '#F59E0B' }
+                    ]
+                },
+                options: {
+                    ...chartOptionsBase,
+                    indexAxis: 'y',
+                    scales: {
+                        x: { stacked: true, max: 100, ticks: { callback: v => v + '%' } },
+                        y: { stacked: true }
+                    }
+                }
+            });
+
+            const peakLoadLabels = ['Morning Depot Dispatch', 'Mid-Day Top-up Charging', 'Overnight Depot Charging'].map(wrapLabel);
+            new Chart(document.getElementById('peakLoadChart').getContext('2d'), {
+                type: 'bar',
+                data: {
+                    labels: peakLoadLabels,
+                    datasets: [
+                        {
+                            label: 'Grid Demand WITHOUT BESS (MW)',
+                            data: [4.5, 8.2, 5.0],
+                            backgroundColor: '#F43F5E',
+                            borderRadius: 4
+                        },
+                        {
+                            label: 'Grid Demand WITH BESS (MW)',
+                            data: [1.5, 2.0, 3.5],
+                            backgroundColor: '#10B981',
+                            borderRadius: 4
+                        }
+                    ]
+                },
+                options: chartOptionsBase
+            });
+
+            const plotlyData = [{
+                x: [200, 400, 600, 800, 1000],
+                y: [45, 60, 40, 35, 30], 
+                mode: 'markers',
+                marker: {
+                    size: [20, 35, 50, 70, 90], 
+                    color: ['#0EA5E9', '#0EA5E9', '#4F46E5', '#4F46E5', '#F59E0B'],
+                    opacity: 0.8,
+                    line: { color: 'white', width: 2 }
+                },
+                text: ['Urban Delivery', 'Regional Box', 'Long Haul Articulated', 'Heavy Haulage', 'Extreme Duty'],
+                type: 'scattergl' 
+            }];
+
+            const plotlyLayout = {
+                margin: { t: 20, l: 50, r: 20, b: 50 },
+                xaxis: { title: 'Battery Capacity (kWh)', gridcolor: '#e2e8f0' },
+                yaxis: { title: 'Target Charge Time (Minutes)', gridcolor: '#e2e8f0' },
+                paper_bgcolor: 'rgba(0,0,0,0)',
+                plot_bgcolor: 'rgba(0,0,0,0)',
+                font: { family: 'Roboto', color: '#1E293B' },
+                hovermode: 'closest'
+            };
+
+            Plotly.newPlot('plotlyScatter', plotlyData, plotlyLayout, {displayModeBar: false, responsive: true});
+        });
+    </script>
+</body>
+</html>
