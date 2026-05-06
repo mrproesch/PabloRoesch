@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Battery Revolution: From Lithium's Peak to Sodium's Rise</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<style>
+body { font-family: 'Inter', sans-serif; background-color: #F8FAFC; color: #1E293B; }
+.chart-container { position: relative; width: 100%; max-width: 800px; margin-left: auto; margin-right: auto; height: 350px; max-height: 450px; }
+@media (min-width: 768px) { .chart-container { height: 400px; } }
+.gradient-text { background: linear-gradient(to right, #2563EB, #14B8A6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.card { background-color: #FFFFFF; border-radius: 1rem; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); padding: 1.5rem; margin-bottom: 2rem; border-top: 4px solid #2563EB; }
+.card-orange { border-top-color: #F97316; }
+.card-teal { border-top-color: #14B8A6; }
+.metric-box { background: #EFF6FF; border-radius: 0.5rem; padding: 1rem; text-align: center; }
+.metric-value { font-size: 2rem; font-weight: 800; color: #1D4ED8; }
+.metric-label { font-size: 0.875rem; color: #475569; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; }
+</style>
+</head>
+<body class="antialiased">
+<!-- 
+Palette: Vibrant Tech (Deep Blue #1E3A8A, Bright Blue #2563EB, Vibrant Orange #F97316, Teal #14B8A6, Slate #475569)
+Confirmation: NEITHER Mermaid JS NOR SVG were used anywhere in the output.
+Plan: 
+1. Hook: 99% Lithium price drop (Line Chart)
+2. Bottleneck: Geographic concentration & limits of Li (Donut Chart)
+3. Enter Sodium: Abundance & Cost (Bar Chart)
+4. Head-to-Head: Li vs Na capabilities (Radar Chart)
+5. Future Split: Flowchart using HTML/Tailwind showing applications.
+Data Point -> Goal -> Visualization -> Justification:
+- Price Drop -> Change -> Line Chart -> Shows trend over 3 decades. NO SVG.
+- Supply -> Compare -> Donut Chart -> Shows geographic monopoly. NO SVG.
+- Abundance -> Compare -> Bar Chart -> High contrast between Na and Li. NO SVG.
+- Capabilities -> Relationships/Compare -> Radar Chart -> Multi-variable comparison. NO SVG.
+-->
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <header class="text-center mb-16">
+        <div class="inline-block bg-blue-100 text-blue-800 px-4 py-1 rounded-full text-sm font-bold tracking-wider mb-4">DATA ANALYSIS & FORECAST</div>
+        <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight mb-6">The Battery <span class="gradient-text">Revolution</span></h1>
+        <p class="text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed">Over three decades, Lithium-ion batteries experienced a miraculous 99% cost reduction, shaping the modern world. But as global electrification accelerates, Lithium faces severe supply and cost bottlenecks. Enter <b>Sodium-ion</b>: the abundant, cost-effective alternative poised to permanently alter the energy storage landscape.</p>
+    </header>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <section class="card lg:col-span-2">
+            <h2 class="text-2xl font-bold mb-4 flex items-center text-slate-800"><span class="text-3xl mr-2">📉</span> The Lithium Miracle (1991 - 2023)</h2>
+            <p class="mb-6 text-slate-600">The commercialization of the lithium-ion battery in 1991 by Sony marked the beginning of a technological epoch. Through economies of scale, chemical refinements, and manufacturing innovations, the cost per kilowatt-hour (kWh) has plummeted by over 97%, enabling the smartphone era and the rise of Electric Vehicles (EVs).</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                <div class="metric-box">
+                    <div class="metric-value">$7,500</div>
+                    <div class="metric-label">Cost per kWh (1991)</div>
+                </div>
+                <div class="metric-box">
+                    <div class="metric-value text-teal-600">$139</div>
+                    <div class="metric-label">Cost per kWh (2023)</div>
+                </div>
+                <div class="metric-box">
+                    <div class="metric-value text-orange-600">~98.1%</div>
+                    <div class="metric-label">Total Price Drop</div>
+                </div>
+            </div>
+            <div class="chart-container">
+                <canvas id="lithiumPriceChart"></canvas>
+            </div>
+        </section>
+
+        <section class="card card-orange">
+            <h2 class="text-2xl font-bold mb-4 flex items-center text-slate-800"><span class="text-3xl mr-2">🌍</span> The Lithium Bottleneck</h2>
+            <p class="mb-6 text-slate-600">Despite falling costs, Lithium ("White Gold") is relatively scarce and its supply chain is highly concentrated. A handful of nations control the vast majority of raw extraction and processing, creating geopolitical risks and price volatility during demand spikes.</p>
+            <div class="chart-container">
+                <canvas id="lithiumSupplyChart"></canvas>
+            </div>
+        </section>
+
+        <section class="card card-teal">
+            <h2 class="text-2xl font-bold mb-4 flex items-center text-slate-800"><span class="text-3xl mr-2">🧂</span> Enter Sodium: Infinite Abundance</h2>
+            <p class="mb-6 text-slate-600">Sodium is chemically similar to Lithium but is the 6th most abundant element in the Earth's crust (found in seawater and rock salt). This vast availability fundamentally breaks the dependency on complex, constrained supply chains, promising radical cost reductions for raw materials.</p>
+            <div class="chart-container">
+                <canvas id="abundanceChart"></canvas>
+            </div>
+        </section>
+
+        <section class="card lg:col-span-2 card-orange">
+            <h2 class="text-2xl font-bold mb-4 flex items-center text-slate-800"><span class="text-3xl mr-2">⚔️</span> Head-to-Head: Lithium vs. Sodium</h2>
+            <p class="mb-6 text-slate-600">Sodium-ion (Na-ion) batteries are larger and heavier than Lithium-ion, resulting in lower energy density. However, they excel in cost, extreme cold performance, and safety (less prone to thermal runaway and can be completely discharged to 0 volts for safe transport).</p>
+            <div class="flex flex-col lg:flex-row items-center gap-8">
+                <div class="chart-container flex-1">
+                    <canvas id="radarChart"></canvas>
+                </div>
+                <div class="flex-1 space-y-4 w-full">
+                    <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-lg">
+                        <h3 class="font-bold text-blue-800">Lithium-ion Advantage</h3>
+                        <p class="text-sm text-blue-900 mt-1">Superior energy density (200-300 Wh/kg). Essential for long-range EVs, laptops, and smartphones where weight and space are premium.</p>
+                    </div>
+                    <div class="bg-teal-50 border-l-4 border-teal-500 p-4 rounded-r-lg">
+                        <h3 class="font-bold text-teal-800">Sodium-ion Advantage</h3>
+                        <p class="text-sm text-teal-900 mt-1">Unhindered raw material supply, lower cost curve, and retains over 90% capacity at -20°C. Perfect for stationary grid storage and budget micro-mobility.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="card lg:col-span-2">
+            <h2 class="text-2xl font-bold mb-6 text-center text-slate-800">The Two-Tier Battery Future Landscape</h2>
+            <p class="text-center text-slate-600 mb-8 max-w-2xl mx-auto">Sodium won't kill Lithium; it will liberate it. By taking over stationary and low-range applications, Sodium frees up premium Lithium supplies for advanced technologies.</p>
+            
+            <div class="flex flex-col md:flex-row justify-center items-stretch gap-6">
+                
+                <div class="flex-1 bg-gradient-to-b from-blue-50 to-white border-2 border-blue-200 rounded-xl p-6 shadow-sm flex flex-col">
+                    <div class="text-center mb-4">
+                        <div class="text-4xl mb-2">🔋</div>
+                        <h3 class="text-xl font-bold text-blue-800">High-Performance Tier</h3>
+                        <div class="inline-block bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-xs font-bold mt-2">LITHIUM-ION</div>
+                    </div>
+                    <div class="flex-grow space-y-3">
+                        <div class="bg-white border border-blue-100 p-3 rounded shadow-sm text-center font-semibold text-slate-700">Long-Range EVs (400km+)</div>
+                        <div class="bg-white border border-blue-100 p-3 rounded shadow-sm text-center font-semibold text-slate-700">Smartphones & Laptops</div>
+                        <div class="bg-white border border-blue-100 p-3 rounded shadow-sm text-center font-semibold text-slate-700">Electric Aviation & Drones</div>
+                    </div>
+                </div>
+
+                <div class="hidden md:flex flex-col justify-center items-center text-slate-400">
+                    <div class="text-2xl font-bold">↔️</div>
+                </div>
+
+                <div class="flex-1 bg-gradient-to-b from-teal-50 to-white border-2 border-teal-200 rounded-xl p-6 shadow-sm flex flex-col">
+                    <div class="text-center mb-4">
+                        <div class="text-4xl mb-2">⚡</div>
+                        <h3 class="text-xl font-bold text-teal-800">Cost-Efficient Tier</h3>
+                        <div class="inline-block bg-teal-100 text-teal-800 px-3 py-1 rounded-full text-xs font-bold mt-2">SODIUM-ION</div>
+                    </div>
+                    <div class="flex-grow space-y-3">
+                        <div class="bg-white border border-teal-100 p-3 rounded shadow-sm text-center font-semibold text-slate-700">Stationary Grid Storage (Wind/Solar)</div>
+                        <div class="bg-white border border-teal-100 p-3 rounded shadow-sm text-center font-semibold text-slate-700">Budget City EVs & E-Bikes</div>
+                        <div class="bg-white border border-teal-100 p-3 rounded shadow-sm text-center font-semibold text-slate-700">Uninterruptible Power Supplies (UPS)</div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </div>
+    
+    <footer class="text-center mt-12 text-slate-500 text-sm">
+        <p>Data synthesized from industry reports on battery price evolution (1991-2023) and emerging Na-ion technology projections.</p>
+    </footer>
+</div>
+
+<script>
+const wrapLabelText = (label) => {
+    if (typeof label !== 'string') return label;
+    if (label.length <= 16) return label;
+    const words = label.split(' ');
+    const lines = [];
+    let currentLine = '';
+    words.forEach(word => {
+        if ((currentLine + word).length > 16) {
+            if (currentLine) lines.push(currentLine.trim());
+            currentLine = word + ' ';
+        } else {
+            currentLine += word + ' ';
+        }
+    });
+    if (currentLine) lines.push(currentLine.trim());
+    return lines;
+};
+
+const customTooltipConfig = {
+    callbacks: {
+        title: function(tooltipItems) {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+                return label.join(' ');
+            } else {
+                return label;
+            }
+        }
+    }
+};
+
+const commonOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+        tooltip: customTooltipConfig,
+        legend: {
+            labels: {
+                font: { family: "'Inter', sans-serif" }
+            }
+        }
+    }
+};
+
+const ctxPrice = document.getElementById('lithiumPriceChart').getContext('2d');
+new Chart(ctxPrice, {
+    type: 'line',
+    data: {
+        labels: ['1991', '1995', '2000', '2005', '2010', '2015', '2020', '2023'].map(wrapLabelText),
+        datasets: [{
+            label: 'Cost per kWh (USD)',
+            data: [7500, 3200, 1500, 800, 450, 280, 140, 139],
+            borderColor: '#2563EB',
+            backgroundColor: 'rgba(37, 99, 235, 0.1)',
+            borderWidth: 3,
+            fill: true,
+            tension: 0.4,
+            pointBackgroundColor: '#F97316',
+            pointRadius: 5
+        }]
+    },
+    options: {
+        ...commonOptions,
+        scales: {
+            y: {
+                beginAtZero: true,
+                title: { display: true, text: 'Price (USD / kWh)' }
+            }
+        }
+    }
+});
+
+const ctxSupply = document.getElementById('lithiumSupplyChart').getContext('2d');
+new Chart(ctxSupply, {
+    type: 'doughnut',
+    data: {
+        labels: ['Australia (Extraction)', 'Chile (Extraction)', 'China (Extraction)', 'Rest of World', 'China (Refining)', 'Rest of World (Refining)'].map(wrapLabelText),
+        datasets: [{
+            label: 'Market Share %',
+            data: [47, 30, 12, 11],
+            backgroundColor: ['#2563EB', '#1D4ED8', '#60A5FA', '#CBD5E1'],
+            borderWidth: 2,
+            borderColor: '#ffffff'
+        },
+        {
+            label: 'Refining Share %',
+            data: [0, 0, 0, 0, 65, 35],
+            backgroundColor: ['transparent', 'transparent', 'transparent', 'transparent', '#F97316', '#FDBA74'],
+            borderWidth: 2,
+            borderColor: '#ffffff',
+            weight: 0.5
+        }]
+    },
+    options: {
+        ...commonOptions,
+        cutout: '50%',
+        plugins: {
+            ...commonOptions.plugins,
+            title: {
+                display: true,
+                text: 'Inner: Raw Extraction | Outer: Chemical Refining',
+                font: { family: "'Inter', sans-serif" }
+            }
+        }
+    }
+});
+
+const ctxAbundance = document.getElementById('abundanceChart').getContext('2d');
+new Chart(ctxAbundance, {
+    type: 'bar',
+    data: {
+        labels: ['Sodium (Na)', 'Lithium (Li)'].map(wrapLabelText),
+        datasets: [{
+            label: 'Parts Per Million (ppm) in Earth Crust',
+            data: [23600, 20],
+            backgroundColor: ['#14B8A6', '#2563EB'],
+            borderRadius: 6
+        }]
+    },
+    options: {
+        ...commonOptions,
+        indexAxis: 'y',
+        scales: {
+            x: {
+                type: 'logarithmic',
+                title: { display: true, text: 'Abundance (ppm) - Logarithmic Scale' }
+            }
+        }
+    }
+});
+
+const ctxRadar = document.getElementById('radarChart').getContext('2d');
+new Chart(ctxRadar, {
+    type: 'radar',
+    data: {
+        labels: [
+            'Energy Density', 
+            'Raw Material Cost', 
+            'Cold Weather Performance', 
+            'Safety (Thermal Stability)', 
+            'Cycle Life', 
+            'Fast Charging'
+        ].map(wrapLabelText),
+        datasets: [{
+            label: 'Lithium-ion',
+            data: [9, 3, 4, 5, 8, 7],
+            backgroundColor: 'rgba(37, 99, 235, 0.2)',
+            borderColor: '#2563EB',
+            pointBackgroundColor: '#2563EB',
+            borderWidth: 2
+        }, {
+            label: 'Sodium-ion',
+            data: [5, 9, 9, 8, 6, 8],
+            backgroundColor: 'rgba(20, 184, 166, 0.2)',
+            borderColor: '#14B8A6',
+            pointBackgroundColor: '#14B8A6',
+            borderWidth: 2
+        }]
+    },
+    options: {
+        ...commonOptions,
+        scales: {
+            r: {
+                angleLines: { color: 'rgba(0,0,0,0.1)' },
+                grid: { color: 'rgba(0,0,0,0.1)' },
+                pointLabels: { font: { family: "'Inter', sans-serif", size: 11 } },
+                ticks: { display: false, min: 0, max: 10 }
+            }
+        }
+    }
+});
+</script>
+</body>
+</html>
