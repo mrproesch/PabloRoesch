@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grid Stabilization: Leveraging Energy Storage</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: #f8fafc; }
+        .glass { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .accent-gradient { background: linear-gradient(135deg, #10b981 0%, #3b82f6 100%); }
+        .text-gradient { background: linear-gradient(135deg, #34d399 0%, #60a5fa 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .shimmer { position: relative; overflow: hidden; }
+        .shimmer::after { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(45deg, transparent, rgba(255,255,255,0.03), transparent); transform: rotate(45deg); animation: shimmer 3s infinite; }
+        @keyframes shimmer { 0% { transform: translateX(-100%) rotate(45deg); } 100% { transform: translateX(100%) rotate(45deg); } }
+        .sine-wave { stroke-dasharray: 1000; stroke-dashoffset: 1000; animation: dash 5s linear infinite; }
+        @keyframes dash { to { stroke-dashoffset: 0; } }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+    <div class="max-w-6xl mx-auto space-y-12">
+        
+        <!-- Header Section -->
+        <header class="text-center space-y-4">
+            <div class="inline-block px-4 py-1 rounded-full border border-emerald-500/30 bg-emerald-500/10 text-emerald-400 text-xs font-bold tracking-widest uppercase mb-2">
+                2025 Market Intelligence Report
+            </div>
+            <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight">
+                The Great <span class="text-gradient">Stabilization</span>
+            </h1>
+            <p class="text-slate-400 max-w-2xl mx-auto text-lg">
+                Navigating the 100-GW Milestone, Inertial Decay, and the Future of Grid-Forming Infrastructure.
+            </p>
+        </header>
+
+        <section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div class="lg:col-span-2 glass p-8 rounded-3xl shimmer">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+                    <div>
+                        <h2 class="text-2xl font-bold flex items-center gap-2">
+                            <svg class="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                            The 100-GW Milestone
+                        </h2>
+                        <p class="text-slate-400">Accelerated deployment exceeding all forecasts.</p>
+                    </div>
+                    <div class="mt-4 md:mt-0 bg-emerald-500 text-slate-900 px-6 py-2 rounded-2xl font-black text-3xl shadow-lg shadow-emerald-500/20">
+                        112 GW
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-end">
+                            <span class="text-sm font-semibold text-slate-400">Deployment Speed</span>
+                            <span class="text-emerald-400 font-bold">+48% YoY</span>
+                        </div>
+                        <div class="h-2 w-full bg-slate-800 rounded-full overflow-hidden">
+                            <div class="h-full bg-emerald-500 rounded-full" style="width: 48%"></div>
+                        </div>
+                        <p class="text-sm text-slate-400 italic">"Scaling from 10GW to 100GW in just 4 years—outpacing Solar (8y) and Wind (15y)."</p>
+                    </div>
+                    
+                    <div class="flex gap-4 items-center bg-slate-800/50 p-4 rounded-2xl">
+                        <div class="text-center border-r border-slate-700 pr-4">
+                            <div class="text-xs text-slate-500 uppercase">China</div>
+                            <div class="text-xl font-bold text-emerald-400">54%</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-xs text-slate-500 uppercase">United States</div>
+                            <div class="text-xl font-bold text-blue-400">16%</div>
+                        </div>
+                        <div class="text-center border-l border-slate-700 pl-4">
+                            <div class="text-xs text-slate-500 uppercase">Others</div>
+                            <div class="text-xl font-bold text-slate-400">30%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Solar to Battery Ratio Visualization -->
+                <div class="mt-10 space-y-4">
+                    <h3 class="text-sm font-bold uppercase tracking-widest text-slate-500">The Closing Gap (Solar-to-Battery Ratio)</h3>
+                    <div class="flex items-center gap-4">
+                        <div class="flex-1 space-y-2">
+                            <div class="flex justify-between text-xs font-mono"><span>2016</span><span>56:1</span></div>
+                            <div class="h-3 w-full bg-slate-800 rounded-lg flex"><div class="h-full bg-yellow-500" style="width: 95%"></div><div class="h-full bg-emerald-500" style="width: 5%"></div></div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <div class="flex-1 space-y-2">
+                            <div class="flex justify-between text-xs font-mono"><span>2025</span><span>6:1</span></div>
+                            <div class="h-3 w-full bg-slate-800 rounded-lg flex"><div class="h-full bg-yellow-500" style="width: 60%"></div><div class="h-full bg-emerald-500" style="width: 40%"></div></div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <div class="flex-1 space-y-2 text-emerald-400">
+                            <div class="flex justify-between text-xs font-mono font-bold"><span>2026 (Projected)</span><span>4:1</span></div>
+                            <div class="h-3 w-full bg-slate-800 rounded-lg flex"><div class="h-full bg-yellow-500" style="width: 40%"></div><div class="h-full bg-emerald-500 shadow-[0_0_10px_#10b981]" style="width: 60%"></div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass p-8 rounded-3xl flex flex-col justify-between border-blue-500/20">
+                <div>
+                    <h2 class="text-2xl font-bold mb-4">Total Capacity</h2>
+                    <div class="text-6xl font-black text-blue-400">307</div>
+                    <div class="text-xl font-bold text-blue-500/60 uppercase">Gigawatt Hours</div>
+                </div>
+                <div class="mt-8 pt-8 border-t border-slate-800">
+                    <div class="flex items-center gap-3 text-slate-300">
+                        <div class="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center">
+                            <svg class="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+                        </div>
+                        <div>
+                            <p class="text-xs uppercase font-bold text-slate-500">AI Demand Pulse</p>
+                            <p class="text-lg font-bold">950 TWh <span class="text-sm font-normal text-slate-500">by 2030</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+            <div class="space-y-6">
+                <h2 class="text-3xl font-bold">Inertial Decay: <span class="text-red-400">The Core Problem</span></h2>
+                <div class="space-y-4">
+                    <div class="p-4 rounded-2xl bg-slate-800/30 border-l-4 border-emerald-500">
+                        <h4 class="font-bold text-emerald-400">Stable Inertia (Legacy)</h4>
+                        <p class="text-sm text-slate-400 leading-relaxed">Heavy thermal turbines provide physical rotation to automatically dampen frequency shocks.</p>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-slate-800/30 border-l-4 border-red-500">
+                        <h4 class="font-bold text-red-400">Static Interfacing (Modern)</h4>
+                        <p class="text-sm text-slate-400 leading-relaxed">Solid-state inverters are decoupled from grid frequency, leaving systems fragile to weather and server load swings.</p>
+                    </div>
+                </div>
+                <div class="bg-amber-500/10 border border-amber-500/20 p-4 rounded-2xl">
+                    <p class="text-amber-500 text-sm font-semibold flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                        AI Risk: Data center loads swing >50% in <1s.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="glass p-8 rounded-3xl relative overflow-hidden flex flex-col items-center justify-center min-h-[300px]">
+                <!-- Abstract Diagram for Inertia -->
+                <svg viewBox="0 0 400 200" class="w-full max-w-sm">
+                    <!-- Spinning Turbine (Legacy) -->
+                    <circle cx="100" cy="100" r="40" fill="none" stroke="#10b981" stroke-width="2" stroke-dasharray="5,5" class="animate-spin" style="animation-duration: 10s" />
+                    <circle cx="100" cy="100" r="10" fill="#10b981" />
+                    <text x="100" y="160" text-anchor="middle" fill="#10b981" class="text-xs font-bold uppercase">Mechanical</text>
+                    
+                    <!-- Arrow -->
+                    <path d="M180 100 H220" stroke="#334155" stroke-width="2" marker-end="url(#arrowhead)" />
+                    
+                    <!-- Static Block (Modern) -->
+                    <rect x="260" y="70" width="60" height="60" rx="8" fill="#3b82f6" />
+                    <path d="M270 100 Q 290 70, 310 100 T 350 100" fill="none" stroke="white" stroke-width="2" class="sine-wave" />
+                    <text x="290" y="160" text-anchor="middle" fill="#3b82f6" class="text-xs font-bold uppercase">Digital</text>
+                </svg>
+            </div>
+        </section>
+
+        <section class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Macro Solutions -->
+            <div class="glass p-8 rounded-3xl space-y-6">
+                <h3 class="text-2xl font-bold text-gradient">Macro: Super-Corridors</h3>
+                <div class="relative h-48 bg-slate-900/50 rounded-2xl p-4 overflow-hidden">
+                    <div class="absolute inset-0 flex items-center justify-between px-10">
+                        <div class="text-center">
+                            <div class="w-10 h-10 rounded-full bg-yellow-500/20 flex items-center justify-center mx-auto mb-2">⚡</div>
+                            <span class="text-[10px] text-slate-500">REMOTE GEN</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gradient-to-r from-yellow-500 via-emerald-500 to-blue-500 mx-4 relative">
+                            <div class="absolute -top-6 left-1/2 -translate-x-1/2 bg-slate-800 px-3 py-1 rounded-full text-xs font-mono">3,284 km</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center mx-auto mb-2">🏙️</div>
+                            <span class="text-[10px] text-slate-500">URBAN HUB</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="space-y-4">
+                    <div class="flex justify-between items-center bg-slate-800/40 p-3 rounded-xl">
+                        <span class="text-sm font-semibold">Smart DC Transformer</span>
+                        <span class="text-blue-400 font-bold">750 MVA</span>
+                    </div>
+                    <p class="text-sm text-slate-400">Ultra-High Voltage Direct Current (UHVDC) corridors enable >70% renewable penetration without oversized backup plants.</p>
+                </div>
+            </div>
+
+            <!-- Micro Solutions -->
+            <div class="glass p-8 rounded-3xl space-y-6 border-emerald-500/10">
+                <h3 class="text-2xl font-bold text-gradient">Micro: Grid-Forming (GFM)</h3>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="bg-slate-900/50 p-4 rounded-2xl border border-slate-700">
+                        <div class="text-xs font-bold text-slate-500 mb-2 uppercase">Legacy (GFL)</div>
+                        <div class="text-sm font-semibold text-slate-300">"Follows" the grid</div>
+                        <div class="text-xs text-red-400/70 mt-1 italic">Trips offline if grid crashes</div>
+                    </div>
+                    <div class="bg-emerald-500/5 p-4 rounded-2xl border border-emerald-500/30">
+                        <div class="text-xs font-bold text-emerald-500 mb-2 uppercase">Advanced (GFM)</div>
+                        <div class="text-sm font-semibold text-emerald-400">"Creates" the grid</div>
+                        <div class="text-xs text-emerald-400/70 mt-1 italic">Functions independently</div>
+                    </div>
+                </div>
+                <div class="space-y-4">
+                    <h4 class="font-bold text-slate-200">Market Projection</h4>
+                    <div class="flex items-end gap-2 h-16">
+                        <div class="flex-1 bg-slate-800 rounded-t-lg h-[50%]" title="$788M (2024)"></div>
+                        <div class="flex-1 bg-emerald-500 rounded-t-lg h-full shadow-[0_0_15px_#10b98155]" title="$1.58B (2032)"></div>
+                    </div>
+                    <div class="flex justify-between text-xs font-bold text-slate-500 uppercase">
+                        <span>2024 ($788M)</span>
+                        <span>2032 ($1.58B)</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="glass p-8 rounded-3xl overflow-x-auto">
+            <h2 class="text-3xl font-bold mb-8 text-center">Real-World Testing Grounds</h2>
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="border-b border-slate-800">
+                        <th class="pb-4 font-bold text-slate-500 uppercase text-xs tracking-wider">Parameter</th>
+                        <th class="pb-4 font-bold text-orange-400 uppercase text-xs tracking-wider">CAISO (California)</th>
+                        <th class="pb-4 font-bold text-red-400 uppercase text-xs tracking-wider">ERCOT (Texas)</th>
+                    </tr>
+                </thead>
+                <tbody class="text-sm">
+                    <tr class="border-b border-slate-800/50">
+                        <td class="py-4 font-semibold text-slate-400">Fleet Capacity</td>
+                        <td class="py-4">17,000 MW</td>
+                        <td class="py-4">15,981 MW</td>
+                    </tr>
+                    <tr class="border-b border-slate-800/50">
+                        <td class="py-4 font-semibold text-slate-400">System Peak Coverage</td>
+                        <td class="py-4 font-bold text-emerald-400">33%</td>
+                        <td class="py-4">19%</td>
+                    </tr>
+                    <tr class="border-b border-slate-800/50">
+                        <td class="py-4 font-semibold text-slate-400">Primary Driver</td>
+                        <td class="py-4 text-slate-300">Policy & Resource Adequacy</td>
+                        <td class="py-4 text-slate-300">Pure Merchant Economics</td>
+                    </tr>
+                    <tr>
+                        <td class="py-4 font-semibold text-slate-400">Core Strategy</td>
+                        <td class="py-4 text-slate-300">Evening Solar-Dropout Ramps</td>
+                        <td class="py-4 text-slate-300">Extreme Weather Volatility</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="bg-red-500/5 border border-red-500/20 p-8 rounded-3xl relative overflow-hidden">
+            <div class="absolute top-0 right-0 p-8 opacity-10">
+                <svg class="w-32 h-32" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
+            </div>
+            
+            <h2 class="text-3xl font-bold mb-8">Long-Term Roadblocks</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="space-y-3">
+                    <div class="text-4xl font-black text-red-500">2,600 GW</div>
+                    <div class="text-sm font-bold uppercase text-slate-500">Interconnection Queue</div>
+                    <p class="text-xs text-slate-400 leading-relaxed">Capacity trapped in regulatory backlog—nearly double the current operational U.S. grid.</p>
+                </div>
+                
+                <div class="space-y-3">
+                    <div class="text-4xl font-black text-red-500">> 4 Years</div>
+                    <div class="text-sm font-bold uppercase text-slate-500">Median Time-to-Market</div>
+                    <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+                        <div class="bg-red-500 h-full w-[80%]"></div>
+                    </div>
+                    <p class="text-xs text-slate-400">Project durations have doubled since 2010. 77% are eventually withdrawn.</p>
+                </div>
+
+                <div class="space-y-3">
+                    <div class="text-4xl font-black text-red-500">40%</div>
+                    <div class="text-sm font-bold uppercase text-slate-500">Chokepoint Exposure</div>
+                    <p class="text-xs text-slate-400">Global rare earth shipments passing through a single maritime point: The Malacca Strait.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="pt-12 pb-8 text-center text-slate-500 text-xs border-t border-slate-800">
+            <p>Data Sources: [1] IEA World Energy Outlook, [2] IEEE Power & Energy, [7] Goldman Sachs Research, [14] California ISO, [17] Lawrence Berkeley National Lab.</p>
+            <p class="mt-2 font-mono uppercase tracking-widest">&copy; 2025 Energy intelligence systems</p>
+        </footer>
+    </div>
+
+    <script>
+        // Simple intersection observer to trigger animations when scrolled into view
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('opacity-100');
+                    entry.target.classList.remove('translate-y-4');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('section').forEach(section => {
+            section.classList.add('transition-all', 'duration-1000', 'opacity-0', 'translate-y-4');
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>
