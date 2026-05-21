@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Compound BESS Model: Distributed Energy Resiliency</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Custom styling for extra transitions and glassmorphism -->
+    <style>
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.65);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+        .glow-teal {
+            box-shadow: 0 0 20px rgba(20, 184, 166, 0.15);
+        }
+        .glow-amber {
+            box-shadow: 0 0 20px rgba(245, 158, 11, 0.15);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.8);
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(100, 116, 139, 0.5);
+            border-radius: 3px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(100, 116, 139, 0.8);
+        }
+        @keyframes pulse-slow {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.02); }
+        }
+        .grid-pulse {
+            animation: pulse-slow 3s infinite ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen font-sans selection:bg-teal-500 selection:text-slate-950 antialiased custom-scrollbar">
+
+    <!-- Header Section -->
+    <header class="border-b border-slate-800 bg-slate-900/80 sticky top-0 z-50 backdrop-blur-md px-6 py-4">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <div class="p-2.5 bg-teal-500/10 text-teal-400 rounded-xl border border-teal-500/20">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="text-xl md:text-2xl font-bold tracking-tight text-white flex items-center gap-2">
+                        THE COMPOUND BESS MODEL
+                    </h1>
+                    <p class="text-xs md:text-sm text-slate-400">Next-Generation Distributed Resiliency & Circular Storage for Remote Rural Grids</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-3 bg-slate-950 p-1.5 rounded-xl border border-slate-800 text-xs font-semibold">
+                <span class="px-3 py-1.5 rounded-lg text-slate-400">ANALYSIS & STRATEGY</span>
+                <span class="px-3 py-1.5 rounded-lg bg-teal-500 text-slate-950 shadow-md">LIVE INTERACTIVE DECK</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto p-4 md:p-6 space-y-6">
+        
+        <!-- ROW 1: Executive KPI Dashboard -->
+        <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <!-- Metric Card 1 -->
+            <div class="glass-panel rounded-2xl p-5 glow-teal flex items-center justify-between">
+                <div>
+                    <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Battery Cost Curve</p>
+                    <h3 class="text-3xl font-extrabold text-teal-400 mt-1">-90%</h3>
+                    <p class="text-[11px] text-slate-400 mt-1">Capital cost collapse over last decade <span class="text-teal-500 font-medium">(Nuveen)</span></p>
+                </div>
+                <div class="p-3 bg-teal-500/10 text-teal-400 rounded-xl border border-teal-500/20">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+                </div>
+            </div>
+
+            <!-- Metric Card 2 -->
+            <div class="glass-panel rounded-2xl p-5 glow-amber flex items-center justify-between">
+                <div>
+                    <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Global BESS Investment</p>
+                    <h3 class="text-3xl font-extrabold text-amber-400 mt-1">$54B</h3>
+                    <p class="text-[11px] text-slate-400 mt-1">Global funding benchmark for resiliency <span class="text-amber-500 font-medium">(Nuveen)</span></p>
+                </div>
+                <div class="p-3 bg-amber-500/10 text-amber-400 rounded-xl border border-amber-500/20">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                </div>
+            </div>
+
+            <!-- Metric Card 3 -->
+            <div class="glass-panel rounded-2xl p-5 glow-teal flex items-center justify-between">
+                <div>
+                    <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Safety Rating (Na-Ion)</p>
+                    <h3 class="text-3xl font-extrabold text-emerald-400 mt-1">Zero Risk</h3>
+                    <p class="text-[11px] text-slate-400 mt-1">No thermal runaway, non-combustible <span class="text-emerald-500 font-medium">(US Desert Tech)</span></p>
+                </div>
+                <div class="p-3 bg-emerald-500/10 text-emerald-400 rounded-xl border border-emerald-500/20">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                </div>
+            </div>
+
+            <!-- Metric Card 4 -->
+            <div class="glass-panel rounded-2xl p-5 glow-amber flex items-center justify-between">
+                <div>
+                    <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Circularity / Life Extension</p>
+                    <h3 class="text-3xl font-extrabold text-pink-400 mt-1">Non-Destructive</h3>
+                    <p class="text-[11px] text-slate-400 mt-1">Direct reuse of cells without crushing <span class="text-pink-500 font-medium">(German Project)</span></p>
+                </div>
+                <div class="p-3 bg-pink-500/10 text-pink-400 rounded-xl border border-pink-500/20">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 15H19M9 5a4 4 0 00-4 4v12a2 2 0 002 2h10a2 2 0 002-2V9a4 4 0 00-4-4H9z"></path></svg>
+                </div>
+            </div>
+        </section>
+
+        <!-- ROW 2: The Core Strategic Dilemma (Traditional vs Compound Logistics) -->
+        <section class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            
+            <!-- Left Panel: The Problem Statement (Guatemala Focus) -->
+            <div class="glass-panel rounded-3xl p-6 lg:col-span-5 flex flex-col justify-between space-y-6">
+                <div>
+                    <div class="flex items-center gap-2 mb-3">
+                        <span class="w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse"></span>
+                        <span class="text-xs font-bold text-red-400 uppercase tracking-widest">The Rural Power Paradox</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white tracking-tight">Why Rural Power Access Projects Fail Long-Term</h3>
+                    
+                    <p class="text-slate-400 text-sm mt-3 leading-relaxed">
+                        Historically, remote community microgrids (such as micro-hydro or mini-solar networks in Quiché, Huehuetenango, and the Alta Verapaz highlands of Guatemala) face a common, devastating bottleneck: <strong>sustainability decay.</strong>
+                    </p>
+
+                    <div class="space-y-4 mt-6">
+                        <div class="flex gap-3">
+                            <div class="flex-shrink-0 w-8 h-8 rounded-lg bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-400">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-semibold text-white">Topographic & Transport Barriers</h4>
+                                <p class="text-xs text-slate-400 mt-0.5">Heavy monolithic battery enclosures require 20-ton freight access. Extreme, unpaved rural paths lack this transportation infrastructure.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex gap-3">
+                            <div class="flex-shrink-0 w-8 h-8 rounded-lg bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-400">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-semibold text-white">Unstable Seasonal Flows</h4>
+                                <p class="text-xs text-slate-400 mt-0.5">Micro-hydros suffer from silt accumulation and decreased flows during the dry season. Without high-capacity storage, grids brownout or overload.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex gap-3">
+                            <div class="flex-shrink-0 w-8 h-8 rounded-lg bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-400">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 114 0v2m-4 0h4m-4 0H5m12 0h2"></path></svg>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-semibold text-white">Centralized Maintenance Failure</h4>
+                                <p class="text-xs text-slate-400 mt-0.5">When a large standalone custom inverter or proprietary lithium cell stack fails, local operators cannot perform complex, dangerous repairs without vendor support.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border-t border-slate-800/80 pt-4 bg-slate-900/40 p-4 rounded-xl">
+                    <p class="text-[11px] text-slate-400 italic">
+                        "The solution lies in shifting the paradigm: moving from centralized monoliths to modular, circular, compound microgrid storage."
+                    </p>
+                </div>
+            </div>
+
+            <!-- Right Panel: Interactive Logistics / Assembly Simulation -->
+            <div class="glass-panel rounded-3xl p-6 lg:col-span-7 flex flex-col justify-between space-y-6 border-l border-teal-500/20">
+                <div>
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-4">
+                        <div>
+                            <span class="text-xs font-bold text-teal-400 uppercase tracking-widest">Active Concept Sandbox</span>
+                            <h3 class="text-xl font-bold text-white mt-1">Modular "Lego-Style" Assembly Simulation</h3>
+                        </div>
+                        <span class="text-xs px-2 py-1 bg-teal-500/10 border border-teal-500/20 text-teal-400 rounded-lg font-mono">Guatemala Highlands Context</span>
+                    </div>
+
+                    <p class="text-slate-400 text-sm mb-6 leading-relaxed">
+                        Rather than shipping one massive, unmovable battery enclosure, the <strong>Compound BESS Model</strong> breaks storage down into lightweight <strong>5kW to 10kW "drawers."</strong> These are easy to transport over rugged terrain, and safely stackable to build a heavy community battery.
+                    </p>
+
+                    <!-- Interactive Sandbox Widget -->
+                    <div class="bg-slate-900/60 rounded-2xl p-5 border border-slate-800 space-y-6">
+                        <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
+                            <!-- Left: Micro-Controls -->
+                            <div class="w-full sm:w-1/2 space-y-4">
+                                <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400">Assemble Your Array</h4>
+                                <div class="flex gap-2">
+                                    <button onclick="addModule()" class="flex-1 bg-teal-500 hover:bg-teal-400 text-slate-950 font-bold py-2.5 px-3 rounded-xl transition duration-150 text-xs shadow-lg hover:shadow-teal-500/10 flex items-center justify-center gap-1.5">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                                        Add Module (+10kWh)
+                                    </button>
+                                    <button onclick="resetModules()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold py-2.5 px-3 rounded-xl transition duration-150 text-xs border border-slate-700 flex items-center justify-center">
+                                        Reset
+                                    </button>
+                                </div>
+
+                                <div class="space-y-2 pt-2">
+                                    <div class="flex justify-between text-xs text-slate-400">
+                                        <span>Total Capacity:</span>
+                                        <span class="font-mono text-teal-400 font-bold" id="total-capacity">10 kWh</span>
+                                    </div>
+                                    <div class="flex justify-between text-xs text-slate-400">
+                                        <span>Required Transport:</span>
+                                        <span class="font-mono text-slate-200" id="transport-requirement">4x4 Pickup Truck</span>
+                                    </div>
+                                    <div class="flex justify-between text-xs text-slate-400">
+                                        <span>Power Capacity:</span>
+                                        <span class="font-mono text-slate-200" id="village-impact">Serves ~5 Homes</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Right: Physical Representation -->
+                            <div class="w-full sm:w-1/2 flex flex-col items-center justify-center border-l border-slate-800 pl-0 sm:pl-4">
+                                <span class="text-[10px] text-slate-500 uppercase tracking-widest mb-2 font-mono">Modular Rack Status</span>
+                                
+                                <!-- Drawer Stack Graphics container -->
+                                <div class="w-full max-w-[180px] bg-slate-950 p-3 rounded-xl border border-slate-800 flex flex-col-reverse gap-1.5 h-44 overflow-y-auto custom-scrollbar" id="drawer-stack">
+                                    <!-- Dynamic module elements go here -->
+                                    <div class="bg-slate-800 border-2 border-teal-500/60 rounded-md p-1 flex justify-between items-center text-[10px] font-mono text-teal-300 grid-pulse">
+                                        <span>[===] MOD 01</span>
+                                        <span class="text-emerald-400">10kWh</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Logistics Status Bar -->
+                        <div class="pt-4 border-t border-slate-800/80 grid grid-cols-3 gap-3 text-center">
+                            <div>
+                                <span class="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Unit Weight</span>
+                                <p class="text-sm font-extrabold text-white mt-0.5">50 kg</p>
+                                <p class="text-[10px] text-emerald-400 font-medium mt-0.5">Two-person lift</p>
+                            </div>
+                            <div>
+                                <span class="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Access Required</span>
+                                <p class="text-sm font-extrabold text-white mt-0.5">Footpath / Dirt road</p>
+                                <p class="text-[10px] text-teal-400 font-medium mt-0.5">Mule / 4x4 capable</p>
+                            </div>
+                            <div>
+                                <span class="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Scalability</span>
+                                <p class="text-sm font-extrabold text-white mt-0.5">Hot-Swappable</p>
+                                <p class="text-[10px] text-amber-400 font-medium mt-0.5">No downtime addition</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ROW 3: Three Technology Pillars (Analysis of Shared Articles) -->
+        <section class="space-y-4">
+            <div class="flex items-center gap-3">
+                <span class="h-px bg-slate-800 flex-1"></span>
+                <h3 class="text-md font-bold uppercase text-slate-400 tracking-widest text-center px-4">The Three Technological Pillars</h3>
+                <span class="h-px bg-slate-800 flex-1"></span>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Pillar 1: Nuveen Analysis (Cost Collapse) -->
+                <div class="glass-panel rounded-3xl p-6 border-t-2 border-teal-500/50 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-xs px-2.5 py-1 bg-teal-500/10 text-teal-400 border border-teal-500/20 rounded-full font-bold uppercase tracking-wider">01 / ECONOMICS</span>
+                            <span class="text-slate-500 font-mono text-xs">Nuveen Report</span>
+                        </div>
+                        <h4 class="text-lg font-bold text-white mb-2 leading-snug">The Capital Demilitarization of BESS</h4>
+                        <p class="text-xs text-slate-400 leading-relaxed">
+                            BESS technology costs have plummeted by <strong>90%</strong>, driving the global annual investment directly up to <strong>$54 Billion</strong>. 
+                        </p>
+                        
+                        <div class="mt-4 p-3 bg-slate-900/60 rounded-xl border border-slate-800 space-y-2">
+                            <p class="text-[11px] text-slate-300 font-medium">Strategic Implications for Rural Areas:</p>
+                            <ul class="space-y-1.5 text-[11px] text-slate-400">
+                                <li class="flex items-start gap-1">
+                                    <span class="text-teal-400 mt-0.5">•</span>
+                                    <span>Democratizes access from multi-million utility grids down to modest local agricultural co-ops.</span>
+                                </li>
+                                <li class="flex items-start gap-1">
+                                    <span class="text-teal-400 mt-0.5">•</span>
+                                    <span>Changes CAPEX models from expensive asset ownership to affordable local lease models (ESaaS).</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="pt-4 border-t border-slate-800/80 mt-6 flex justify-between items-center text-xs text-slate-500">
+                        <span>Economic Barrier:</span>
+                        <span class="text-emerald-400 font-semibold font-mono">Overcome (Cost Dropped 90%)</span>
+                    </div>
+                </div>
+
+                <!-- Pillar 2: US Desert Tech (Sodium-Ion Safety) -->
+                <div class="glass-panel rounded-3xl p-6 border-t-2 border-emerald-500/50 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-xs px-2.5 py-1 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-full font-bold uppercase tracking-wider">02 / CHEMISTRY</span>
+                            <span class="text-slate-500 font-mono text-xs">Sodium (Na-Ion)</span>
+                        </div>
+                        <h4 class="text-lg font-bold text-white mb-2 leading-snug">Thermal Runaway Prevention with Na-Ion</h4>
+                        <p class="text-xs text-slate-400 leading-relaxed">
+                            Unlike lithium-ion chemistries prone to thermal runaways (fires), sodium-ion cells are inherently fire-safe, perform optimally under extreme temperatures, and use abundant, cheap sodium raw materials.
+                        </p>
+                        
+                        <!-- Interactive Chemistry Safety Indicator -->
+                        <div class="mt-4 p-3 bg-slate-900/60 rounded-xl border border-slate-800 space-y-3">
+                            <p class="text-[11px] text-slate-300 font-medium">Sodium Advantage Simulator:</p>
+                            <div class="space-y-2">
+                                <div>
+                                    <div class="flex justify-between text-[10px] text-slate-400">
+                                        <span>Fire Hazard Risk:</span>
+                                        <span class="text-emerald-400 font-bold">0% (Inherent Chemistry Safety)</span>
+                                    </div>
+                                    <div class="w-full bg-slate-950 h-1.5 rounded-full overflow-hidden mt-1">
+                                        <div class="bg-emerald-500 h-full w-[3%]"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between text-[10px] text-slate-400">
+                                        <span>Operating Temp Tolerance:</span>
+                                        <span class="text-teal-400 font-bold">-40°C to +60°C</span>
+                                    </div>
+                                    <div class="w-full bg-slate-950 h-1.5 rounded-full overflow-hidden mt-1">
+                                        <div class="bg-teal-500 h-full w-[95%]"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pt-4 border-t border-slate-800/80 mt-6 flex justify-between items-center text-xs text-slate-500">
+                        <span>Physical Security Risk:</span>
+                        <span class="text-emerald-400 font-semibold font-mono">Mitigated (Inherent Fire Safety)</span>
+                    </div>
+                </div>
+
+                <!-- Pillar 3: German Circularity Project (Refurbish/Re-use) -->
+                <div class="glass-panel rounded-3xl p-6 border-t-2 border-pink-500/50 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-xs px-2.5 py-1 bg-pink-500/10 text-pink-400 border border-pink-500/20 rounded-full font-bold uppercase tracking-wider">03 / CIRCULARITY</span>
+                            <span class="text-slate-500 font-mono text-xs">German Tech Project</span>
+                        </div>
+                        <h4 class="text-lg font-bold text-white mb-2 leading-snug">Automated Non-Destructive Dismantling</h4>
+                        <p class="text-xs text-slate-400 leading-relaxed">
+                            Rather than destroying end-of-life battery cells via harsh chemical or thermal shredding, automated techniques allow non-destructive component dismantling, cell refurbishment, and immediate second-life assembly.
+                        </p>
+                        
+                        <div class="mt-4 p-3 bg-slate-900/60 rounded-xl border border-slate-800 space-y-2">
+                            <p class="text-[11px] text-slate-300 font-medium">Impact on Remote Community Resiliency:</p>
+                            <ul class="space-y-1.5 text-[11px] text-slate-400">
+                                <li class="flex items-start gap-1">
+                                    <span class="text-pink-400 mt-0.5">•</span>
+                                    <span>Provides local co-ops with an inventory of affordable, second-life modular batteries.</span>
+                                </li>
+                                <li class="flex items-start gap-1">
+                                    <span class="text-pink-400 mt-0.5">•</span>
+                                    <span>Standardized modular assembly allows easy visual checks and manual swaps.</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="pt-4 border-t border-slate-800/80 mt-6 flex justify-between items-center text-xs text-slate-500">
+                        <span>Resource Sourcing:</span>
+                        <span class="text-pink-400 font-semibold font-mono">Solved (Modular Recovery)</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ROW 4: Compound BESS vs VPP (Detailed Battleground) -->
+        <section class="glass-panel rounded-3xl p-6 overflow-hidden relative">
+            <!-- Background element for modern tech layout -->
+            <div class="absolute top-0 right-0 w-80 h-80 bg-teal-500/5 rounded-full filter blur-[100px] pointer-events-none"></div>
+            
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 relative z-10">
+                <div>
+                    <span class="text-xs font-bold text-amber-400 uppercase tracking-widest">Architectural Battleground</span>
+                    <h3 class="text-2xl font-bold text-white mt-1">Virtual Power Plant (VPP) vs. Compound BESS</h3>
+                    <p class="text-xs text-slate-400 mt-1">Understanding the shift from abstract, high-latency digital clustering to resilient, physical module optimization</p>
+                </div>
+                
+                <div class="flex gap-2">
+                    <button id="toggle-vpp" onclick="switchBattleground('vpp')" class="bg-amber-500 text-slate-950 font-bold py-1.5 px-3 rounded-lg text-xs transition duration-150">VPP Model</button>
+                    <button id="toggle-compound" onclick="switchBattleground('compound')" class="bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 font-bold py-1.5 px-3 rounded-lg text-xs transition duration-150">Compound BESS</button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 relative z-10">
+                <!-- Comparison Text Column -->
+                <div class="lg:col-span-4 space-y-4" id="battleground-content-panel">
+                    <div class="p-5 bg-amber-500/5 border border-amber-500/20 rounded-2xl space-y-3" id="vpp-desc">
+                        <h4 class="text-sm font-bold text-amber-400 uppercase tracking-wider">The Legacy: Virtual Power Plant (VPP)</h4>
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            Virtual Power Plants aggregate thousands of small, disparate consumer batteries over cloud servers to mimic a central power utility. 
+                        </p>
+                        <p class="text-xs text-slate-400 leading-relaxed">
+                            <strong>The Failure Mode in Rural Areas:</strong> Highly reliant on high-bandwidth communication infrastructure, complex telemetry, and standardizing dozens of different hardware brands. When local internet cuts out (common in mountain communities), the VPP structure collapses.
+                        </p>
+                    </div>
+
+                    <div class="p-5 bg-teal-500/5 border border-teal-500/20 rounded-2xl space-y-3 hidden" id="compound-desc">
+                        <h4 class="text-sm font-bold text-teal-400 uppercase tracking-wider">The Innovation: Compound BESS Model</h4>
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            Inspired by industrial scaling concepts (building mega-batteries out of uniform, hot-swappable smaller units), the Compound BESS model aggregates units physically in a centralized community hub.
+                        </p>
+                        <p class="text-xs text-slate-400 leading-relaxed">
+                            <strong>The Resiliency Premium:</strong> Physical stabilization does not depend on cloud uptime. If 1 small module fails, the remaining 99 units continue to function. Maintenance is done with no downtime by swapping standard physical drawer components.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Comparison Dynamic Grid Column -->
+                <div class="lg:col-span-8 bg-slate-900/60 rounded-2xl border border-slate-800 p-6">
+                    <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4" id="table-title">Performance Metric Comparison Matrix</h4>
+                    
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs">
+                            <thead>
+                                <tr class="border-b border-slate-800 text-slate-400 font-semibold">
+                                    <th class="pb-3 w-1/4">Evaluation Vector</th>
+                                    <th class="pb-3 w-3/8 text-amber-400">Virtual Power Plant (VPP)</th>
+                                    <th class="pb-3 w-3/8 text-teal-400">Compound BESS Model</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-800/50 text-slate-300">
+                                <tr>
+                                    <td class="py-3 font-semibold text-slate-200">Grid Resiliency</td>
+                                    <td class="py-3 text-slate-400">Virtual (requires cloud communication)</td>
+                                    <td class="py-3 text-teal-300 font-medium">Physical (autonomous local stabilization)</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-3 font-semibold text-slate-200">Asset Ownership</td>
+                                    <td class="py-3 text-slate-400">Fragmented (individual homeowners)</td>
+                                    <td class="py-3 text-teal-300 font-bold">Democratic (Community Cooperative Share)</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-3 font-semibold text-slate-200">Logistics & Installation</td>
+                                    <td class="py-3 text-slate-400">High installation overhead per home</td>
+                                    <td class="py-3 text-teal-300 font-medium">Modular assembly (simple box stacking)</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-3 font-semibold text-slate-200">Maintenance & Repair</td>
+                                    <td class="py-3 text-slate-400">Difficult (highly fragmented, various manufacturers)</td>
+                                    <td class="py-3 text-teal-300 font-medium">Hot-swap (remove single failed drawer)</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-3 font-semibold text-slate-200">System Capital Costs</td>
+                                    <td class="py-3 text-slate-400">High upfront CAPEX for individual units</td>
+                                    <td class="py-3 text-teal-300 font-semibold">Shared community leases (low monthly fees)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ROW 5: Real-World Case Study Sandbox (Guatemala Highlands / ASDHINQUI) -->
+        <section class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <!-- Left Side: Interactive Micro-Grid Balancing Sandbox -->
+            <div class="glass-panel rounded-3xl p-6 lg:col-span-7 space-y-6">
+                <div>
+                    <span class="text-xs font-bold text-teal-400 uppercase tracking-widest">Cooperative Simulation Sandbox</span>
+                    <h3 class="text-xl font-bold text-white mt-1">Guatemala Rural Microgrid Balance Simulator</h3>
+                    <p class="text-xs text-slate-400 mt-1">Balance production and loads for a remote mountain grid co-located with a micro-hydro system.</p>
+                </div>
+
+                <!-- Simulation Interactive Interface -->
+                <div class="bg-slate-900/60 rounded-2xl border border-slate-800 p-5 space-y-6">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <!-- Seasonal/Turbine Controller -->
+                        <div class="space-y-4">
+                            <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400">Micro-Hydro Resource Mode</h4>
+                            <div class="grid grid-cols-3 gap-2">
+                                <button onclick="setSeason('rainy')" class="bg-teal-500/20 hover:bg-teal-500/30 text-teal-400 border border-teal-500/30 font-semibold py-2 px-1 rounded-xl text-[10px] transition duration-150" id="btn-rainy">
+                                    Rainy Season<br><span class="text-[9px] text-slate-400">(Peak Flow)</span>
+                                </button>
+                                <button onclick="setSeason('dry')" class="bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 font-semibold py-2 px-1 rounded-xl text-[10px] transition duration-150" id="btn-dry">
+                                    Dry Season<br><span class="text-[9px] text-slate-400">(Low Flow)</span>
+                                </button>
+                                <button onclick="setSeason('silted')" class="bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 font-semibold py-2 px-1 rounded-xl text-[10px] transition duration-150" id="btn-silted">
+                                    Silt-Blocked<br><span class="text-[9px] text-slate-400">(0% Flow)</span>
+                                </button>
+                            </div>
+
+                            <!-- Cooperative Productive Loads Control -->
+                            <div class="space-y-3 pt-2">
+                                <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400">Productive Industrial Loads</h4>
+                                <div class="space-y-2">
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-xs text-slate-300 flex items-center gap-1.5">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-orange-400"></span>
+                                            Coffee Wet Mill (Beneficio)
+                                        </span>
+                                        <input type="checkbox" id="load-coffee" onchange="calculateBalance()" class="w-4 h-4 text-teal-600 bg-slate-900 border-slate-800 rounded focus:ring-teal-500">
+                                    </div>
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-xs text-slate-300 flex items-center gap-1.5">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
+                                            Community Corn Nixtamal Mill
+                                        </span>
+                                        <input type="checkbox" id="load-mill" onchange="calculateBalance()" class="w-4 h-4 text-teal-600 bg-slate-900 border-slate-800 rounded focus:ring-teal-500">
+                                    </div>
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-xs text-slate-300 flex items-center gap-1.5">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-blue-400"></span>
+                                            School & Health Clinic Refrigeration
+                                        </span>
+                                        <input type="checkbox" id="load-clinic" checked onchange="calculateBalance()" class="w-4 h-4 text-teal-600 bg-slate-900 border-slate-800 rounded focus:ring-teal-500">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- System Status Readings -->
+                        <div class="space-y-4 bg-slate-950 p-4 rounded-xl border border-slate-800">
+                            <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 text-center">Live Operational Gauges</h4>
+                            
+                            <div class="space-y-3">
+                                <div>
+                                    <div class="flex justify-between text-[11px]">
+                                        <span class="text-slate-400">Hydro Generation:</span>
+                                        <span class="font-mono text-emerald-400" id="gauge-generation">15 kW</span>
+                                    </div>
+                                    <div class="w-full bg-slate-900 h-1 rounded-full mt-1">
+                                        <div class="bg-emerald-400 h-full w-[75%]" id="bar-generation"></div>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <div class="flex justify-between text-[11px]">
+                                        <span class="text-slate-400">Demand Load:</span>
+                                        <span class="font-mono text-amber-400" id="gauge-load">5 kW</span>
+                                    </div>
+                                    <div class="w-full bg-slate-900 h-1 rounded-full mt-1">
+                                        <div class="bg-amber-400 h-full w-[25%]" id="bar-load"></div>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <div class="flex justify-between text-[11px]">
+                                        <span class="text-slate-400">Reserve State (Compound BESS):</span>
+                                        <span class="font-mono text-teal-400" id="gauge-bess">Ready (Holding)</span>
+                                    </div>
+                                    <div class="w-full bg-slate-900 h-1 rounded-full mt-1">
+                                        <div class="bg-teal-400 h-full w-[50%]" id="bar-bess"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- System Status Banner -->
+                            <div class="p-2.5 rounded-lg text-center text-xs font-bold uppercase tracking-wide mt-2" id="grid-status-badge">
+                                Grid Operational: Stable
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side: Real World Implementation Narrative -->
+            <div class="glass-panel rounded-3xl p-6 lg:col-span-5 flex flex-col justify-between space-y-6">
+                <div>
+                    <span class="text-xs font-bold text-pink-400 uppercase tracking-widest">Guatemalan Highlands Case Study</span>
+                    <h3 class="text-xl font-bold text-white mt-1">Redeeming Micro-Hydro Networks</h3>
+                    <p class="text-slate-400 text-xs mt-1">Deploying Compound Sodium-BESS in remote communities</p>
+
+                    <!-- Case Study Specifics -->
+                    <div class="space-y-4 mt-6 text-xs text-slate-400 leading-relaxed">
+                        <p>
+                            Consider the example of community associations like **ASDHINQUI** in rural Guatemala, which manage micro-hydro grids. These cooperatives struggle with major load balancing issues during dry seasons when water level drops. If coffee depulping or grain milling operations activate simultaneously, the entire system risks brownouts.
+                        </p>
+                        <p>
+                            By integrating the **Compound BESS model**, the community places a centrally managed, modular, sodium-ion battery stack right at the hydro-powerhouse station.
+                        </p>
+                        
+                        <div class="p-3.5 bg-slate-900/60 rounded-xl border border-slate-800 space-y-2">
+                            <h5 class="font-semibold text-white">Compound Co-location Benefits:</h5>
+                            <ul class="space-y-1.5 list-disc pl-3">
+                                <li><strong>Black-start Capability:</strong> Simple microgrid recovery after hydro-generator silt-out.</li>
+                                <li><strong>Surplus Harvesting:</strong> Harnesses high nocturnal hydro generation to run heavy coffee processing equipment during the day.</li>
+                                <li><strong>Financial Autonomy:</strong> The cooperative collects small monthly "Storage Fees" from members, maintaining the physical modular assets with simple, internal technical skills.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pt-4 border-t border-slate-800/80 text-[11px] text-slate-500">
+                    *Reference: Model adapted for remote Central American microgrid deployments utilizing modular architecture.
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER & CONCLUSION -->
+        <footer class="glass-panel rounded-3xl p-6 text-center space-y-3">
+            <h4 class="text-sm font-bold uppercase text-slate-300">Strategic Synthesis: The Value of Compound BESS</h4>
+            <p class="text-xs text-slate-400 max-w-2xl mx-auto leading-relaxed">
+                By combining **falling storage costs** (-90%), **inherently safe Sodium-ion technology**, and **modular circular assembly design**, we decouple distributed renewable energy from transport barriers. This paradigm-shifting "Compound Battery" model offers remote grids true physical sovereignty, surpassing both centralized monoliths and fragile Virtual Power Plants.
+            </p>
+            <div class="text-[10px] text-slate-500 pt-3 border-t border-slate-800/80">
+                Created with precision to demonstrate the adaptability of next-generation Battery Energy Storage Systems (BESS) for underserved communities.
+            </div>
+        </footer>
+
+    </main>
+
+    <!-- Vanilla Javascript Logic for Simulations -->
+    <script>
+        // Lego-Style Assembly Simulation State Variables
+        let currentCapacity = 10;
+        const maxCapacity = 100;
+        
+        function addModule() {
+            if (currentCapacity >= maxCapacity) {
+                return; // Reached limit
+            }
+            
+            currentCapacity += 10;
+            updateAssemblyDisplay();
+        }
+
+        function resetModules() {
+            currentCapacity = 10;
+            updateAssemblyDisplay();
+        }
+
+        function updateAssemblyDisplay() {
+            // Update Text Metrics
+            document.getElementById('total-capacity').innerText = `${currentCapacity} kWh`;
+            
+            // Update Transport Requirement
+            const transportEl = document.getElementById('transport-requirement');
+            if (currentCapacity <= 20) {
+                transportEl.innerText = "Mule / 4x4 Pickup Truck";
+                transportEl.className = "font-mono text-emerald-400";
+            } else if (currentCapacity <= 50) {
+                transportEl.innerText = "Small 4x4 Truck";
+                transportEl.className = "font-mono text-teal-400";
+            } else {
+                transportEl.innerText = "Light Flatbed Trailer (requires road access)";
+                transportEl.className = "font-mono text-amber-400";
+            }
+
+            // Update Village Impact
+            const homesServed = Math.floor(currentCapacity * 0.5);
+            document.getElementById('village-impact').innerText = `Serves ~${homesServed} Homes`;
+
+            // Update Stack Visuals
+            const stackContainer = document.getElementById('drawer-stack');
+            stackContainer.innerHTML = ''; // Clear container
+
+            const moduleCount = currentCapacity / 10;
+            for (let i = 1; i <= moduleCount; i++) {
+                const numStr = i < 10 ? `0${i}` : `${i}`;
+                const div = document.createElement('div');
+                div.className = "bg-slate-800 border-2 border-teal-500/60 rounded-md p-1 flex justify-between items-center text-[10px] font-mono text-teal-300 grid-pulse";
+                div.innerHTML = `<span>[===] MOD ${numStr}</span><span class="text-emerald-400">10kWh</span>`;
+                stackContainer.appendChild(div);
+            }
+        }
+
+        // VPP vs Compound BESS Panel Toggle
+        function switchBattleground(mode) {
+            const vppBtn = document.getElementById('toggle-vpp');
+            const compoundBtn = document.getElementById('toggle-compound');
+            const vppDesc = document.getElementById('vpp-desc');
+            const compoundDesc = document.getElementById('compound-desc');
+            const tableTitle = document.getElementById('table-title');
+
+            if (mode === 'vpp') {
+                vppBtn.className = "bg-amber-500 text-slate-950 font-bold py-1.5 px-3 rounded-lg text-xs transition duration-150";
+                compoundBtn.className = "bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 font-bold py-1.5 px-3 rounded-lg text-xs transition duration-150";
+                vppDesc.classList.remove('hidden');
+                compoundDesc.classList.add('hidden');
+                tableTitle.innerText = "Performance Metric Comparison Matrix: Focus on Virtual Aggregation";
+            } else {
+                compoundBtn.className = "bg-teal-500 text-slate-950 font-bold py-1.5 px-3 rounded-lg text-xs transition duration-150";
+                vppBtn.className = "bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 font-bold py-1.5 px-3 rounded-lg text-xs transition duration-150";
+                compoundDesc.classList.remove('hidden');
+                vppDesc.classList.add('hidden');
+                tableTitle.innerText = "Performance Metric Comparison Matrix: Focus on Compound Modularity";
+            }
+        }
+
+        // Guatemala Rural Microgrid Balance Simulator State
+        let currentSeason = 'rainy'; // default
+
+        function setSeason(season) {
+            currentSeason = season;
+            
+            // Adjust buttons active classes
+            const seasons = ['rainy', 'dry', 'silted'];
+            seasons.forEach(s => {
+                const btn = document.getElementById(`btn-${s}`);
+                if (s === season) {
+                    if (s === 'rainy') btn.className = "bg-emerald-500 text-slate-950 font-bold py-2 px-1 rounded-xl text-[10px] transition duration-150 border border-emerald-500";
+                    if (s === 'dry') btn.className = "bg-amber-500 text-slate-950 font-bold py-2 px-1 rounded-xl text-[10px] transition duration-150 border border-amber-500";
+                    if (s === 'silted') btn.className = "bg-red-500 text-slate-950 font-bold py-2 px-1 rounded-xl text-[10px] transition duration-150 border border-red-500";
+                } else {
+                    btn.className = "bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 font-semibold py-2 px-1 rounded-xl text-[10px] transition duration-150";
+                }
+            });
+
+            calculateBalance();
+        }
+
+        function calculateBalance() {
+            let generation = 0;
+            if (currentSeason === 'rainy') generation = 25; // kW
+            if (currentSeason === 'dry') generation = 8; // kW
+            if (currentSeason === 'silted') generation = 0; // kW
+
+            let demand = 0;
+            if (document.getElementById('load-coffee').checked) demand += 12; // wet mill active
+            if (document.getElementById('load-mill').checked) demand += 6;   // nixtamal mill active
+            if (document.getElementById('load-clinic').checked) demand += 3; // refrigeration active
+
+            const netPower = generation - demand;
+            let bessStatus = "";
+            let bessColor = "";
+            let statusText = "";
+            let badgeBgClass = "";
+            let badgeTextClass = "";
+
+            // Update Generation Elements
+            document.getElementById('gauge-generation').innerText = `${generation} kW`;
+            const genPercent = Math.min((generation / 30) * 100, 100);
+            document.getElementById('bar-generation').style.width = `${genPercent}%`;
+
+            // Update Demand Elements
+            document.getElementById('gauge-load').innerText = `${demand} kW`;
+            const demandPercent = Math.min((demand / 30) * 100, 100);
+            document.getElementById('bar-load').style.width = `${demandPercent}%`;
+
+            // Core Balance Logic
+            if (netPower > 0) {
+                // Surplus generation -> BESS is charging
+                bessStatus = `Charging (+${netPower} kW)`;
+                bessColor = "text-emerald-400";
+                statusText = "Grid Operational: Stable (Surplus Stored)";
+                badgeBgClass = "bg-emerald-500/10";
+                badgeTextClass = "text-emerald-400 border border-emerald-500/20";
+                document.getElementById('bar-bess').className = "bg-emerald-400 h-full w-[80%]";
+            } else if (netPower === 0) {
+                // Perfect balance
+                bessStatus = "Idle (Fully Balanced)";
+                bessColor = "text-teal-400";
+                statusText = "Grid Operational: Balanced";
+                badgeBgClass = "bg-teal-500/10";
+                badgeTextClass = "text-teal-400 border border-teal-500/20";
+                document.getElementById('bar-bess').className = "bg-teal-400 h-full w-[50%]";
+            } else {
+                // Deficit -> BESS discharging
+                const deficit = Math.abs(netPower);
+                
+                // If BESS is available, it can cover the deficit up to 15kW discharge
+                if (deficit <= 15) {
+                    bessStatus = `Discharging (-${deficit} kW)`;
+                    bessColor = "text-amber-400";
+                    statusText = "Grid Stable: Supported by BESS Drawdown";
+                    badgeBgClass = "bg-amber-500/10";
+                    badgeTextClass = "text-amber-400 border border-amber-500/20";
+                    document.getElementById('bar-bess').className = "bg-amber-400 h-full w-[30%]";
+                } else {
+                    // System overload! Deficit exceeds BESS capacity
+                    bessStatus = "Overloaded (Max discharge reached)";
+                    bessColor = "text-red-400";
+                    statusText = "WARNING: Grid Brownout Imminent! Reduce load.";
+                    badgeBgClass = "bg-red-500/10";
+                    badgeTextClass = "text-red-400 border border-red-500/20 grid-pulse";
+                    document.getElementById('bar-bess').className = "bg-red-500 h-full w-[10%]";
+                }
+            }
+
+            // Update visual text indicators
+            const bessGauge = document.getElementById('gauge-bess');
+            bessGauge.innerText = bessStatus;
+            bessGauge.className = `font-mono ${bessColor} font-bold`;
+
+            const statusBadge = document.getElementById('grid-status-badge');
+            statusBadge.innerText = statusText;
+            statusBadge.className = `p-2.5 rounded-lg text-center text-xs font-bold uppercase tracking-wide mt-2 ${badgeBgClass} ${badgeTextClass}`;
+        }
+
+        // Initialization
+        window.onload = function() {
+            updateAssemblyDisplay();
+            setSeason('rainy');
+        };
+    </script>
+
+</body>
+</html>
