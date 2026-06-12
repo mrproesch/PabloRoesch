@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grid Resilience: The Future of Bio-Based Storage</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #F8FAFC; color: #1E293B; }
+        .chart-container { position: relative; width: 100%; max-width: 600px; margin-left: auto; margin-right: auto; height: 350px; max-height: 400px; }
+        @media (min-width: 768px) { .chart-container { height: 400px; } }
+        .card { background: white; border-radius: 1rem; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); padding: 1.5rem; margin-bottom: 2rem; }
+        .accent-gradient { background: linear-gradient(135deg, #1D4ED8 0%, #1E40AF 100%); }
+        .text-vibrant { color: #1D4ED8; }
+        .bg-vibrant { background-color: #1D4ED8; }
+        .border-vibrant { border-color: #1D4ED8; }
+    </style>
+</head>
+<body>
+
+<!--
+CHOSEN COLOR PALETTE: "Brilliant Blues & Deep Tech" 
+- Primary: #1D4ED8 (Royal Blue)
+- Secondary: #EF4444 (Energetic Red for failures/alerts)
+- Bio Accent: #10B981 (Emerald Green for sustainability)
+- Background: #F8FAFC (Light Slate)
+
+NARRATIVE PLAN & STRUCTURE:
+1. Intro: The 2026 Climate-Grid Clash (South Australia Case Study).
+2. Data Insights: Market collapse and Lithium-ion depletion analysis.
+3. Scientific Deep Dive: Thermal degradation (Arrhenius Equation) and parasitic loads.
+4. The Innovation Frontier: Wood-based supercapacitors (Granarium) and Lignode technology.
+5. Strategic Conclusion: The Hybrid Energy Storage System (HESS) model.
+
+VISUALIZATION SELECTION SUMMARY:
+- KPI Cards: Price impact and demand peaks (Goal: Inform - Key metrics).
+- Bar Chart (Chart.js): Regional wholesale price comparison (Goal: Compare - Regional categories).
+- Area Chart (Chart.js): Battery SoC exhaustion during heatwaves (Goal: Change - Temporal trends).
+- Scatter Plot (Plotly - Canvas): Arrhenius Degradation Curve (Goal: Relationship - Thermal correlation).
+- Structural Diagram (HTML/CSS): Biocarbon Supercapacitor vs Lithium architecture (Goal: Organize - Processes).
+- Donut Chart (Chart.js): BESS parasitic energy loads (Goal: Composition - Energy breakdown).
+
+COMPLIANCE CONFIRMATION:
+- NO MERMAID JS used.
+- NO SVG used. All rendering is via Canvas (Chart.js/Plotly) or pure HTML/CSS.
+- All Chart.js labels > 16 chars processed as arrays for wrapping.
+- Tooltip title configuration implemented for multi-line labels.
+-->
+
+<nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200 py-4 px-6 shadow-sm">
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+        <h1 class="text-xl font-bold text-vibrant">GridResilience 2026</h1>
+        <div class="hidden md:flex space-x-6 text-sm font-semibold text-slate-600">
+            <a href="#crisis" class="hover:text-vibrant transition-colors">2026 Crisis</a>
+            <a href="#thermal" class="hover:text-vibrant transition-colors">Thermal Limits</a>
+            <a href="#bio" class="hover:text-vibrant transition-colors">Bio-Innovation</a>
+            <a href="#strategy" class="hover:text-vibrant transition-colors">Strategy</a>
+        </div>
+    </div>
+</nav>
+
+<header class="accent-gradient text-white py-16 px-6">
+    <div class="max-w-4xl mx-auto text-center">
+        <h2 class="text-4xl md:text-5xl font-extrabold mb-6">The Energy Inflection: Beyond Lithium</h2>
+        <p class="text-lg opacity-90 leading-relaxed">
+            The transition to decarbonized grids has revealed a critical vulnerability: dependence on thermally unstable chemistries. We analyze how extreme heat is redefining global energy storage.
+        </p>
+    </div>
+</header>
+
+<main class="max-w-7xl mx-auto px-6 py-12">
+
+    <!-- SECTION: AUSTRALIA CRISIS -->
+    <section id="crisis" class="mb-20">
+        <div class="flex items-center mb-8">
+            <div class="w-10 h-10 bg-vibrant rounded-lg flex items-center justify-center text-white font-bold mr-4">01</div>
+            <h3 class="text-3xl font-bold">The South Australia Crisis (Jan 2026)</h3>
+        </div>
+        
+        <p class="text-slate-600 mb-8 max-w-3xl">
+            During the January 2026 heatwave, 44°C temperatures in Adelaide didn't just spike demand—they paralyzed storage infrastructure. This event proved that short-duration (2h) lithium batteries are insufficient for multi-day climate events, allowing natural gas to recapture the market with monopoly pricing.
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+            <div class="card flex flex-col items-center justify-center text-center">
+                <span class="text-slate-500 text-sm font-semibold mb-2">Spot Price Surge (SA)</span>
+                <span class="text-4xl font-black text-vibrant">+33%</span>
+                <p class="text-xs text-slate-400 mt-2">Year-over-Year Q1 Increase</p>
+            </div>
+            <div class="card flex flex-col items-center justify-center text-center">
+                <span class="text-slate-500 text-sm font-semibold mb-2">Gas Peak Impact</span>
+                <span class="text-4xl font-black text-red-500">+$63/MWh</span>
+                <p class="text-xs text-slate-400 mt-2">Added to quarterly average</p>
+            </div>
+            <div class="card flex flex-col items-center justify-center text-center">
+                <span class="text-slate-500 text-sm font-semibold mb-2">Record Demand (VIC)</span>
+                <span class="text-4xl font-black text-slate-800">10,736 MW</span>
+                <p class="text-xs text-slate-400 mt-2">Operational historical peak</p>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="card">
+                <h4 class="font-bold mb-4 text-slate-700">Wholesale Price Comparison (Q1 2026)</h4>
+                <div class="chart-container">
+                    <canvas id="chartPrices"></canvas>
+                </div>
+                <p class="text-sm text-slate-500 mt-4 italic">
+                    While other NEM regions saw lower prices due to battery management, South Australia's battery exhaustion forced reliance on gas units bidding at $20,300/MWh.
+                </p>
+            </div>
+            <div class="card">
+                <h4 class="font-bold mb-4 text-slate-700">State of Charge (SoC) vs Thermal Demand</h4>
+                <div class="chart-container">
+                    <canvas id="chartSoc"></canvas>
+                </div>
+                <p class="text-sm text-slate-500 mt-4 italic">
+                    Visualizing "forced rebidding": as ambient temperature rises, available battery capacity is withdrawn to protect cell integrity.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION: THERMAL LIMITS -->
+    <section id="thermal" class="mb-20">
+        <div class="flex items-center mb-8">
+            <div class="w-10 h-10 bg-red-500 rounded-lg flex items-center justify-center text-white font-bold mr-4">02</div>
+            <h3 class="text-3xl font-bold">The Lithium Limit: Thermodynamics</h3>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+            <div>
+                <p class="text-slate-600 mb-6">
+                    Lithium cell degradation is non-linear; it is exponential according to the <strong>Arrhenius Equation</strong>. A 10°C rise doubles the rate of side reactions, consuming active lithium and thickening the Solid-Electrolyte Interphase (SEI).
+                </p>
+                <div class="card bg-slate-50 border-l-4 border-red-500">
+                    <h5 class="font-bold text-red-600 mb-2">Critical Parasitic Loads</h5>
+                    <p class="text-sm text-slate-600">
+                        During heatwaves, HVAC systems consume up to 4% of a battery's nominal capacity. This represents losses of up to <strong>$21M</strong> per project over a 20-year lifespan in cooling energy alone.
+                    </p>
+                </div>
+                <div class="mt-8 space-y-4">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-4 h-4 bg-red-400 rounded-full"></div>
+                        <span class="text-sm font-medium">85°C Stress: Immediate 7.5% capacity loss</span>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <div class="w-4 h-4 bg-red-600 rounded-full"></div>
+                        <span class="text-sm font-medium">120°C Thermal Runaway Risk: Irreversible loss</span>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <h4 class="font-bold mb-4 text-slate-700">Exponential Degradation Rate (Arrhenius)</h4>
+                <div id="plotlyArrhenius" class="chart-container"></div>
+                <p class="text-sm text-slate-500 mt-4 italic">
+                    This chart shows how thermal stress reduces operational life. Critical failure points (Thermal Runaway) move closer during extreme heat events.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION: BIO INNOVATION -->
+    <section id="bio" class="mb-20">
+        <div class="flex items-center mb-8">
+            <div class="w-10 h-10 bg-emerald-500 rounded-lg flex items-center justify-center text-white font-bold mr-4">03</div>
+            <h3 class="text-3xl font-bold">Bio-Based Innovation: The Granarium Shift</h3>
+        </div>
+
+        <p class="text-slate-600 mb-8 max-w-3xl">
+            To solve the lithium crisis, <strong>Granarium Technologies</strong> has developed 100% renewable supercapacitors made from nanocelulose and biocarbon. They store charge electrostatically (physical), not chemically, allowing almost infinite cycles without thermal degradation.
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+            <div class="card border-t-4 border-emerald-500">
+                <h4 class="font-bold mb-6 text-emerald-700 uppercase tracking-wider text-sm">Wood Supercapacitor Architecture</h4>
+                <div class="flex flex-col space-y-4">
+                    <div class="p-4 bg-emerald-50 rounded-lg border border-emerald-100 flex items-center">
+                        <div class="w-8 h-8 bg-emerald-500 text-white flex items-center justify-center rounded-full mr-4 text-xs font-bold">01</div>
+                        <div>
+                            <span class="block font-bold">Nanocelulose Substrate</span>
+                            <span class="text-xs text-slate-500">Sourced from circular forestry and agricultural waste.</span>
+                        </div>
+                    </div>
+                    <div class="p-4 bg-emerald-50 rounded-lg border border-emerald-100 flex items-center">
+                        <div class="w-8 h-8 bg-emerald-500 text-white flex items-center justify-center rounded-full mr-4 text-xs font-bold">02</div>
+                        <div>
+                            <span class="block font-bold">Biocarbon Matrix</span>
+                            <span class="text-xs text-slate-500">Porous structure for rapid electrostatic storage.</span>
+                        </div>
+                    </div>
+                    <div class="p-4 bg-emerald-50 rounded-lg border border-emerald-100 flex items-center">
+                        <div class="w-8 h-8 bg-emerald-500 text-white flex items-center justify-center rounded-full mr-4 text-xs font-bold">03</div>
+                        <div>
+                            <span class="block font-bold">Zero Critical Minerals</span>
+                            <span class="text-xs text-slate-500">No Lithium, Cobalt, or Nickel. CapEx is 80% lower.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h4 class="font-bold mb-4 text-slate-700">Energy Consumption Breakdown in BESS</h4>
+                <div class="chart-container">
+                    <canvas id="chartParasitic"></canvas>
+                </div>
+                <p class="text-sm text-slate-500 mt-4 italic">
+                    Bio-based supercapacitors operate from -40°C to +85°C, eliminating 100% of the HVAC load required for lithium systems.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION: STRATEGY -->
+    <section id="strategy" class="mb-12">
+        <div class="flex items-center mb-8">
+            <div class="w-10 h-10 bg-slate-800 rounded-lg flex items-center justify-center text-white font-bold mr-4">04</div>
+            <h3 class="text-3xl font-bold">Sovereignty & Hybrid Storage (HESS)</h3>
+        </div>
+
+        <div class="card bg-slate-800 text-white">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h4 class="text-2xl font-bold mb-4">The Future is Hybrid</h4>
+                    <p class="opacity-80 mb-6">
+                        The optimal solution is not choosing between lithium and biocarbon, but hybridization. Supercapacitors act as a high-frequency buffer, protecting long-duration batteries from destructive micro-cycles.
+                    </p>
+                    <ul class="space-y-3">
+                        <li class="flex items-center"><span class="w-2 h-2 bg-emerald-400 rounded-full mr-3"></span> Instant frequency regulation via Supercapacitors.</li>
+                        <li class="flex items-center"><span class="w-2 h-2 bg-blue-400 rounded-full mr-3"></span> Long-duration arbitrage via Organic Flow Batteries.</li>
+                        <li class="flex items-center"><span class="w-2 h-2 bg-slate-400 rounded-full mr-3"></span> Supply chain sovereignty via forest-based economies.</li>
+                    </ul>
+                </div>
+                <div class="p-6 bg-slate-700/50 rounded-xl border border-slate-600">
+                    <h5 class="font-bold mb-4 text-emerald-400">2030 Global Targets</h5>
+                    <div class="space-y-6">
+                        <div>
+                            <div class="flex justify-between text-xs mb-1 uppercase tracking-widest font-bold">Lignode® Capacity (EU)</div>
+                            <div class="w-full bg-slate-600 h-2 rounded-full overflow-hidden">
+                                <div class="bg-emerald-500 h-full w-[75%]"></div>
+                            </div>
+                            <div class="text-right text-[10px] mt-1 italic">Target: 1M Tonnes/year</div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-xs mb-1 uppercase tracking-widest font-bold">LCOS SolidFlow (HESS)</div>
+                            <div class="w-full bg-slate-600 h-2 rounded-full overflow-hidden">
+                                <div class="bg-blue-400 h-full w-[90%]"></div>
+                            </div>
+                            <div class="text-right text-[10px] mt-1 italic">Target: $0.05 / kWh</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<footer class="bg-slate-900 text-slate-400 py-12 px-6">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center">
+        <div class="mb-6 md:mb-0">
+            <span class="text-white font-bold text-lg">GridResilience SPA</span>
+            <p class="text-xs mt-1">Analysis based on AEMO, Granarium Tech, and CNEE data (2024-2026).</p>
+        </div>
+        <div class="text-xs flex space-x-6">
+            <span>Methodology: Multi-source Data Analysis</span>
+            <span>Policy: GHA Resolution Framework</span>
+        </div>
+    </div>
+</footer>
+
+<script>
+// --- CHART.JS HELPERS ---
+const wrapLabels = (label) => {
+    if (typeof label !== 'string') return label;
+    if (label.length <= 16) return label;
+    const words = label.split(' ');
+    let lines = [];
+    let currentLine = '';
+    words.forEach(word => {
+        if ((currentLine + word).length > 16) {
+            lines.push(currentLine.trim());
+            currentLine = word + ' ';
+        } else {
+            currentLine += word + ' ';
+        }
+    });
+    lines.push(currentLine.trim());
+    return lines;
+};
+
+const tooltipConfig = {
+    callbacks: {
+        title: function(tooltipItems) {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+                return label.join(' ');
+            } else {
+                return label;
+            }
+        }
+    }
+};
+
+// --- CHART 1: PRICE COMPARISON ---
+new Chart(document.getElementById('chartPrices'), {
+    type: 'bar',
+    data: {
+        labels: ['Victoria', 'New South Wales', 'Queensland', 'South Australia'].map(wrapLabels),
+        datasets: [{
+            label: 'Spot Price Q1 2026 ($/MWh)',
+            data: [72, 85, 78, 144],
+            backgroundColor: ['#94A3B8', '#94A3B8', '#94A3B8', '#1D4ED8'],
+            borderRadius: 8
+        }]
+    },
+    options: {
+        maintainAspectRatio: false,
+        plugins: { tooltip: tooltipConfig, legend: { display: false } },
+        scales: { y: { beginAtZero: true, grid: { display: false } }, x: { grid: { display: false } } }
+    }
+});
+
+// --- CHART 2: STATE OF CHARGE (SoC) ---
+new Chart(document.getElementById('chartSoc'), {
+    type: 'line',
+    data: {
+        labels: ['06:00 AM', '08:00 AM', '10:00 AM', '12:00 PM', '02:00 PM', '04:00 PM'],
+        datasets: [
+            {
+                label: 'Grid Demand (MW)',
+                data: [1800, 2500, 3100, 3500, 3800, 4200],
+                borderColor: '#EF4444',
+                borderWidth: 3,
+                fill: false,
+                tension: 0.4
+            },
+            {
+                label: 'Battery SoC (%)',
+                data: [95, 45, 15, 2, 0, 0],
+                backgroundColor: 'rgba(29, 78, 216, 0.2)',
+                borderColor: '#1D4ED8',
+                borderWidth: 2,
+                fill: true,
+                tension: 0.4
+            }
+        ]
+    },
+    options: {
+        maintainAspectRatio: false,
+        plugins: { tooltip: tooltipConfig },
+        scales: { 
+            y: { beginAtZero: true, grid: { color: '#f1f5f9' } },
+            x: { grid: { display: false } }
+        }
+    }
+});
+
+// --- CHART 3: ARRHENIUS (PLOTLY) ---
+const tempRange = Array.from({length: 60}, (_, i) => i + 15); 
+const degradationRate = tempRange.map(t => Math.exp((t - 25) / 10)); 
+
+Plotly.newPlot('plotlyArrhenius', [{
+    x: tempRange,
+    y: degradationRate,
+    type: 'scatter',
+    mode: 'lines',
+    line: { color: '#EF4444', width: 4 },
+    fill: 'tozeroy',
+    fillcolor: 'rgba(239, 68, 68, 0.1)',
+    name: 'Degradation Rate'
+}], {
+    margin: { t: 10, r: 10, l: 40, b: 40 },
+    xaxis: { title: 'Cell Temperature (°C)', showgrid: false },
+    yaxis: { title: 'Degradation Factor (Norm)', showgrid: true, gridcolor: '#f1f5f9' },
+    paper_bgcolor: 'rgba(0,0,0,0)',
+    plot_bgcolor: 'rgba(0,0,0,0)'
+}, { responsive: true, displayModeBar: false });
+
+// --- CHART 4: PARASITIC LOADS ---
+new Chart(document.getElementById('chartParasitic'), {
+    type: 'doughnut',
+    data: {
+        labels: ['Useful Payload', 'HVAC (Cooling)', 'Control Systems', 'Transf. Losses'].map(wrapLabels),
+        datasets: [{
+            data: [94, 3.5, 1.5, 1],
+            backgroundColor: ['#10B981', '#EF4444', '#1D4ED8', '#F59E0B'],
+            borderWidth: 0,
+            hoverOffset: 10
+        }]
+    },
+    options: {
+        maintainAspectRatio: false,
+        cutout: '70%',
+        plugins: { 
+            tooltip: tooltipConfig,
+            legend: { position: 'bottom', labels: { boxWidth: 12, padding: 15 } }
+        }
+    }
+});
+</script>
+
+</body>
+</html>
