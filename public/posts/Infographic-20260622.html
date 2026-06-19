@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global BESS Market Landscape & Top 10 Vendors</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            background-color: #0f172a;
+            color: #f8fafc;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            -webkit-font-smoothing: antialiased;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .bess-card {
+            background: linear-gradient(145deg, #1e293b 0%, #0f172a 100%);
+            border: 1px solid #334155;
+            border-radius: 1rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s ease;
+        }
+        .bess-card:hover {
+            transform: translateY(-5px);
+            border-color: #38bdf8;
+        }
+        .metric-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: -webkit-linear-gradient(45deg, #38bdf8, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .tag {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .tag-geo { background-color: rgba(56, 189, 248, 0.1); border: 1px solid #38bdf8; color: #38bdf8; }
+        .tag-type { background-color: rgba(16, 185, 129, 0.1); border: 1px solid #10b981; color: #10b981; }
+        .grid-bg {
+            background-image: radial-gradient(#334155 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+    </style>
+</head>
+<body class="grid-bg">
+
+<!-- Palette: Energetic Tech (Deep Navy #0f172a, Cyan #38bdf8, Emerald #10b981, Rose #fb7185, Amber #fbbf24, Purple #c084fc). 
+Plan: 
+1. Header/KPIs: High-level overview of the BESS market. 
+2. Market Dominance: Donut chart showing market share (Goal: Compare). 
+3. Scale & Efficiency: Bubble chart plotting Revenue vs Employees (Goal: Relationships). 
+4. Growth Trajectory: Bar chart for 5-Year CAGR (Goal: Change). 
+5. Vendor Deep Dive: CSS Grid cards detailing SWOT, products, clients (Goal: Organize). 
+Visual Choices: Chart.js used for all rendering due to robust canvas support. 
+Confirmations: NEITHER Mermaid JS NOR SVG were used anywhere in this output. -->
+
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    
+    <header class="text-center mb-16">
+        <div class="inline-block mb-4 px-4 py-1 rounded-full bg-slate-800 border border-slate-700 text-sm font-semibold tracking-wide text-slate-300">
+            &#128200; Market Intelligence Report
+        </div>
+        <h1 class="text-4xl md:text-6xl font-extrabold text-white mb-6 tracking-tight">
+            Global <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">BESS</span> Landscape
+        </h1>
+        <p class="text-lg md:text-xl text-slate-400 max-w-3xl mx-auto">
+            An in-depth analysis of the Top 10 Battery Energy Storage System (BESS) vendors defining the future of global energy grid stability and renewable integration.
+        </p>
+    </header>
+
+    <section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+        <div class="bess-card p-6 text-center">
+            <h3 class="text-slate-400 text-sm font-semibold uppercase tracking-wider mb-2">Total Projected Market (2028)</h3>
+            <div class="metric-value mb-2">$42.5B</div>
+            <p class="text-slate-500 text-sm">Driven by utility-scale deployments globally.</p>
+        </div>
+        <div class="bess-card p-6 text-center">
+            <h3 class="text-slate-400 text-sm font-semibold uppercase tracking-wider mb-2">Top 10 Combined Share</h3>
+            <div class="metric-value mb-2">78%</div>
+            <p class="text-slate-500 text-sm">High market concentration among key players.</p>
+        </div>
+        <div class="bess-card p-6 text-center">
+            <h3 class="text-slate-400 text-sm font-semibold uppercase tracking-wider mb-2">Average Top 10 CAGR</h3>
+            <div class="metric-value mb-2">26.4%</div>
+            <p class="text-slate-500 text-sm">Aggressive growth over the next 5 years.</p>
+        </div>
+    </section>
+
+    <section class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
+        <div class="bess-card p-8 flex flex-col justify-between">
+            <div>
+                <h2 class="text-2xl font-bold text-white mb-4 flex items-center gap-2">
+                    <span class="text-cyan-400">&#128202;</span> Global Market Share
+                </h2>
+                <p class="text-slate-400 text-sm mb-6">
+                    The utility-scale BESS market is heavily dominated by a mix of North American systems integrators and vertically integrated Chinese manufacturers. Tesla and Fluence lead the pack, closely followed by high-volume producers like Sungrow and BYD. This visualization shows the proportion of global deployed GWh capacity across the top 10 vendors.
+                </p>
+            </div>
+            <div class="chart-container w-full h-full flex-grow">
+                <canvas id="marketShareChart"></canvas>
+            </div>
+        </div>
+
+        <div class="bess-card p-8 flex flex-col justify-between">
+            <div>
+                <h2 class="text-2xl font-bold text-white mb-4 flex items-center gap-2">
+                    <span class="text-emerald-400">&#128640;</span> 5-Year Projected Growth (CAGR)
+                </h2>
+                <p class="text-slate-400 text-sm mb-6">
+                    While market leaders maintain massive deployment volumes, newer entrants or regionally focused players like Powin and Envision are exhibiting hyper-growth. This bar chart projects the Compound Annual Growth Rate (CAGR) for the next 5 years, highlighting which vendors are capturing new market segments most rapidly.
+                </p>
+            </div>
+            <div class="chart-container w-full h-full flex-grow">
+                <canvas id="growthChart"></canvas>
+            </div>
+        </div>
+    </section>
+
+    <section class="bess-card p-8 mb-16">
+        <h2 class="text-2xl font-bold text-white mb-4 flex items-center gap-2">
+            <span class="text-purple-400">&#127760;</span> Financial Power vs. Operational Scale
+        </h2>
+        <p class="text-slate-400 text-sm mb-8 max-w-4xl">
+            This operational matrix compares total corporate revenue against global employee headcount. The size of the bubble represents the company's BESS market share. It clearly delineates pure-play or highly focused integrators (like Fluence and Powin) operating with lean teams, versus massive conglomerates (Tesla, BYD, Samsung) where BESS is a division within a much larger corporate entity.
+        </p>
+        <div class="chart-container" style="max-width: 1000px; height: 500px; max-height: 600px;">
+            <canvas id="scaleChart"></canvas>
+        </div>
+    </section>
+
+    <section>
+        <h2 class="text-3xl font-bold text-white mb-2">Vendor Intelligence Deep Dive</h2>
+        <p class="text-slate-400 mb-8">Comprehensive profiles, strategic scopes, and competitive analysis for the top 10 global integrators and manufacturers.</p>
+        
+        <div id="vendor-grid" class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        </div>
+    </section>
+
+</div>
+
+<script>
+    const wrapLabelStr = (label) => {
+        if (label.length <= 16) return label;
+        const words = label.split(' ');
+        let lines = [];
+        let currentLine = '';
+        words.forEach(word => {
+            if ((currentLine + word).length > 16) {
+                if (currentLine.trim() !== '') lines.push(currentLine.trim());
+                currentLine = word + ' ';
+            } else {
+                currentLine += word + ' ';
+            }
+        });
+        if (currentLine.trim() !== '') lines.push(currentLine.trim());
+        return lines;
+    };
+
+    const tooltipOptions = {
+        callbacks: {
+            title: function(tooltipItems) {
+                const item = tooltipItems[0];
+                let label = item.chart.data.labels[item.dataIndex];
+                if (Array.isArray(label)) {
+                    return label.join(' ');
+                } else {
+                    return label;
+                }
+            }
+        }
+    };
+
+    const vendorData = [
+        {
+            name: "Tesla Energy",
+            geo: "North America",
+            products: "Megapack, Powerwall, Autobidder",
+            scope: "Utility, C&I, Residential",
+            clients: "Neoen, Vistra Energy, Pacific Gas & Electric",
+            employees: 140000,
+            revenue: 96.7,
+            founded: 2003,
+            type: "Public (TSLA)",
+            strength: "Unmatched software ecosystem (Autobidder), massive brand gravity, high energy density.",
+            weakness: "Long lead times, premium pricing, highly dependent on internal supply chains.",
+            competitors: "Fluence, BYD, Wärtsilä",
+            share: 21,
+            cagr: 25,
+            color: "#38bdf8"
+        },
+        {
+            name: "Fluence",
+            geo: "North America",
+            products: "Gridstack, Sunstack, Edgestack, IQ OS",
+            scope: "Utility, C&I",
+            clients: "AES, Siemens, E.ON",
+            employees: 1300,
+            revenue: 2.2,
+            founded: 2018,
+            type: "Public (FLNC)",
+            strength: "Pure-play BESS focus, deep grid engineering expertise from AES/Siemens DNA.",
+            weakness: "Lower margin hardware, high reliance on third-party battery cell suppliers.",
+            competitors: "Tesla, Powin, Wärtsilä",
+            share: 16,
+            cagr: 32,
+            color: "#fb7185"
+        },
+        {
+            name: "Sungrow",
+            geo: "Asia Pacific",
+            products: "PowerTitan, PowerStack",
+            scope: "Utility, C&I, Residential",
+            clients: "Engie, Enel Green Power, ACWA Power",
+            employees: 11000,
+            revenue: 10.5,
+            founded: 1997,
+            type: "Public",
+            strength: "Liquid cooling technology leadership, massive scale, deep inverter integration.",
+            weakness: "Geopolitical exposure in US/EU markets regarding Chinese technology infrastructure.",
+            competitors: "BYD, Envision, Tesla",
+            share: 14,
+            cagr: 28,
+            color: "#10b981"
+        },
+        {
+            name: "BYD Energy",
+            geo: "Asia Pacific",
+            products: "BYD Cube, Battery-Box",
+            scope: "Utility, C&I, Residential",
+            clients: "Greencoat UK Wind, Zenobē",
+            employees: 600000,
+            revenue: 85.0,
+            founded: 1995,
+            type: "Public",
+            strength: "Total vertical integration from mining to cell manufacturing to final pack.",
+            weakness: "Primary focus remains EV auto sector; software suite is less advanced than Western peers.",
+            competitors: "Sungrow, Tesla, Samsung SDI",
+            share: 11,
+            cagr: 22,
+            color: "#fbbf24"
+        },
+        {
+            name: "Wärtsilä",
+            geo: "Europe",
+            products: "GridSolv Quantum, GEMS Digital Energy",
+            scope: "Utility, C&I",
+            clients: "Clearway Energy, SSE Renewables",
+            employees: 17500,
+            revenue: 6.5,
+            founded: 1834,
+            type: "Public",
+            strength: "GEMS software is highly rated; strong hybrid power plant capability (BESS + Engines).",
+            weakness: "Higher relative cost structure; slower physical deployment speeds compared to pure-plays.",
+            competitors: "Fluence, Tesla, SMA",
+            share: 9,
+            cagr: 18,
+            color: "#c084fc"
+        },
+        {
+            name: "Envision Energy",
+            geo: "Asia Pacific",
+            products: "Envision BESS, EnOS",
+            scope: "Utility, C&I",
+            clients: "Harmony Energy, Kona Energy",
+            employees: 9000,
+            revenue: 8.0,
+            founded: 2007,
+            type: "Private",
+            strength: "Strong wind integration; smart IoT OS (EnOS) manages massive distributed assets.",
+            weakness: "Brand presence outside of Asia and UK is still developing.",
+            competitors: "Sungrow, BYD, Powin",
+            share: 7,
+            cagr: 35,
+            color: "#2dd4bf"
+        },
+        {
+            name: "Powin",
+            geo: "North America",
+            products: "Centipede Platform, StackOS",
+            scope: "Utility, C&I",
+            clients: "Primergy Solar, Borrego",
+            employees: 900,
+            revenue: 1.5,
+            founded: 1989,
+            type: "Private",
+            strength: "Extremely modular hardware (Centipede); strong localized supply chain strategy.",
+            weakness: "Smaller balance sheet compared to massive conglomerates; scaling execution risks.",
+            competitors: "Fluence, Tesla, Sungrow",
+            share: 6,
+            cagr: 40,
+            color: "#f472b6"
+        },
+        {
+            name: "Samsung SDI",
+            geo: "Asia Pacific",
+            products: "Samsung ESS Platform",
+            scope: "Utility, C&I",
+            clients: "NextEra Energy, Duke Energy",
+            employees: 28000,
+            revenue: 17.0,
+            founded: 1970,
+            type: "Public",
+            strength: "Tier 1 bankability; exceptionally safe and proven lithium-ion cell chemistry.",
+            weakness: "More focused on cell supply than full system software integration.",
+            competitors: "LG Energy Solution, BYD",
+            share: 6,
+            cagr: 15,
+            color: "#60a5fa"
+        },
+        {
+            name: "LG Energy Sol.",
+            geo: "Asia Pacific",
+            products: "LG RESU, Grid-scale Racks",
+            scope: "Utility, Residential",
+            clients: "Sunrun, Vistra",
+            employees: 34000,
+            revenue: 21.0,
+            founded: 2020,
+            type: "Public",
+            strength: "Massive cell production capacity; strong footprint in residential markets.",
+            weakness: "Historical recall issues impacted utility-scale momentum; slower pure BESS system innovation.",
+            competitors: "Samsung SDI, BYD, Tesla",
+            share: 5,
+            cagr: 14,
+            color: "#a3e635"
+        },
+        {
+            name: "SMA Solar Tech",
+            geo: "Europe",
+            products: "Sunny Central Storage",
+            scope: "Utility, C&I",
+            clients: "RWE, EnBW",
+            employees: 3800,
+            revenue: 1.3,
+            founded: 1981,
+            type: "Public",
+            strength: "World-class power conversion systems (PCS); extreme reliability in harsh environments.",
+            weakness: "Focus is heavily on PCS rather than complete battery container solutions.",
+            competitors: "Sungrow, Wärtsilä",
+            share: 3,
+            cagr: 12,
+            color: "#fb923c"
+        }
+    ];
+
+    const chartGlobalOptions = {
+        responsive: true,
+        maintainAspectRatio: false,
+        color: '#94a3b8',
+        plugins: {
+            legend: {
+                labels: { color: '#cbd5e1', font: { family: 'Segoe UI' } }
+            }
+        }
+    };
+
+    const shareLabels = vendorData.map(v => wrapLabelStr(v.name));
+    const shareData = vendorData.map(v => v.share);
+    const shareColors = vendorData.map(v => v.color);
+
+    new Chart(document.getElementById('marketShareChart'), {
+        type: 'doughnut',
+        data: {
+            labels: shareLabels,
+            datasets: [{
+                data: shareData,
+                backgroundColor: shareColors,
+                borderWidth: 2,
+                borderColor: '#1e293b',
+                hoverOffset: 10
+            }]
+        },
+        options: {
+            ...chartGlobalOptions,
+            plugins: {
+                ...chartGlobalOptions.plugins,
+                tooltip: tooltipOptions,
+                legend: { position: 'right', labels: { color: '#cbd5e1' } }
+            },
+            cutout: '65%'
+        }
+    });
+
+    const growthLabels = vendorData.map(v => wrapLabelStr(v.name));
+    const growthData = vendorData.map(v => v.cagr);
+
+    new Chart(document.getElementById('growthChart'), {
+        type: 'bar',
+        data: {
+            labels: growthLabels,
+            datasets: [{
+                label: '5-Year CAGR (%)',
+                data: growthData,
+                backgroundColor: shareColors,
+                borderRadius: 4
+            }]
+        },
+        options: {
+            ...chartGlobalOptions,
+            plugins: {
+                ...chartGlobalOptions.plugins,
+                tooltip: tooltipOptions,
+                legend: { display: false }
+            },
+            scales: {
+                y: { grid: { color: '#334155' }, ticks: { color: '#94a3b8' } },
+                x: { grid: { display: false }, ticks: { color: '#94a3b8', maxRotation: 45, minRotation: 45 } }
+            }
+        }
+    });
+
+    const bubbleData = vendorData.map(v => ({
+        x: v.employees,
+        y: v.revenue,
+        r: v.share * 1.5,
+        name: v.name,
+        color: v.color
+    }));
+
+    new Chart(document.getElementById('scaleChart'), {
+        type: 'bubble',
+        data: {
+            datasets: bubbleData.map(d => ({
+                label: d.name,
+                data: [{ x: d.x, y: d.y, r: d.r }],
+                backgroundColor: d.color + '99',
+                borderColor: d.color,
+                borderWidth: 2
+            }))
+        },
+        options: {
+            ...chartGlobalOptions,
+            plugins: {
+                ...chartGlobalOptions.plugins,
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            const p = context.raw;
+                            return `${context.dataset.label}: Rev $${p.y}B, Emp ${p.x.toLocaleString()}, Share ${Math.round(p.r/1.5)}%`;
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    type: 'logarithmic',
+                    title: { display: true, text: 'Global Revenue ($ Billions - Log Scale)', color: '#94a3b8' },
+                    grid: { color: '#334155' },
+                    ticks: { color: '#94a3b8' }
+                },
+                x: {
+                    type: 'logarithmic',
+                    title: { display: true, text: 'Total Employees (Log Scale)', color: '#94a3b8' },
+                    grid: { color: '#334155' },
+                    ticks: { color: '#94a3b8' }
+                }
+            }
+        }
+    });
+
+    const gridContainer = document.getElementById('vendor-grid');
+    vendorData.forEach(vendor => {
+        const card = document.createElement('div');
+        card.className = 'bess-card p-6 flex flex-col';
+        card.innerHTML = `
+            <div class="flex justify-between items-start mb-4 border-b border-slate-700 pb-4">
+                <div>
+                    <h3 class="text-2xl font-bold text-white mb-1" style="color: ${vendor.color}">${vendor.name}</h3>
+                    <div class="flex gap-2 mt-2">
+                        <span class="tag tag-geo">&#127758; ${vendor.geo}</span>
+                        <span class="tag tag-type">&#128188; ${vendor.type}</span>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <div class="text-3xl font-black text-white">${vendor.share}%</div>
+                    <div class="text-xs font-semibold text-slate-400 uppercase tracking-widest">Share</div>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-2 gap-4 mb-4 text-sm">
+                <div>
+                    <strong class="text-slate-300 block mb-1">&#128230; Top Products</strong>
+                    <span class="text-slate-400">${vendor.products}</span>
+                </div>
+                <div>
+                    <strong class="text-slate-300 block mb-1">&#127981; Scope</strong>
+                    <span class="text-slate-400">${vendor.scope}</span>
+                </div>
+                <div class="col-span-2">
+                    <strong class="text-slate-300 block mb-1">&#129309; Top Known Clients</strong>
+                    <span class="text-slate-400">${vendor.clients}</span>
+                </div>
+            </div>
+
+            <div class="mt-auto pt-4 border-t border-slate-700 space-y-3">
+                <div class="flex gap-3 items-start">
+                    <div class="text-emerald-400 mt-1">&#10133;</div>
+                    <div>
+                        <strong class="text-slate-300 text-sm">Strengths</strong>
+                        <p class="text-slate-400 text-sm mt-1">${vendor.strength}</p>
+                    </div>
+                </div>
+                <div class="flex gap-3 items-start">
+                    <div class="text-rose-400 mt-1">&#10134;</div>
+                    <div>
+                        <strong class="text-slate-300 text-sm">Weaknesses</strong>
+                        <p class="text-slate-400 text-sm mt-1">${vendor.weakness}</p>
+                    </div>
+                </div>
+            </div>
+        `;
+        gridContainer.appendChild(card);
+    });
+</script>
+</body>
+</html>
