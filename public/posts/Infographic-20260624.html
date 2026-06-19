@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Space-Based Solar Power Infographic</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
+<style>
+body {
+    background-color: #0B0F19;
+    color: #E2E8F0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+.chart-container {
+    position: relative;
+    width: 100%;
+    max-width: 650px;
+    margin-left: auto;
+    margin-right: auto;
+    height: 350px;
+    max-height: 400px;
+}
+.plotly-container {
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+    height: 400px;
+}
+@media (min-width: 768px) {
+    .chart-container {
+        height: 400px;
+    }
+}
+.glow-text {
+    text-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
+}
+.card-border {
+    border: 1px solid rgba(0, 229, 255, 0.1);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+}
+.timeline-dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background-color: #00E5FF;
+    box-shadow: 0 0 10px #00E5FF;
+    margin-top: 4px;
+    flex-shrink: 0;
+}
+.timeline-line {
+    width: 2px;
+    background: linear-gradient(to bottom, #00E5FF, #FF3D7F);
+    margin-left: 7px;
+    flex-grow: 1;
+    min-height: 40px;
+}
+</style>
+</head>
+<body class="antialiased overflow-x-hidden">
+
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <header class="text-center mb-16">
+        <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight mb-4 text-transparent bg-clip-text bg-gradient-to-r from-[#00E5FF] to-[#FF3D7F] glow-text">
+            SPACE-BASED SOLAR POWER
+        </h1>
+        <p class="text-xl md:text-2xl text-gray-400 max-w-3xl mx-auto font-light">
+            Harvesting the sun where it never sets. From Peter Glaser's 1968 visionary concept to Japan's impending 2025 orbital tests.
+        </p>
+    </header>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+        <div class="bg-[#1A233A] rounded-2xl p-8 card-border flex flex-col justify-center">
+            <div class="flex items-center mb-4">
+                <span class="text-4xl mr-4 text-[#FFC107]">&#9728;</span>
+                <h2 class="text-3xl font-bold text-white">The 1968 Genesis</h2>
+            </div>
+            <p class="text-lg text-gray-300 leading-relaxed mb-6">
+                In a landmark 1968 article published in <em>Science</em>, Dr. Peter Glaser introduced the concept of transmitting solar energy from space to Earth. He recognized that terrestrial solar is inherently limited by the atmosphere, weather, and the day/night cycle.
+            </p>
+            <p class="text-lg text-gray-300 leading-relaxed">
+                Glaser proposed placing enormous solar collector arrays in Geostationary Earth Orbit (GEO). In this orbit, satellites face the sun almost continuously, gathering intense, unfiltered solar radiation, converting it to microwaves, and beaming it down to massive terrestrial receiving antennas (rectennas) for continuous baseload power.
+            </p>
+        </div>
+
+        <div class="bg-[#1A233A] rounded-2xl p-8 card-border">
+            <h2 class="text-2xl font-bold text-white mb-2">Why Space Solar? Capacity Factor</h2>
+            <p class="text-sm text-gray-400 mb-6">SBSP provides continuous power compared to intermittent terrestrial renewables.</p>
+            <div class="chart-container">
+                <canvas id="capacityChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-[#1A233A] rounded-2xl p-8 card-border mb-8">
+        <h2 class="text-3xl font-bold text-white mb-6 text-center">The SBSP Architecture Flow</h2>
+        <div class="flex flex-col md:flex-row items-center justify-between gap-6 w-full">
+            <div class="flex-1 bg-[#0B0F19] border border-[#00E5FF] rounded-xl p-6 text-center w-full shadow-[0_0_15px_rgba(0,229,255,0.2)]">
+                <div class="text-5xl mb-4 text-[#FFC107]">&#9728;</div>
+                <h3 class="text-xl font-bold text-[#00E5FF] mb-2">1. Collection in Space</h3>
+                <p class="text-sm text-gray-400">Giant photovoltaic arrays in orbit harvest unfiltered sunlight 24/7, avoiding atmospheric interference.</p>
+            </div>
+            <div class="text-4xl text-[#FF3D7F] rotate-90 md:rotate-0">&#10132;</div>
+            <div class="flex-1 bg-[#0B0F19] border border-[#FF3D7F] rounded-xl p-6 text-center w-full shadow-[0_0_15px_rgba(255,61,127,0.2)]">
+                <div class="text-5xl mb-4 text-[#FF3D7F]">&#128225;</div>
+                <h3 class="text-xl font-bold text-[#FF3D7F] mb-2">2. Wireless Transmission</h3>
+                <p class="text-sm text-gray-400">DC power is converted into high-frequency microwaves or lasers and beamed directly toward the Earth.</p>
+            </div>
+            <div class="text-4xl text-[#7C4DFF] rotate-90 md:rotate-0">&#10132;</div>
+            <div class="flex-1 bg-[#0B0F19] border border-[#7C4DFF] rounded-xl p-6 text-center w-full shadow-[0_0_15px_rgba(124,77,255,0.2)]">
+                <div class="text-5xl mb-4 text-[#7C4DFF]">&#9889;</div>
+                <h3 class="text-xl font-bold text-[#7C4DFF] mb-2">3. Terrestrial Reception</h3>
+                <p class="text-sm text-gray-400">Vast 'rectennas' on Earth receive the beam, converting the electromagnetic waves back into electricity for the grid.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+        <div class="bg-[#1A233A] rounded-2xl p-8 card-border">
+            <h2 class="text-2xl font-bold text-white mb-2">The Economic Catalyst</h2>
+            <p class="text-sm text-gray-400 mb-6">Plunging launch costs make massive orbital infrastructure feasible.</p>
+            <div class="chart-container">
+                <canvas id="launchCostChart"></canvas>
+            </div>
+            <p class="text-xs text-gray-500 mt-4 text-center">Historical and projected cost to Low Earth Orbit (USD/kg).</p>
+        </div>
+
+        <div class="bg-[#1A233A] rounded-2xl p-8 card-border flex flex-col justify-center">
+            <div class="flex items-center mb-4">
+                <span class="text-4xl mr-4 text-[#FF3D7F]">&#128640;</span>
+                <h2 class="text-3xl font-bold text-white">Japan's OHISAMA Project</h2>
+            </div>
+            <p class="text-lg text-gray-300 leading-relaxed mb-6">
+                Moving from theory to practice, Japan is aggressively pursuing SBSP. Following successful ground tests of microwave power transmission in 2015, the Japanese government and JAXA aim to conduct an orbital test by 2025.
+            </p>
+            <p class="text-lg text-gray-300 leading-relaxed mb-6">
+                The test will utilize small satellites in Low Earth Orbit (LEO) at an altitude of approximately <strong>400 to 450 kilometers</strong>. This crucial experiment will attempt to beam kilowatts of power to terrestrial receiving stations.
+            </p>
+            <div class="bg-[#0B0F19] p-4 rounded-lg border border-[#2A3441]">
+                <h4 class="text-[#00E5FF] font-bold mb-2">Target Milestones:</h4>
+                <ul class="space-y-2 text-sm text-gray-300">
+                    <li><strong class="text-white">2025:</strong> LEO Orbital Transmission Test (450km)</li>
+                    <li><strong class="text-white">2030s:</strong> First large-scale commercial orbital plant</li>
+                    <li><strong class="text-white">Goal:</strong> Provide gigawatt-scale power to resource-scarce nations.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-[#1A233A] rounded-2xl p-8 card-border mb-8">
+        <h2 class="text-3xl font-bold text-white mb-2 text-center">Power Conversion Efficiency Pipeline</h2>
+        <p class="text-center text-gray-400 mb-8 max-w-2xl mx-auto">Visualizing the energy cascade: from raw solar irradiance captured in space down to the final AC power delivered to the terrestrial grid. Microwave transmission is the critical bottleneck.</p>
+        <div class="chart-container" style="max-width: 800px;">
+            <canvas id="efficiencyChart"></canvas>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+        <div class="bg-[#1A233A] rounded-2xl p-8 card-border">
+            <h2 class="text-2xl font-bold text-white mb-6">Global Race to Orbit</h2>
+            <div class="flex flex-col">
+                <div class="flex">
+                    <div class="flex flex-col items-center mr-6">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-line"></div>
+                    </div>
+                    <div class="pb-8">
+                        <h4 class="text-xl font-bold text-[#00E5FF]">2023 - USA (Caltech MAPLE)</h4>
+                        <p class="text-gray-400 text-sm mt-1">First successful wireless power transfer in space and beam to Earth.</p>
+                    </div>
+                </div>
+                <div class="flex">
+                    <div class="flex flex-col items-center mr-6">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-line"></div>
+                    </div>
+                    <div class="pb-8">
+                        <h4 class="text-xl font-bold text-[#FF3D7F]">2025 - Japan (OHISAMA)</h4>
+                        <p class="text-gray-400 text-sm mt-1">Planned LEO test satellite at 450km transmitting power to ground rectennas.</p>
+                    </div>
+                </div>
+                <div class="flex">
+                    <div class="flex flex-col items-center mr-6">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-line"></div>
+                    </div>
+                    <div class="pb-8">
+                        <h4 class="text-xl font-bold text-[#7C4DFF]">2028 - China (Zhuri)</h4>
+                        <p class="text-gray-400 text-sm mt-1">Targeting high-voltage orbital power transmission experiments.</p>
+                    </div>
+                </div>
+                <div class="flex">
+                    <div class="flex flex-col items-center mr-6">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-line"></div>
+                    </div>
+                    <div class="pb-8">
+                        <h4 class="text-xl font-bold text-[#FFC107]">2030 - Europe (ESA SOLARIS)</h4>
+                        <p class="text-gray-400 text-sm mt-1">Decision point for full-scale development based on current feasibility studies.</p>
+                    </div>
+                </div>
+                <div class="flex">
+                    <div class="flex flex-col items-center mr-6">
+                        <div class="timeline-dot" style="background-color: #ffffff; box-shadow: 0 0 10px #ffffff;"></div>
+                    </div>
+                    <div>
+                        <h4 class="text-xl font-bold text-white">2035+ - Commercial Era</h4>
+                        <p class="text-gray-400 text-sm mt-1">Gigawatt scale, multi-kilometer arrays operating in GEO.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-[#1A233A] rounded-2xl p-8 card-border">
+            <h2 class="text-2xl font-bold text-white mb-2">Mass vs. Power Distribution</h2>
+            <p class="text-sm text-gray-400 mb-6">Theoretical component mass constraints for a 1 GW SBSP satellite.</p>
+            <div class="chart-container">
+                <canvas id="massChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-[#1A233A] rounded-2xl p-8 card-border mb-8">
+        <h2 class="text-3xl font-bold text-white mb-2 text-center">Orbit Altitude & Power Density Simulation</h2>
+        <p class="text-center text-gray-400 mb-6">A Plotly rendering visualizing the relationship between orbital altitude, receiver size, and power density. Note: LEO requires faster tracking but smaller arrays.</p>
+        <div id="plotlyScatter" class="plotly-container"></div>
+    </div>
+
+</div>
+
+<script>
+const processLabel = (label) => {
+    if (label.length <= 16) return label;
+    const words = label.split(' ');
+    const lines = [];
+    let currentLine = '';
+    words.forEach(word => {
+        if ((currentLine + word).length > 16) {
+            if (currentLine) lines.push(currentLine.trim());
+            currentLine = word + ' ';
+        } else {
+            currentLine += word + ' ';
+        }
+    });
+    if (currentLine) lines.push(currentLine.trim());
+    return lines;
+};
+
+const commonTooltipObj = {
+    callbacks: {
+        title: function(tooltipItems) {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) return label.join(' ');
+            return label;
+        }
+    }
+};
+
+const capCtx = document.getElementById('capacityChart').getContext('2d');
+new Chart(capCtx, {
+    type: 'bar',
+    data: {
+        labels: ['Solar PV (Terrestrial)'.split(' '), 'Wind (Onshore)', 'Nuclear', 'Space-Based Solar Power'].map(processLabel),
+        datasets: [{
+            label: 'Capacity Factor (%)',
+            data: [22, 35, 92, 99],
+            backgroundColor: ['#2A3441', '#2A3441', '#FF3D7F', '#00E5FF'],
+            borderRadius: 6
+        }]
+    },
+    options: {
+        maintainAspectRatio: false,
+        plugins: {
+            legend: { display: false },
+            tooltip: commonTooltipObj
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                max: 100,
+                grid: { color: 'rgba(255,255,255,0.05)' },
+                ticks: { color: '#94A3B8' }
+            },
+            x: {
+                grid: { display: false },
+                ticks: { color: '#94A3B8' }
+            }
+        }
+    }
+});
+
+const launchCtx = document.getElementById('launchCostChart').getContext('2d');
+new Chart(launchCtx, {
+    type: 'line',
+    data: {
+        labels: ['1981', '1995', '2006', '2010', '2015', '2020', '2025'].map(processLabel),
+        datasets: [{
+            label: 'Cost per kg to LEO ($)',
+            data: [85000, 26000, 18000, 10000, 2600, 1500, 300],
+            borderColor: '#FF3D7F',
+            backgroundColor: 'rgba(255, 61, 127, 0.2)',
+            borderWidth: 3,
+            fill: true,
+            tension: 0.4,
+            pointBackgroundColor: '#00E5FF',
+            pointRadius: 5
+        }]
+    },
+    options: {
+        maintainAspectRatio: false,
+        plugins: {
+            legend: { display: false },
+            tooltip: commonTooltipObj
+        },
+        scales: {
+            y: {
+                type: 'logarithmic',
+                grid: { color: 'rgba(255,255,255,0.05)' },
+                ticks: { color: '#94A3B8' }
+            },
+            x: {
+                grid: { display: false },
+                ticks: { color: '#94A3B8' }
+            }
+        }
+    }
+});
+
+const effCtx = document.getElementById('efficiencyChart').getContext('2d');
+new Chart(effCtx, {
+    type: 'bar',
+    data: {
+        labels: ['Incident Solar Energy', 'DC Power Conversion', 'Microwave Conversion', 'Transmission through Space/Atmosphere', 'Rectenna Capture to Grid AC'].map(processLabel),
+        datasets: [{
+            label: 'Remaining Power (%)',
+            data: [100, 40, 32, 28, 20],
+            backgroundColor: [
+                '#FFC107',
+                '#00E5FF',
+                '#7C4DFF',
+                '#FF3D7F',
+                '#10B981'
+            ],
+            borderRadius: 8
+        }]
+    },
+    options: {
+        maintainAspectRatio: false,
+        plugins: {
+            legend: { display: false },
+            tooltip: commonTooltipObj
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                max: 100,
+                grid: { color: 'rgba(255,255,255,0.05)' },
+                ticks: { color: '#94A3B8' }
+            },
+            x: {
+                grid: { display: false },
+                ticks: { color: '#94A3B8', font: { size: 11 } }
+            }
+        }
+    }
+});
+
+const massCtx = document.getElementById('massChart').getContext('2d');
+new Chart(massCtx, {
+    type: 'doughnut',
+    data: {
+        labels: ['Solar PV Array', 'Microwave Transmitters', 'Structural Support', 'Thermal Management', 'Avionics & Control'].map(processLabel),
+        datasets: [{
+            data: [45, 30, 15, 8, 2],
+            backgroundColor: ['#00E5FF', '#FF3D7F', '#7C4DFF', '#FFC107', '#E2E8F0'],
+            borderWidth: 0,
+            hoverOffset: 10
+        }]
+    },
+    options: {
+        maintainAspectRatio: false,
+        cutout: '70%',
+        plugins: {
+            legend: { position: 'right', labels: { color: '#94A3B8' } },
+            tooltip: commonTooltipObj
+        }
+    }
+});
+
+const trace1 = {
+    x: [400, 1000, 5000, 10000, 20000, 35786],
+    y: [100, 250, 1200, 2500, 5000, 10000],
+    z: [95, 90, 80, 70, 60, 50],
+    mode: 'markers',
+    marker: {
+        size: [10, 15, 20, 25, 30, 40],
+        color: [95, 90, 80, 70, 60, 50],
+        colorscale: 'Viridis',
+        opacity: 0.8
+    },
+    type: 'scatter3d',
+    name: 'Orbit Params'
+};
+const dataPlotly = [trace1];
+const layoutPlotly = {
+    paper_bgcolor: 'rgba(0,0,0,0)',
+    plot_bgcolor: 'rgba(0,0,0,0)',
+    margin: { l: 0, r: 0, b: 0, t: 0 },
+    scene: {
+        xaxis: { title: 'Altitude (km)', color: '#94A3B8', gridcolor: '#2A3441' },
+        yaxis: { title: 'Rectenna Size (m)', color: '#94A3B8', gridcolor: '#2A3441' },
+        zaxis: { title: 'Power Density Target', color: '#94A3B8', gridcolor: '#2A3441' },
+        camera: { eye: { x: 1.5, y: 1.5, z: 1.2 } }
+    }
+};
+const configPlotly = { responsive: true, displayModeBar: false };
+Plotly.newPlot('plotlyScatter', dataPlotly, layoutPlotly, configPlotly);
+
+</script>
+</body>
+</html>
